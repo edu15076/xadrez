@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chess</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body onload="drawBoard();">
+        <div id="open-page">
+            <!--this div is desapearing when ' ' is pressed-->
+            <h1>Chess</h1>
+            <img src="">
+            <p>Press <mark>SPACE</mark> to continue</p>
+        </div>
+        
+        <main>
+            <h2>Chess</h2>
+            <canvas id="board" width="2400" height="2400"></canvas>
+            
+            <div id="pieces-move">
+                <div class="white-rook" id="a1"></div>
+                <div class="white-knight" id="b1"></div>
+                <div class="white-bishop" id="c1"></div>
+                <div class="white-king" id="d1"></div>
+                <div class="white-queen" id="e1"></div>
+                <div class="white-bishop" id="f1"></div>
+                <div class="white-knight" id="g1"></div>
+                <div class="white-rook" id="h1"></div>
+
+                <div class="white-pawn" id="a2"></div>
+                <div class="white-pawn" id="b2"></div>
+                <div class="white-pawn" id="c2"></div>
+                <div class="white-pawn" id="d2"></div>
+                <div class="white-pawn" id="e2"></div>
+                <div class="white-pawn" id="f2"></div>
+                <div class="white-pawn" id="g2"></div>
+                <div class="white-pawn" id="h2"></div>
+
+                <div id="a3"></div>
+                <div id="b3"></div>
+                <div id="c3"></div>
+                <div id="d3"></div>
+                <div id="e3"></div>
+                <div id="f3"></div>
+                <div id="g3"></div>
+                <div id="h3"></div>
+
+                <div id="a4"></div>
+                <div id="b4"></div>
+                <div id="c4"></div>
+                <div id="d4"></div>
+                <div id="e4"></div>
+                <div id="f4"></div>
+                <div id="g4"></div>
+                <div id="h4"></div>
+
+                <div id="a5"></div>
+                <div id="b5"></div>
+                <div id="c5"></div>
+                <div id="d5"></div>
+                <div id="e5"></div>
+                <div id="f5"></div>
+                <div id="g5"></div>
+                <div id="h5"></div>
+
+                <div id="a6"></div>
+                <div id="b6"></div>
+                <div id="c6"></div>
+                <div id="d6"></div>
+                <div id="e6"></div>
+                <div id="f6"></div>
+                <div id="g6"></div>
+                <div id="h6"></div>
+
+                <div class="black-pawn" id="a7"></div>
+                <div class="black-pawn" id="b7"></div>
+                <div class="black-pawn" id="c7"></div>
+                <div class="black-pawn" id="d7"></div>
+                <div class="black-pawn" id="e7"></div>
+                <div class="black-pawn" id="f7"></div>
+                <div class="black-pawn" id="g7"></div>
+                <div class="black-pawn" id="h7"></div>
+
+                <div class="black-rook" id="a8"></div>
+                <div class="black-knight" id="b8"></div>
+                <div class="black-bishop" id="c8"></div>
+                <div class="black-king" id="d8"></div>
+                <div class="black-queen" id="e8"></div>
+                <div class="black-bishop" id="f8"></div>
+                <div class="black-knight" id="g8"></div>
+                <div class="black-rook" id="h8"></div>
+            </div>
+        </main>
+        <script src="chess.js"></script>
+    </body>
+</html>
