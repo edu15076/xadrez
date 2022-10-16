@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Chess</title>
         <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Raleway:wght@500&display=swap" rel="stylesheet">
     </head>
     <body onload="drawBoard();">
         <div id="open-page">
@@ -14,9 +17,22 @@
             <img src="">
             <p>Press <mark>SPACE</mark> to continue</p>
         </div>
+        <header>
+            <h1>Chess</h1>
+            <div class="container">
+                <input type="checkbox" id="checkbox-menu">
+            
+                <label for="checkbox-menu">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </label>
+             
+              </div>
+        </nav>
+        </header>
         
         <main>
-            <h2>Chess</h2>
             <canvas id="board" width="2400" height="2400"></canvas>
             
             <div id="pieces-move">
