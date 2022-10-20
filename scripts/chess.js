@@ -24,3 +24,24 @@ for (let i = 0; i < mat.length; i++)
 const blackKing = Object.create(king);
 blackKing.y = 0;*/
 
+let boxEl = document.querySelector('.container');
+let menuEl = document.querySelector('#menu');
+let cont = 0;
+
+function menu(contador) {
+    if (cont % 2 == 1)
+        menuEl.style.left = '80vw';
+    else
+        menuEl.style.left = '100vw';
+}
+
+boxEl.addEventListener('click', ()=> {
+    menu(cont);
+    cont++;
+});
+/*por algum motivo o menu n tá voltando, eu vou ver isso dps. Tentei usando toggle numa class tbm, só q n foi ;(
+usando toggle:
+no css: .opened {
+    left: 80vw;
+}
+no js: menuEl.classList.toggle('opened');*/
