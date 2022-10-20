@@ -1,5 +1,6 @@
 html {
     min-height: 100%;
+    overflow: hidden;
 }
 
 body {
@@ -198,4 +199,29 @@ label span:nth-child(3) {
 #checkbox-menu:checked+label span:nth-child(3) {
     transform: rotate(45deg);
     top: 8px;
+}
+
+#menu {
+    position: absolute;
+    height: 90%;
+    width: 35vw;
+    border-left: 0.4vw solid white;
+    transition: 300ms ease;
+    left: 100vw;
+}
+
+.opcoes {
+    height: 2.8vw;
+    width: 14vw;
+    border-radius: 0.5vw;
+    border: 0.3vw solid white;
+    padding: 0.4vw;
+    margin: 8vw 2vw 8vw 2vw;
+}
+
+.opcoes p {
+    text-align: center;
+    padding: 0.4vw 0.2vw 0.4vw 0.2vw;
+    font-size: 2vw;
+    font-weight: bold;
 }
