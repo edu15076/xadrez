@@ -28,13 +28,19 @@
                   <span></span>
                 </label>
              
-              </div>
+            </div>
         </header>
+
+        <nav>
+            <div class="opcoes">Login</div>
+            <div class="opcoes">Configurações</div>
+            <div class="opcoes">Desenvolvedores</div>
+        </nav>
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
         <main>
             <canvas id="board" width="2400" height="2400"></canvas>
             
-            <div id="pieces-move">
+            <section id="pieces-move">
                 <div class="white-rook" id="a1"><img src="img/white_rook.svg"></div>
                 <div class="white-knight" id="b1"><img src="img/white_knight.svg"></div>
                 <div class="white-bishop" id="c1"><img src="img/white_bishop.svg"></div>
@@ -106,20 +112,10 @@
                 <div class="black-bishop" id="f8"><img src="img/black_bishop.svg"></div>
                 <div class="black-knight" id="g8"><img src="img/black_knight.svg"></div>
                 <div class="black-rook" id="h8"><img src="img/black_rook.svg"></div>
-            </div>
-            <div id="menu">
-                <div class="opcoes">
-                    <p>Login</p>
-                </div>
-                <div class="opcoes">
-                    <p>Configurações</p>
-                </div>
-                <div class="opcoes">
-                    <p>Contribuidores</p>
-                </div>
-            </div>
+            </section>
         </main>
         <script src="scripts/chess.js"></script>
         <script src="scripts/cria_tabuleiro.js"></script>
+        <script src="scripts/menu.js"></script>
     </body>
 </html>

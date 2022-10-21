@@ -1,11 +1,11 @@
 html {
     min-height: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 body {
     height: 100vh;
-    background-color: #0d1117;
+    background-color: #070c15;
     color: white;
     font-family: 'Nunito', sans-serif;
 }
@@ -13,12 +13,16 @@ body {
 header {
     text-align: left;
     padding: 2vh;
-    background-color: rgb(11, 14, 20);
+    background-color: #02050c;
     display: flex;
     justify-content: space-between;
 }
 
-h1, h2, h3, h4{
+header h1 {
+    font-size: 4.0404vh;
+}
+
+h1, h2, h3, h4 {
     font-family: 'Raleway', sans-serif;
 }
 
@@ -34,7 +38,7 @@ h1, h2, h3, h4{
 main {
     display: grid;
     grid-template: 1fr auto 1fr / 1fr auto 1fr;
-    height: 90vh;
+    height: 91.224vh;
 }
 
 main > h2 {
@@ -47,7 +51,7 @@ main > h2 {
     width: 60vh;
     height: 60vh;
     border: 1.6vh solid rgb(32, 40, 58);
-    border-radius: 0.5vh;
+    border-radius: .5vh;
 }
 
 #pieces-move {
@@ -161,18 +165,18 @@ label {
     cursor: pointer;
     position: relative;
     display: block;
-    height: 22px;
-    width: 30px;
+    height: 2.778vh;
+    width: 3.788vh;
 }
 
 label span {
     position: absolute;
     display: block;
-    height: 5px;
-    width: 2em;
-    border-radius: 30px;
+    height: .631vh;
+    width: 4.04vh;
+    border-radius: 3.788vh;
     background: white;
-    transition: 0.25s ease-in-out;
+    transition: .25s ease-in-out;
 }
 
 label span:nth-child(1) {
@@ -180,16 +184,16 @@ label span:nth-child(1) {
 }
 
 label span:nth-child(2) {
-    top: 8px;
+    top: 1.01vh;
 }
 
 label span:nth-child(3) {
-    top: 16px;
+    top: 2.02vh;
 }
 
 #checkbox-menu:checked+label span:nth-child(1) {
     transform: rotate(-45deg);
-    top: 8px;
+    top: 1.01vh;
 }
 
 #checkbox-menu:checked+label span:nth-child(2) {
@@ -198,30 +202,39 @@ label span:nth-child(3) {
 
 #checkbox-menu:checked+label span:nth-child(3) {
     transform: rotate(45deg);
-    top: 8px;
+    top: 1.01vh;
 }
 
-#menu {
-    position: absolute;
-    height: 90%;
-    width: 35vw;
-    border-left: 0.4vw solid white;
-    transition: 300ms ease;
-    left: 100vw;
+nav {
+    z-index: 100;
+    background-color: #02050c;
+    position: fixed;
+    height: 91.3vh;
+    width: 35vh;
+    transition: all 300ms ease;
+    right: -35vh;
+    top: 8.7vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .opcoes {
-    height: 2.8vw;
-    width: 14vw;
-    border-radius: 0.5vw;
-    border: 0.3vw solid white;
-    padding: 0.4vw;
-    margin: 8vw 2vw 8vw 2vw;
+    height: 4.177vh;
+    width: 20.886vh;
+    border-radius: .746vh;
+    background-color: #fff;
+    padding: .597vh .298vh .597vh .298vh;
+    text-align: center;
+    font-size: 2.536vh;
+    font-weight: bold;
+    color: #02050c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.opcoes p {
-    text-align: center;
-    padding: 0.4vw 0.2vw 0.4vw 0.2vw;
-    font-size: 2vw;
-    font-weight: bold;
+.aberto {
+    right: 0;
 }
