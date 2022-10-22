@@ -150,3 +150,27 @@ for (let i = 0; i < mat.length; i++)
 const blackKing = Object.create(king);
 blackKing.y = 0;*/
 
+// ---------Inicio movimentos----------
+
+let pieces = document.querySelectorAll('.piece');
+let squares = document.querySelectorAll('#pieces-move div');
+let finalMove;
+
+pieces.forEach(pieceEl => {
+    pieceEl.addEventListener('dragstart', () => {
+        pieceEl.classList.add('grabed');
+    });
+
+    pieceEl.addEventListener('dragend', () => {
+        // verification
+        pieceEl.classList.remove('grabed');
+        finalMove.innerHTML = '';
+        finalMove.appendChild(pieceEl);
+    });
+});
+
+squares.forEach(squareEl => {
+    squareEl.addEventListener('dragenter', e => {
+        finalMove = e.currentTarget;
+    });
+});
