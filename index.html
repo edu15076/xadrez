@@ -44,7 +44,6 @@
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
         <main>
             <canvas id="board" width="2400" height="2400"></canvas>
-            
             <section id="pieces-move">
                 <div class="white-rook" id="a1"><img class="piece" src="img/white_rook.svg"></div>
                 <div class="white-knight" id="b1"><img class="piece" src="img/white_knight.svg"></div>
@@ -118,9 +117,32 @@
                 <div class="black-knight" id="g8"><img class="piece" src="img/black_knight.svg"></div>
                 <div class="black-rook" id="h8"><img class="piece" src="img/black_rook.svg"></div>
             </section>
+            <div id="login">
+                <h2>Login</h2>
+                <label> <!-- colocar icone -->
+                    <input type="text" placeholder="Usuário" minlength="5" maxlength="20">
+                </label>
+                <label> <!-- colocar icone -->
+                    <input type="password" placeholder="Senha" minlength="8" maxlength="25">
+                </label>
+                <button id="botao-login" class="sumir" type="submit">Login!</button>
+                <h2>Primeira vez?</h2>
+                <button id="botao-nova-conta">Criar conta!</button>
+                <label id="usuario-novo"> <!-- colocar icone -->
+                    <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20">
+                </label>
+                <label id="idade-nova"> <!-- colocar icone -->
+                    <input type="number" placeholder="Idade" step="1">
+                </label>
+                <label id="senha-nova"> <!-- colocar icone -->
+                    <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25">
+                </label>
+                <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
+            </div>
         </main>
         <script src="scripts/chess.js"></script>
         <script src="scripts/cria_tabuleiro.js"></script>
         <script src="scripts/menu.js"></script>
+        <script src="scripts/login.js"></script>
     </body>
 </html>
