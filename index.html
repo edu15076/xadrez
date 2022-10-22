@@ -18,8 +18,31 @@
             <p>Press <mark>SPACE</mark> to continue</p>
         </div>
         <!--janela das configurações incompleta-->
-        <div id="pop-up-configuracoes">
-            <div id="configuracoes">
+        <div class="pop-up-configuracoes-fechado" id="configuracoes">
+            <div id="configuracoes-janela">
+                <div class="temas" id="wood" 
+                    data-dark-square="rgb(181, 136, 99)" 
+                    data-light-square="rgb(240, 217, 181)">
+                    <h2>Wood</h2>
+                </div>
+                <div class="temas" id="blue" 
+                    data-dark-square="rgb(4, 14, 61)" 
+                    data-light-square="rgb(211, 218, 240)">
+                    <h2>Blue</h2>
+                </div>
+                <div class="temas" id="modern" 
+                    data-dark-square="rgb(24, 24, 24)" 
+                    data-light-square="rgb(170, 170, 170)">
+                    <h2>Modern</h2>
+                </div>
+                <div class="temas" id="traditional" 
+                    data-dark-square="rgb(115, 180, 89)" 
+                    data-light-square="rgb(233, 227, 219)">
+                    <h2>Traditional</h2>
+                </div>
+                <div class="botoes-cofiguracoes">
+                    <div class="opcoes">Reiniciar</div>
+                </div>
             </div>
         </div>
         <!--------------------------------------->
@@ -38,7 +61,7 @@
 
         <nav>
             <div class="opcoes">Login</div>
-            <div class="opcoes">Configurações</div>
+            <div class="opcoes" id="configuracoes-btn">Configurações</div>
             <div class="opcoes">Desenvolvedores</div>
         </nav>
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
@@ -121,6 +144,6 @@
         </main>
         <script src="scripts/chess.js"></script>
         <script src="scripts/cria_tabuleiro.js"></script>
-        <script src="scripts/menu.js"></script>
+        <script src="scripts/menus.js"></script>
     </body>
 </html>
