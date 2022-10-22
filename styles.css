@@ -257,3 +257,87 @@ nav {
     background-color: #02050c;
 }
 /*-----------------------------------*/
+
+#login {
+    position: absolute;
+    left: 71vh;
+    top: 9vh;
+    height: 65vh;
+    width: 42.7vh;
+    background-color: rgb(27, 26, 26);
+    padding: 10.3vh;
+    border-radius: 2.8vh;
+}
+
+#login h2 {
+    font-size: 6.5vh;
+}
+
+#login input {
+    height: 4vh;
+    width: 37vh;
+    border-radius: .75vh;
+    background-color: rgb(65, 62, 62);
+    color: white;
+}
+
+#login input:focus {
+    outline: 0.3vh solid white;
+}
+
+#login label:first-of-type {
+    margin: 5vh 0 3vh 3vh;
+}
+
+#login label:nth-of-type(2) {
+    margin: 0 0 6vh 3vh;
+}
+
+::placeholder {
+    font-size: 2.3vh;
+    color: white;
+}
+
+#login h2:nth-of-type(2) {
+    position: relative;
+    top: 10vh;
+}
+
+#botao-login, #botao-nova-conta, #botao-confirmar {
+    position: absolute;
+    left: 20vh;
+    width: 24vh;
+    height: 5vh;
+    background: rgb(229, 177, 124); /*podem mudar a cor*/
+    color: white;
+    font-size: 3.2vh;
+    border-radius: 0.5vh;
+    text-shadow: .2vh .2vh rgb(65, 62, 62);
+}
+
+#botao-nova-conta {
+    top: 60vh;
+}
+
+#usuario-novo, #idade-nova, #senha-nova {
+    position: fixed;
+    transition: 550ms all ease;
+}
+
+#usuario-novo {
+    left: -100vh;
+}
+
+#idade-nova {
+    right: -100vh;
+}
+
+#senha-nova {
+    top: -100vh;
+}
+
+#botao-confirmar {
+    position: fixed;
+    bottom: -100vh;
+}
+
