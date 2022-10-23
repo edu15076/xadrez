@@ -5,6 +5,10 @@ let senhaEl = document.querySelector('#senha-nova');
 let botaoConfirmar = document.querySelector('#botao-confirmar');
 let botoesSumir = document.querySelectorAll('.sumir');
 let loginEl = document.querySelector('#login');
+let senhaConfirmacao = document.querySelector('#senha-confirmacao');
+let torreEl = document.querySelector('#torre-animacao');
+let senhaInput = document.querySelector('#senha-nova input');
+let senhaConfirmacaoInput = document.querySelector('#senha-confirmacao input');
 let mainEl = document.querySelector('main');
 let botaoLoginEl = document.querySelector('#login-btn');
 
@@ -25,8 +29,45 @@ let sumir = () => {
         botaoConfirmar.style.left = '-100vh';
 }
 
+function moveEsquerda() {
+    torreEl.style.right = '60vh';
+}
+
+function apareceConfirmacao() {
+    senhaConfirmacao.style.transition = 'none';
+    senhaConfirmacao.style.top = '75vh';
+    senhaConfirmacao.style.right = '58vh';
+}
+
+let confirmaSenha = (validador) => {
+    if(senhaInput.value === validador) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+for (let botao of botoesSumir) {
+    botao.addEventListener('click', () => {
+        if (senhaInput.value != senhaConfirmacaoInput.value && senhaConfirmacaoInput.value != '') {
+            senhaConfirmacaoInput.value = '';
+            senhaEl.value = '';
+            senhaConfirmacaoInput.placeholder = 'CONFIRMAÇÃO INVÁLIDA';
+            senhaConfirmacaoInput.style.border = '0.4vh solid rgb(136, 0, 0)';
+
+        }
+        else if(senhaConfirmacaoInput.value != ''){
+            sumir();
+            torreEl.style.display = 'none';
+            senhaConfirmacaoInput.style.display = 'none';
+        }
+    });
+}
+
 let criaPerfil = () => {
     let loginIncompleto = 0;
+    let confirmacao;
 
     if(!novoNomeInput.value) {
         novoNomeInput.placeholder="Digite um nome válido";
@@ -51,6 +92,15 @@ let criaPerfil = () => {
         return;
     }
 
+    let temp;
+        torreEl.style.top = '77vh';
+        temp = setTimeout(moveEsquerda, 2000);
+        temp = setTimeout(apareceConfirmacao, 4200);
+
+    botaoConfirmar.addEventListener("click", () => {
+        confirmacao = confirmaSenha(senhaConfirmacaoInput.value);
+    })
+
     localStorage.removeItem('usuario');
 
     let usuario = {
@@ -60,12 +110,18 @@ let criaPerfil = () => {
         score: 0,
         vitorias: 0,
         derrotas: 0,
-        empates: 0
+        empates: 0,
+        tema: 'wood'
     }
 
     localStorage.setItem('usuario', JSON.stringify(usuario));
 
-    sumir();
+    if(confirmacao === true) {
+        sumir(); 
+    }
+    else {
+        return;
+    }
 }
 
 botaoConta.addEventListener('click', () => {
@@ -79,22 +135,7 @@ botaoConta.addEventListener('click', () => {
     botaoConfirmar.style.left = '92vh';
     botaoConfirmar.style.top = '89vh';
 });
-/*
-for (let botao of botoesSumir) {
-    botao.addEventListener('click', () => {
-        loginEl.style.transition = 'none';
-        loginEl.style.left = '-100vh';
-        userEl.style.transition = 'none';
-        userEl.style.left = '-100vh';
-        idadeEl.style.transition = 'none';
-        idadeEl.style.left = '-100vh';
-        senhaEl.style.transition = 'none';
-        senhaEl.style.left = '-100vh';
-        botaoConfirmar.style.transition = 'none';
-        botaoConfirmar.style.left = '-100vh';
-    });
-}
-*/
+
 mainEl.addEventListener('click', sumir);
 
 botaoConfirmar.addEventListener('click', criaPerfil);
