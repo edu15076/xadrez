@@ -359,7 +359,7 @@ nav {
     top: 10vh;
 }
 
-#botao-login, #botao-nova-conta, #botao-confirmar {
+#botao-login, #botao-nova-conta, #botao-confirmar, #senha-confirmacao {
     position: absolute;
     left: 20vh;
     width: 24vh;
@@ -387,7 +387,7 @@ nav {
     right: -100vh;
 }
 
-#senha-nova {
+#senha-nova, #senha-confirmacao {
     top: -100vh;
 }
 
@@ -396,3 +396,10 @@ nav {
     bottom: -100vh;
 }
 
+#torre-animacao {
+    height: 10vh;
+    width: 10vh;
+    top: -10vh;
+    right: 10vh;
+    transition: 2000ms all ease;
+}
