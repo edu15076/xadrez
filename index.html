@@ -62,7 +62,7 @@
         <nav>
             <div class="opcoes" id="login-btn">Login</div>
             <div class="opcoes" id="configuracoes-btn">Configurações</div>
-            <div class="opcoes">Desenvolvedores</div>
+            <div class="opcoes"><a href="desenvolvedores.html">Desenvolvedores</a></div>
         </nav>
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
         <main>
@@ -154,20 +154,19 @@
             <h2>Primeira vez?</h2>
             <button id="botao-nova-conta">Criar conta!</button>
             <label id="usuario-novo"> <!-- colocar icone -->
-                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20">
+                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20" id="novo-nome">
             </label>
             <label id="idade-nova"> <!-- colocar icone -->
-                <input type="number" placeholder="Idade" step="1">
+                <input type="number" placeholder="Idade" step="1" id="idade">
             </label>
             <label id="senha-nova"> <!-- colocar icone -->
-                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25">
+                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25" id="nova-senha">
             </label>
             <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
         </div>
         <script src="scripts/chess.js"></script>
         <script src="scripts/cria_tabuleiro.js"></script>
         <script src="scripts/menus.js"></script>
-        <script src="scripts/menu.js"></script>
         <script src="scripts/login.js"></script>
     </body>
 </html>
