@@ -5,6 +5,8 @@ let senhaEl = document.querySelector('#senha-nova');
 let botaoConfirmar = document.querySelector('#botao-confirmar');
 let botoesSumir = document.querySelectorAll('.sumir');
 let loginEl = document.querySelector('#login');
+let mainEl = document.querySelector('main');
+let botaoLoginEl = document.querySelector('#login-btn');
 
 botaoConta.addEventListener('click', () => {
     botaoConta.style.left = '-100vh';
@@ -32,4 +34,15 @@ for (let botao of botoesSumir) {
         botaoConfirmar.style.left = '-100vh';
     });
 }
-
+mainEl.addEventListener('click', () => {
+    loginEl.style.transition = 'none';
+    loginEl.style.left = '-100vh';
+    userEl.style.transition = 'none';
+    userEl.style.left = '-100vh';
+    idadeEl.style.transition = 'none';
+    idadeEl.style.left = '-100vh';
+    senhaEl.style.transition = 'none';
+    senhaEl.style.left = '-100vh';
+    botaoConfirmar.style.transition = 'none';
+    botaoConfirmar.style.left = '-100vh';
+});

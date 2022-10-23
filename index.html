@@ -41,7 +41,7 @@
                     <h2>Traditional</h2>
                 </div>
                 <div class="botoes-cofiguracoes">
-                    <div class="opcoes">Reiniciar</div>
+                    <div class="opcoes">Resetar tabuleiro</div>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
         </header>
 
         <nav>
-            <div class="opcoes">Login</div>
+            <div class="opcoes" id="login-btn">Login</div>
             <div class="opcoes" id="configuracoes-btn">Configurações</div>
             <div class="opcoes">Desenvolvedores</div>
         </nav>
@@ -140,29 +140,30 @@
                 <div class="black-knight" id="g8"><img class="piece" src="img/black_knight.svg"></div>
                 <div class="black-rook" id="h8"><img class="piece" src="img/black_rook.svg"></div>
             </section>
-            <div id="login">
-                <h2>Login</h2>
-                <label> <!-- colocar icone -->
-                    <input type="text" placeholder="Usuário" minlength="5" maxlength="20">
-                </label>
-                <label> <!-- colocar icone -->
-                    <input type="password" placeholder="Senha" minlength="8" maxlength="25">
-                </label>
-                <button id="botao-login" class="sumir" type="submit">Login!</button>
-                <h2>Primeira vez?</h2>
-                <button id="botao-nova-conta">Criar conta!</button>
-                <label id="usuario-novo"> <!-- colocar icone -->
-                    <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20">
-                </label>
-                <label id="idade-nova"> <!-- colocar icone -->
-                    <input type="number" placeholder="Idade" step="1">
-                </label>
-                <label id="senha-nova"> <!-- colocar icone -->
-                    <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25">
-                </label>
-                <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
-            </div>
+
         </main>
+        <div id="login">
+            <h2>Login</h2>
+            <label> <!-- colocar icone -->
+                <input type="text" placeholder="Usuário" minlength="5" maxlength="20">
+            </label>
+            <label> <!-- colocar icone -->
+                <input type="password" placeholder="Senha" minlength="8" maxlength="25">
+            </label>
+            <button id="botao-login" class="sumir" type="submit">Login!</button>
+            <h2>Primeira vez?</h2>
+            <button id="botao-nova-conta">Criar conta!</button>
+            <label id="usuario-novo"> <!-- colocar icone -->
+                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20">
+            </label>
+            <label id="idade-nova"> <!-- colocar icone -->
+                <input type="number" placeholder="Idade" step="1">
+            </label>
+            <label id="senha-nova"> <!-- colocar icone -->
+                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25">
+            </label>
+            <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
+        </div>
         <script src="scripts/chess.js"></script>
         <script src="scripts/cria_tabuleiro.js"></script>
         <script src="scripts/menus.js"></script>
