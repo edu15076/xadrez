@@ -480,3 +480,12 @@ nav {
     right: 10vh;
     transition: 2s all ease;
 }
+
+.botoes {
+    cursor: pointer;
+}
+
+.botoes:hover {
+    background-color: rgb(218, 216, 216);
+    cursor: pointer;
+}

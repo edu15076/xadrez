@@ -1,4 +1,6 @@
 let botaoConta = document.querySelector('#botao-nova-conta');
+let loginNomeInput = document.querySelector('#nome-logar')
+let loginSenhaInput = document.querySelector('#senha-logar')
 let userEl = document.querySelector('#usuario-novo');
 let idadeEl = document.querySelector('#idade-nova');
 let senhaEl = document.querySelector('#senha-nova');
@@ -10,7 +12,7 @@ let torreEl = document.querySelector('#torre-animacao');
 let senhaInput = document.querySelector('#senha-nova input');
 let senhaConfirmacaoInput = document.querySelector('#senha-confirmacao input');
 let mainEl = document.querySelector('main');
-let botaoLoginEl = document.querySelector('#login-btn');
+let loginBtnEl = document.querySelector('#botao-login');
 
 let novoNomeInput = document.querySelector('#novo-nome');
 let idadeInput = document.querySelector('#idade');
@@ -39,8 +41,8 @@ function apareceConfirmacao() {
     senhaConfirmacao.style.right = '58vh';
 }
 
-let confirmaSenha = (validador) => {
-    if(senhaInput.value === validador) {
+let confirmaSenha = (validador, senha) => {
+    if(senha === validador) {
         return true;
     }
     else {
@@ -98,7 +100,7 @@ let criaPerfil = () => {
         temp = setTimeout(apareceConfirmacao, 4200);
 
     botaoConfirmar.addEventListener("click", () => {
-        confirmacao = confirmaSenha(senhaConfirmacaoInput.value);
+        confirmacao = confirmaSenha(novaSenhaInput, senhaConfirmacaoInput.value);
     })
 
     localStorage.removeItem('usuario');
@@ -136,6 +138,44 @@ botaoConta.addEventListener('click', () => {
     botaoConfirmar.style.top = '89vh';
 });
 
+let logar = () => {
+    let loginIncompleto = 0;
+    let confirmacao;
+
+    if(!loginNomeInput.value) {
+        loginNomeInput.placeholder="Digite um nome válido";
+        loginNomeInput.style.border="0.4vh solid rgb(136, 0, 0)";
+
+        loginIncompleto++;
+    }
+    if(!loginSenhaInput.value) {
+        loginSenhaInput.placeholder="Digite uma senha válida";
+        loginSenhaInput.style.border="0.4vh solid rgb(136, 0, 0)";
+        
+        loginIncompleto++;
+    }
+    if(loginIncompleto !== 0) {
+        return;
+    }
+
+    let usuario = localStorage.getItem('usuario');
+    usuario = JSON.parse(usuario);
+
+    confirmacao = confirmaSenha(usuario.senha, loginSenhaInput.value);
+
+    if(!confirmacao) {
+        loginSenhaInput.value = '';
+        loginSenhaInput.placeholder="Senha incorreta";
+        loginSenhaInput.style.border="0.4vh solid rgb(136, 0, 0)";
+
+        return;
+    }
+    
+    sumir();
+}
+
 mainEl.addEventListener('click', sumir);
 
 botaoConfirmar.addEventListener('click', criaPerfil);
+
+loginBtnEl.addEventListener('click', logar);

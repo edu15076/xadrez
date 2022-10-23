@@ -146,14 +146,14 @@
         <div id="login">
             <h2>Login</h2>
             <label> <!-- colocar icone -->
-                <input type="text" placeholder="Usuário" minlength="5" maxlength="20">
+                <input type="text" placeholder="Usuário" minlength="5" maxlength="20" id="nome-logar">
             </label>
             <label> <!-- colocar icone -->
-                <input type="password" placeholder="Senha" minlength="8" maxlength="25">
+                <input type="password" placeholder="Senha" minlength="8" maxlength="25" id="senha-logar">
             </label>
-            <button id="botao-login" class="sumir" type="submit">Login!</button>
+            <button id="botao-login" class="sumir botoes" type="submit">Login!</button>
             <h2>Primeira vez?</h2>
-            <button id="botao-nova-conta">Criar conta!</button>
+            <button id="botao-nova-conta" class="botoes">Criar conta!</button>
             <label id="usuario-novo"> <!-- colocar icone -->
                 <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20" id="novo-nome">
             </label>
@@ -167,7 +167,7 @@
             <label id="senha-confirmacao"> <!-- colocar icone -->
                 <input type="password" placeholder="Confirme a senha aqui" minlength="8" maxlength="25">
             </label>
-            <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
+            <button id="botao-confirmar" class="sumir botoes" type="submit">Criar!</button>
         </div>
         <script src="scripts/cria_tabuleiro.js"></script>
         <script src="scripts/pieces.js"></script>
