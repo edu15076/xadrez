@@ -12,6 +12,7 @@ const cor = {
         lightSquare: 'rgb(218, 196, 170)'
     }
 }
+const temas = document.querySelectorAll('.temas');
 
 let darkSquare = cor.wood.darkSquare;
 let lightSquare = cor.wood.lightSquare;
@@ -46,4 +47,24 @@ function drawBoard() {
                 boardCtx.fillRect(i * 300, j * 300, 300, 300);
             }
     }
+}
+
+let x = document.querySelector('#modern');
+
+function mudaCor(tema) {
+    tema.addEventListener('click', (e) => {
+        let temaEscolhido = e.currentTarget;
+
+        darkSquare = temaEscolhido.dataset.darkSquare
+        lightSquare = temaEscolhido.dataset.lightSquare
+
+        drawBoard();
+
+        fechaConfiguracoes();
+    });
+}
+temas.forEach(mudaCor);
+
+for (let tema of temas) {
+    
 }

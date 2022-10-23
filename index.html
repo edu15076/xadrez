@@ -18,8 +18,31 @@
             <p>Press <mark>SPACE</mark> to continue</p>
         </div>
         <!--janela das configurações incompleta-->
-        <div id="pop-up-configuracoes">
-            <div id="configuracoes">
+        <div class="pop-up-configuracoes-fechado" id="configuracoes">
+            <div id="configuracoes-janela">
+                <div class="temas" id="wood" 
+                    data-dark-square="rgb(181, 136, 99)" 
+                    data-light-square="rgb(240, 217, 181)">
+                    <h2>Wood</h2>
+                </div>
+                <div class="temas" id="blue" 
+                    data-dark-square="rgb(4, 14, 61)" 
+                    data-light-square="rgb(211, 218, 240)">
+                    <h2>Blue</h2>
+                </div>
+                <div class="temas" id="modern" 
+                    data-dark-square="rgb(24, 24, 24)" 
+                    data-light-square="rgb(170, 170, 170)">
+                    <h2>Modern</h2>
+                </div>
+                <div class="temas" id="traditional" 
+                    data-dark-square="rgb(115, 180, 89)" 
+                    data-light-square="rgb(233, 227, 219)">
+                    <h2>Traditional</h2>
+                </div>
+                <div class="botoes-cofiguracoes">
+                    <div class="opcoes">Resetar tabuleiro</div>
+                </div>
             </div>
         </div>
         <!--------------------------------------->
@@ -37,8 +60,8 @@
         </header>
 
         <nav>
-            <div class="opcoes">Login</div>
-            <div class="opcoes">Configurações</div>
+            <div class="opcoes" id="login-btn">Login</div>
+            <div class="opcoes" id="configuracoes-btn">Configurações</div>
             <div class="opcoes">Desenvolvedores</div>
         </nav>
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
@@ -46,81 +69,110 @@
             <canvas id="board" width="2400" height="2400"></canvas>
             
             <section id="pieces-move">
-                <div class="white-rook" id="a1"><img class="piece" src="img/white_rook.svg"></div>
-                <div class="white-knight" id="b1"><img class="piece" src="img/white_knight.svg"></div>
-                <div class="white-bishop" id="c1"><img class="piece" src="img/white_bishop.svg"></div>
-                <div class="white-queen" id="d1"><img class="piece" src="img/white_queen.svg"></div>
-                <div class="white-king" id="e1"><img class="piece" src="img/white_king.svg"></div>
-                <div class="white-bishop" id="f1"><img class="piece" src="img/white_bishop.svg"></div>
-                <div class="white-knight" id="g1"><img class="piece" src="img/white_knight.svg"></div>
-                <div class="white-rook" id="h1"><img class="piece" src="img/white_rook.svg"></div>
+                <div data-square="a1"><img class="piece" src="img/white_rook.svg"></div>
+                <div data-square="b1"><img class="piece" src="img/white_knight.svg"></div>
+                <div data-square="c1"><img class="piece" src="img/white_bishop.svg"></div>
+                <div data-square="d1"><img class="piece" src="img/white_queen.svg"></div>
+                <div data-square="e1"><img class="piece" src="img/white_king.svg"></div>
+                <div data-square="f1"><img class="piece" src="img/white_bishop.svg"></div>
+                <div data-square="g1"><img class="piece" src="img/white_knight.svg"></div>
+                <div data-square="h1"><img class="piece" src="img/white_rook.svg"></div>
 
-                <div class="white-pawn" id="a2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="b2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="c2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="d2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="e2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="f2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="g2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div class="white-pawn" id="h2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="a2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="b2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="c2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="d2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="e2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="f2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="g2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="h2"><img class="piece" src="img/white_pawn.svg"></div>
 
-                <div id="a3"></div>
-                <div id="b3"></div>
-                <div id="c3"></div>
-                <div id="d3"></div>
-                <div id="e3"></div>
-                <div id="f3"></div>
-                <div id="g3"></div>
-                <div id="h3"></div>
+                <div data-square="a3"></div>
+                <div data-square="b3"></div>
+                <div data-square="c3"></div>
+                <div data-square="d3"></div>
+                <div data-square="e3"></div>
+                <div data-square="f3"></div>
+                <div data-square="g3"></div>
+                <div data-square="h3"></div>
 
-                <div id="a4"></div>
-                <div id="b4"></div>
-                <div id="c4"></div>
-                <div id="d4"></div>
-                <div id="e4"></div>
-                <div id="f4"></div>
-                <div id="g4"></div>
-                <div id="h4"></div>
+                <div data-square="a4"></div>
+                <div data-square="b4"></div>
+                <div data-square="c4"></div>
+                <div data-square="d4"></div>
+                <div data-square="e4"></div>
+                <div data-square="f4"></div>
+                <div data-square="g4"></div>
+                <div data-square="h4"></div>
 
-                <div id="a5"></div>
-                <div id="b5"></div>
-                <div id="c5"></div>
-                <div id="d5"></div>
-                <div id="e5"></div>
-                <div id="f5"></div>
-                <div id="g5"></div>
-                <div id="h5"></div>
+                <div data-square="a5"></div>
+                <div data-square="b5"></div>
+                <div data-square="c5"></div>
+                <div data-square="d5"></div>
+                <div data-square="e5"></div>
+                <div data-square="f5"></div>
+                <div data-square="g5"></div>
+                <div data-square="h5"></div>
 
-                <div id="a6"></div>
-                <div id="b6"></div>
-                <div id="c6"></div>
-                <div id="d6"></div>
-                <div id="e6"></div>
-                <div id="f6"></div>
-                <div id="g6"></div>
-                <div id="h6"></div>
+                <div data-square="a6"></div>
+                <div data-square="b6"></div>
+                <div data-square="c6"></div>
+                <div data-square="d6"></div>
+                <div data-square="e6"></div>
+                <div data-square="f6"></div>
+                <div data-square="g6"></div>
+                <div data-square="h6"></div>
 
-                <div class="black-pawn" id="a7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="b7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="c7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="d7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="e7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="f7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="g7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div class="black-pawn" id="h7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="a7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="b7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="c7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="d7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="e7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="f7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="g7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="h7"><img class="piece" src="img/black_pawn.svg"></div>
 
-                <div class="black-rook" id="a8"><img class="piece" src="img/black_rook.svg"></div>
-                <div class="black-knight" id="b8"><img class="piece" src="img/black_knight.svg"></div>
-                <div class="black-bishop" id="c8"><img class="piece" src="img/black_bishop.svg"></div>
-                <div class="black-queen" id="d8"><img class="piece" src="img/black_queen.svg"></div>
-                <div class="black-king" id="e8"><img class="piece" src="img/black_king.svg"></div>
-                <div class="black-bishop" id="f8"><img class="piece" src="img/black_bishop.svg"></div>
-                <div class="black-knight" id="g8"><img class="piece" src="img/black_knight.svg"></div>
-                <div class="black-rook" id="h8"><img class="piece" src="img/black_rook.svg"></div>
+                <div data-square="a8"><img class="piece" src="img/black_rook.svg"></div>
+                <div data-square="b8"><img class="piece" src="img/black_knight.svg"></div>
+                <div data-square="c8"><img class="piece" src="img/black_bishop.svg"></div>
+                <div data-square="d8"><img class="piece" src="img/black_queen.svg"></div>
+                <div data-square="e8"><img class="piece" src="img/black_king.svg"></div>
+                <div data-square="f8"><img class="piece" src="img/black_bishop.svg"></div>
+                <div data-square="g8"><img class="piece" src="img/black_knight.svg"></div>
+                <div data-square="h8"><img class="piece" src="img/black_rook.svg"></div>
             </section>
+
         </main>
-        <script src="scripts/chess.js"></script>
+        <div id="login">
+            <h2>Login</h2>
+            <label> <!-- colocar icone -->
+                <input type="text" placeholder="Usuário" minlength="5" maxlength="20">
+            </label>
+            <label> <!-- colocar icone -->
+                <input type="password" placeholder="Senha" minlength="8" maxlength="25">
+            </label>
+            <button id="botao-login" class="sumir" type="submit">Login!</button>
+            <h2>Primeira vez?</h2>
+            <button id="botao-nova-conta">Criar conta!</button>
+            <label id="usuario-novo"> <!-- colocar icone -->
+                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20">
+            </label>
+            <label id="idade-nova"> <!-- colocar icone -->
+                <input type="number" placeholder="Idade" step="1">
+            </label>
+            <label id="senha-nova"> <!-- colocar icone -->
+                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25">
+            </label>
+            <img src="img/white_rook.svg" id="torre-animacao">
+            <label id="senha-confirmacao"> <!-- colocar icone -->
+                <input type="password" placeholder="Confirme a senha aqui" minlength="8" maxlength="25">
+            </label>
+            <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
+        </div>
         <script src="scripts/cria_tabuleiro.js"></script>
-        <script src="scripts/menu.js"></script>
+        <script src="scripts/pieces.js"></script>
+        <script src="scripts/chess.js"></script>
+        <script src="scripts/menus.js"></script>
+        <script src="scripts/login.js"></script>
     </body>
 </html>
