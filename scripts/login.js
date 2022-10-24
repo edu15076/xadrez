@@ -18,6 +18,8 @@ let novoNomeInput = document.querySelector('#novo-nome');
 let idadeInput = document.querySelector('#idade');
 let novaSenhaInput = document.querySelector('#nova-senha');
 
+localStorage.getItem('tem usuario', false);
+
 let sumir = () => {
     loginEl.style.transition = 'none';
         loginEl.style.left = '-100vh';
@@ -118,6 +120,8 @@ let criaPerfil = () => {
 
     localStorage.setItem('usuario', JSON.stringify(usuario));
 
+    localStorage.setItem('tem usuario', JSON.stringify(true));
+
     if(confirmacao === true) {
         sumir(); 
     }
@@ -170,6 +174,10 @@ let logar = () => {
 
         return;
     }
+
+    localStorage.setItem('tem usuario', true);
+
+    selecionaTabuleiro(usuario);
     
     sumir();
 }

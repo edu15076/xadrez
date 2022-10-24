@@ -371,7 +371,6 @@ nav {
     left: 20vh;
     width: 24vh;
     height: 5vh;
-    background: rgb(255, 255, 255); /*podem mudar a cor*/
     color: #02050c;
     font-size: 3.2vh;
     border-radius: 0.5vh;
@@ -379,6 +378,15 @@ nav {
 
 #botao-nova-conta {
     top: 60vh;
+}
+
+.botoes {
+    cursor: pointer;
+}
+
+.botoes:hover {
+    background-color: rgb(218, 216, 216);
+    cursor: pointer;
 }
 
 #usuario-novo, #idade-nova, #senha-nova, #senha-confirmacao, #torre-animacao {
@@ -479,13 +487,4 @@ nav {
     top: -10vh;
     right: 10vh;
     transition: 2s all ease;
-}
-
-.botoes {
-    cursor: pointer;
-}
-
-.botoes:hover {
-    background-color: rgb(218, 216, 216);
-    cursor: pointer;
 }

@@ -1,43 +1,39 @@
-const cor = {
-    wood: {
-        darkSquare: 'rgb(181, 136, 99)',
-        lightSquare: 'rgb(240, 217, 181)'
-    },
-    modern: {
-        darkSquare: 'rgb(24, 24, 24)',
-        lightSquare: 'rgb(170, 170, 170)'
-    },
-    classic: {
-        darkSquare: 'rgb(42, 119, 11)',
-        lightSquare: 'rgb(218, 196, 170)'
-    }
-}
 const temas = document.querySelectorAll('.temas');
 
-let darkSquare = cor.wood.darkSquare;
-let lightSquare = cor.wood.lightSquare;
+let temUsuario = localStorage.getItem('tem usuario');
+temUsuario = JSON.parse(temUsuario);
 
-const defineCorClassic = () => {
-    darkSquare = cor.classic.darkSquare;
-    lightSquare = cor.classic.lightSquare;
-}
-const defineCorWood = () => {
-    darkSquare = cor.wood.darkSquare;
-    lightSquare = cor.wood.lightSquare;
-}
-const defineCorModern = () => {
-    darkSquare = cor.modern.darkSquare;
-    lightSquare = cor.modern.lightSquare;
-}
+let darkSquare = 'rgb(181, 136, 99)';
+let lightSquare = 'rgb(240, 217, 181)';
 
-//talvez tenha que chamar a função drawBoard dentro das alterar cor
-//para atualizar a cor, não tenho certeza, vou esperar termos mais
-//avanço no html para ver isso direitinho
-//Ass: Eloy
+let selecionaTabuleiro = (user) => {
+    switch (user.tema) {
+        case 'wood':
+            darkSquare = 'rgb(181, 136, 99)';
+            lightSquare = 'rgb(240, 217, 181)';
+            break;
+        case 'blue':
+            darkSquare = 'rgb(4, 14, 61)';
+            lightSquare = 'rgb(211, 218, 240)';
+            break;
+        case 'modern':
+            darkSquare = 'rgb(24, 24, 24)';
+            lightSquare = 'rgb(170, 170, 170)';
+            break;
+        case 'traditional':
+            darkSquare = 'rgb(115, 180, 89)';
+            lightSquare = 'rgb(233, 227, 219)';
+            break;
+    }
+    
+    console.log(user.tema);
+
+    drawBoard();
+}
 
 function drawBoard() {
     let boardEl = document.getElementById('board');
-    
+
     if (boardEl.getContext) {
         let boardCtx = boardEl.getContext('2d');
 
@@ -49,22 +45,24 @@ function drawBoard() {
     }
 }
 
-let x = document.querySelector('#modern');
-
 function mudaCor(tema) {
+    /*
+        Essa função tem que salvar a cor que a pessoa escolheu seja
+        localStorage mas não consigo acessar o user.tema
+     */
+    let user = localStorage.getItem('usuario');
+    JSON.parse(user);
+
     tema.addEventListener('click', (e) => {
         let temaEscolhido = e.currentTarget;
 
-        darkSquare = temaEscolhido.dataset.darkSquare
-        lightSquare = temaEscolhido.dataset.lightSquare
+        darkSquare = temaEscolhido.dataset.darkSquare;
+        lightSquare = temaEscolhido.dataset.lightSquare;
 
         drawBoard();
 
         fechaConfiguracoes();
     });
 }
-temas.forEach(mudaCor);
 
-for (let tema of temas) {
-    
-}
+temas.forEach(mudaCor);
