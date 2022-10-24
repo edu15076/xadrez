@@ -1,22 +1,29 @@
 let botaoConta = document.querySelector('#botao-nova-conta');
-let loginNomeInput = document.querySelector('#nome-logar')
-let loginSenhaInput = document.querySelector('#senha-logar')
+let loginNomeInput = document.querySelector('#nome-logar');
+let loginSenhaInput = document.querySelector('#senha-logar');
 let userEl = document.querySelector('#usuario-novo');
 let idadeEl = document.querySelector('#idade-nova');
 let senhaEl = document.querySelector('#senha-nova');
 let botaoConfirmar = document.querySelector('#botao-confirmar');
 let botoesSumir = document.querySelectorAll('.sumir');
 let loginEl = document.querySelector('#login');
-let senhaConfirmacao = document.querySelector('#senha-confirmacao');
-let torreEl = document.querySelector('#torre-animacao');
 let senhaInput = document.querySelector('#senha-nova input');
 let senhaConfirmacaoInput = document.querySelector('#senha-confirmacao input');
 let mainEl = document.querySelector('main');
 let loginBtnEl = document.querySelector('#botao-login');
 
-let novoNomeInput = document.querySelector('#novo-nome');
-let idadeInput = document.querySelector('#idade');
-let novaSenhaInput = document.querySelector('#nova-senha');
+let criarContaEl = {
+    botao: document.querySelector('#botao-nova-conta'),
+    nome: document.querySelector('#novo-nome'),
+    idade: document.querySelector('#idade'),
+    senha: document.querySelector('#nova-senha'),
+    confirmacao: {
+        senha: document.querySelector('#senha-confirmacao'),
+        torre: document.querySelector('#torre-animacao'),
+    }
+}
+
+
 
 localStorage.getItem('tem usuario', false);
 
@@ -34,13 +41,13 @@ let sumir = () => {
 }
 
 function moveEsquerda() {
-    torreEl.style.right = '60vh';
+    criarContaEl.confirmacao.torre.style.right = '60vh';
 }
 
 function apareceConfirmacao() {
-    senhaConfirmacao.style.transition = 'none';
-    senhaConfirmacao.style.top = '75vh';
-    senhaConfirmacao.style.right = '58vh';
+    criarContaEl.confirmacao.senha.style.transition = 'none';
+    criarContaEl.confirmacao.senha.style.top = '75vh';
+    criarContaEl.confirmacao.senha.style.right = '58vh';
 }
 
 let confirmaSenha = (validador, senha) => {
@@ -63,31 +70,31 @@ for (let botao of botoesSumir) {
         }
         else if(senhaConfirmacaoInput.value != ''){
             sumir();
-            torreEl.style.display = 'none';
+            criarContaEl.confirmacao.torre.style.display = 'none';
             senhaConfirmacaoInput.style.display = 'none';
         }
     });
 }
 
-let criaPerfil = () => {
+let criarPerfil = () => {
     let loginIncompleto = 0;
     let confirmacao;
 
-    if(!novoNomeInput.value) {
-        novoNomeInput.placeholder="Digite um nome válido";
-        novoNomeInput.style.border="0.4vh solid rgb(136, 0, 0)";
+    if(!criarContaEl.nome.value) {
+        criarContaEl.nome.placeholder="Digite um nome válido";
+        criarContaEl.nome.style.border="0.4vh solid rgb(136, 0, 0)";
 
         loginIncompleto++;
     }
-    if(!novaSenhaInput.value) {
-        novaSenhaInput.placeholder="Digite uma senha válida";
-        novaSenhaInput.style.border="0.4vh solid rgb(136, 0, 0)";
+    if(!criarContaEl.senha.value) {
+        criarContaEl.senha.placeholder="Digite uma senha válida";
+        criarContaEl.senha.style.border="0.4vh solid rgb(136, 0, 0)";
         
         loginIncompleto++;
     }
-    if(!idadeInput.value) {
-        idadeInput.placeholder="Selecione uma idade válida";
-        idadeInput.style.border="0.4vh solid rgb(136, 0, 0)";
+    if(!criarContaEl.idade.value) {
+        criarContaEl.idade.placeholder="Selecione uma idade válida";
+        criarContaEl.idade.style.border="0.4vh solid rgb(136, 0, 0)";
         
         loginIncompleto++;
     }
@@ -97,20 +104,20 @@ let criaPerfil = () => {
     }
 
     let temp;
-        torreEl.style.top = '77vh';
+        criarContaEl.confirmacao.torre.style.top = '77vh';
         temp = setTimeout(moveEsquerda, 2000);
         temp = setTimeout(apareceConfirmacao, 4200);
 
     botaoConfirmar.addEventListener("click", () => {
-        confirmacao = confirmaSenha(novaSenhaInput, senhaConfirmacaoInput.value);
+        confirmacao = confirmaSenha(criarContaEl.senha, senhaConfirmacaoInput.value);
     })
 
     localStorage.removeItem('usuario');
 
     let usuario = {
-        nome: novoNomeInput.value,
+        nome: criarContaEl.nome.value,
         idade: idadeEl.value,
-        senha: novaSenhaInput.value,
+        senha: criarContaEl.senha.value,
         score: 0,
         vitorias: 0,
         derrotas: 0,
@@ -184,6 +191,6 @@ let logar = () => {
 
 mainEl.addEventListener('click', sumir);
 
-botaoConfirmar.addEventListener('click', criaPerfil);
+botaoConfirmar.addEventListener('click', criarPerfil);
 
 loginBtnEl.addEventListener('click', logar);
