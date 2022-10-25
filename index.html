@@ -21,27 +21,30 @@
         <div class="pop-up-configuracoes-fechado" id="configuracoes">
             <div id="configuracoes-janela">
                 <div class="temas" id="wood" 
-                    data-dark-square="rgb(181, 136, 99)" 
+                    data-tema="wood"
+                    data-dark-square="rgb(163, 116, 86)" 
                     data-light-square="rgb(240, 217, 181)">
                     <h2>Wood</h2>
                 </div>
-                <div class="temas" id="blue" 
-                    data-dark-square="rgb(4, 14, 61)" 
-                    data-light-square="rgb(211, 218, 240)">
+                <div class="temas" id="blue"
+                    data-tema="blue"
+                    data-dark-square="rgb(45, 66, 106)" 
+                    data-light-square="rgb(132, 146, 172)">
                     <h2>Blue</h2>
                 </div>
-                <div class="temas" id="modern" 
-                    data-dark-square="rgb(24, 24, 24)" 
+                <div class="temas" id="modern"
+                    data-tema="modern"  
+                    data-dark-square="rgb(73, 73, 72)" 
                     data-light-square="rgb(170, 170, 170)">
                     <h2>Modern</h2>
                 </div>
                 <div class="temas" id="traditional" 
-                    data-dark-square="rgb(115, 180, 89)" 
+                    data-dark-square="rgb(29, 93, 51)" 
                     data-light-square="rgb(233, 227, 219)">
                     <h2>Traditional</h2>
                 </div>
                 <div class="botoes-cofiguracoes">
-                    <div class="opcoes">Resetar tabuleiro</div>
+                    <div class="opcoes" id="reset">Resetar tabuleiro</div>
                 </div>
             </div>
         </div>
@@ -62,7 +65,7 @@
         <nav>
             <div class="opcoes" id="login-btn">Login</div>
             <div class="opcoes" id="configuracoes-btn">Configurações</div>
-            <div class="opcoes">Desenvolvedores</div>
+            <div class="opcoes"><a href="desenvolvedores.html">Desenvolvedores</a></div>
         </nav>
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
         <main>
@@ -146,28 +149,28 @@
         <div id="login">
             <h2>Login</h2>
             <label> <!-- colocar icone -->
-                <input type="text" placeholder="Usuário" minlength="5" maxlength="20">
+                <input type="text" placeholder="Usuário" minlength="5" maxlength="20" id="nome-logar">
             </label>
             <label> <!-- colocar icone -->
-                <input type="password" placeholder="Senha" minlength="8" maxlength="25">
+                <input type="password" placeholder="Senha" minlength="8" maxlength="25" id="senha-logar">
             </label>
-            <button id="botao-login" class="sumir" type="submit">Login!</button>
+            <button id="botao-login" class="sumir botoes" type="submit">Login!</button>
             <h2>Primeira vez?</h2>
-            <button id="botao-nova-conta">Criar conta!</button>
+            <button id="botao-nova-conta" class="botoes">Criar conta!</button>
             <label id="usuario-novo"> <!-- colocar icone -->
-                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20">
+                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20" id="novo-nome">
             </label>
             <label id="idade-nova"> <!-- colocar icone -->
-                <input type="number" placeholder="Idade" step="1">
+                <input type="number" placeholder="Idade" step="1" id="idade">
             </label>
             <label id="senha-nova"> <!-- colocar icone -->
-                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25">
+                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25" id="nova-senha">
             </label>
             <img src="img/white_rook.svg" id="torre-animacao">
             <label id="senha-confirmacao"> <!-- colocar icone -->
                 <input type="password" placeholder="Confirme a senha aqui" minlength="8" maxlength="25">
             </label>
-            <button id="botao-confirmar" class="sumir" type="submit">Criar!</button>
+            <button id="botao-confirmar" class="sumir botoes" type="submit">Criar!</button>
         </div>
         <script src="scripts/cria_tabuleiro.js"></script>
         <script src="scripts/pieces.js"></script>

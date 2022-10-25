@@ -240,6 +240,15 @@ nav {
     cursor: pointer;
 }
 
+.opcoes a:link, a:visited {
+    text-decoration: none;
+    color: #02050c;
+}
+
+.opcoes:hover {
+    background-color: rgb(218, 216, 216);
+}
+
 .aberto {
     right: 0;
 }
@@ -295,19 +304,19 @@ nav {
 }
 
 #wood {
-    background-image: linear-gradient(to left, rgb(181, 136, 99) 0, rgb(181, 136, 99) 50%, rgb(240, 217, 181) 50%);
+    background-image: linear-gradient(to left, rgb(163, 116, 86) 0, rgb(163, 116, 86) 50%, rgb(240, 217, 181) 50%);
 }
 
 #blue {
-    background-image: linear-gradient(to left, rgb(4, 14, 61) 0, rgb(4, 14, 61) 50%, rgb(211, 218, 240) 50%);
+    background-image: linear-gradient(to left, rgb(45, 66, 106) 0, rgb(45, 66, 106) 50%, rgb(132, 146, 172) 50%);
 }
 
 #modern {
-    background-image: linear-gradient(to left, rgb(24, 24, 24) 0, rgb(24, 24, 24) 50%, rgb(170, 170, 170) 50%);
+    background-image: linear-gradient(to left, rgb(73, 73, 72) 0, rgb(73, 73, 72) 50%, rgb(170, 170, 170) 50%);
 }
 
 #traditional {
-    background-image: linear-gradient(to left, rgb(115, 180, 89) 0, rgb(115, 180, 89) 50%, rgb(233, 227, 219) 50%);
+    background-image: linear-gradient(to left, rgb(29, 93, 51) 0, rgb(29, 93, 51) 50%, rgb(233, 227, 219) 50%);
 }
 
 /*-----------------------------------*/
@@ -331,8 +340,8 @@ nav {
     height: 4vh;
     width: 37vh;
     border-radius: .75vh;
-    background-color: rgb(65, 62, 62);
     color: white;
+    background-color: rgb(65, 62, 62);
 }
 
 #login input:focus {
@@ -362,7 +371,6 @@ nav {
     left: 20vh;
     width: 24vh;
     height: 5vh;
-    background: rgb(255, 255, 255); /*podem mudar a cor*/
     color: #02050c;
     font-size: 3.2vh;
     border-radius: 0.5vh;
@@ -370,6 +378,15 @@ nav {
 
 #botao-nova-conta {
     top: 60vh;
+}
+
+.botoes {
+    cursor: pointer;
+}
+
+.botoes:hover {
+    background-color: rgb(218, 216, 216);
+    cursor: pointer;
 }
 
 #usuario-novo, #idade-nova, #senha-nova, #senha-confirmacao, #torre-animacao {
@@ -400,4 +417,75 @@ nav {
     top: -10vh;
     right: 10vh;
     transition: 2s all ease;
+}
+
+/*-----------------pagina desenvolvedores------------------------*/
+#desenvolvedores-html {
+    overflow-y: auto;
+}
+
+
+#desenvolvedores {
+    display: block;
+    margin: 5vh 30vh 5vh 30vh;
+}
+
+#desenvolvedores section article{
+    padding: 3vh;
+}
+
+.titulos {
+    background-color: #02050c;
+    color: white;
+    border-radius: 1vh;
+    margin: 3vh;
+}
+
+.dev-dados {
+    margin: 0 3vh 0 1vh;
+    border-right: 0.8vh solid #02050c;
+}
+
+.conteudo {
+    border: 1.3vh solid #02050c;
+    margin: 3vh;
+    border-radius: 1vh;
+    padding: 1vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.conteudo h3 {
+    margin: auto 1vh auto 1vh;
+}
+
+.conteudo p {
+    text-align: justify;
+    margin: 0 6vh 0 4vh;
+
+}
+
+.github {
+    font-size: small;
+    margin-left: 1vh;
+}
+
+.github a:visited:hover, .github a:link:hover {
+    text-decoration: underline;
+}
+
+.github a:visited {
+    color: white;
+}
+
+.github a:link {
+    color: white;
+    text-decoration: none;
+}
+
+.conteudo img {
+    height: 20vh;
+    border-radius: 50%;
+    margin: 0 3vh 3vh 0;
+    text-align: left;
 }
