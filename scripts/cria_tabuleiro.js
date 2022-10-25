@@ -25,8 +25,6 @@ let selecionaTabuleiro = (user) => {
             lightSquare = 'rgb(233, 227, 219)';
             break;
     }
-    
-    console.log(user.tema);
 
     drawBoard();
 }
@@ -50,11 +48,22 @@ function mudaCor(tema) {
         Essa função tem que salvar a cor que a pessoa escolheu seja
         localStorage mas não consigo acessar o user.tema
      */
-    let user = localStorage.getItem('usuario');
-    JSON.parse(user);
-
+    
+    
+    
     tema.addEventListener('click', (e) => {
+        let user = localStorage.getItem('usuario');
+        user = JSON.parse(user);
+
+        if(temUsuario) {
+            user.tema = tema.dataset.tema;
+            localStorage.setItem('usuario', JSON.stringify(user));
+        }
+
         let temaEscolhido = e.currentTarget;
+
+
+
 
         darkSquare = temaEscolhido.dataset.darkSquare;
         lightSquare = temaEscolhido.dataset.lightSquare;
