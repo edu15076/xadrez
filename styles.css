@@ -327,7 +327,7 @@ nav {
     top: 9vh;
     height: 65vh;
     width: 42.7vh;
-    background-color: rgb(27, 26, 26);
+    background-color: #02050c;
     padding: 10.3vh;
     border-radius: 2.8vh;
 }
@@ -411,14 +411,6 @@ nav {
     bottom: -100vh;
 }
 
-#torre-animacao {
-    height: 10vh;
-    width: 10vh;
-    top: -10vh;
-    right: 10vh;
-    transition: 2s all ease;
-}
-
 /*-----------------pagina desenvolvedores------------------------*/
 #desenvolvedores-html {
     overflow-y: auto;
@@ -488,4 +480,11 @@ nav {
     border-radius: 50%;
     margin: 0 3vh 3vh 0;
     text-align: left;
+}
+#torre-animacao {
+    height: 10vh;
+    width: 10vh;
+    top: -10vh;
+    right: 10vh;
+    transition: 2s all ease;
 }

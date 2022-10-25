@@ -25,14 +25,15 @@ let selecionaTabuleiro = (user) => {
             lightSquare = 'rgb(233, 227, 219)';
             break;
     }
-
+    
     console.log(user.tema);
+
     drawBoard();
 }
 
 function drawBoard() {
     let boardEl = document.getElementById('board');
-    
+
     if (boardEl.getContext) {
         let boardCtx = boardEl.getContext('2d');
 

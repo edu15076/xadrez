@@ -66,7 +66,7 @@ for (let botao of botoesSumir) {
             senhaEl.value = '';
             senhaConfirmacaoInput.placeholder = 'CONFIRMAÇÃO INVÁLIDA';
             senhaConfirmacaoInput.style.border = '0.4vh solid rgb(136, 0, 0)';
-        
+
         }
         else if(senhaConfirmacaoInput.value != ''){
             sumir();
@@ -83,7 +83,7 @@ let criarPerfil = () => {
     if(!criarContaEl.nome.value) {
         criarContaEl.nome.placeholder="Digite um nome válido";
         criarContaEl.nome.style.border="0.4vh solid rgb(136, 0, 0)";
-        
+
         loginIncompleto++;
     }
     if(!criarContaEl.senha.value) {
@@ -126,7 +126,7 @@ let criarPerfil = () => {
     }
 
     localStorage.setItem('usuario', JSON.stringify(usuario));
-    
+
     localStorage.setItem('tem usuario', JSON.stringify(true));
 
     if(confirmacao === true) {
@@ -162,7 +162,7 @@ let logar = () => {
     if(!loginSenhaInput.value) {
         loginSenhaInput.placeholder="Digite uma senha válida";
         loginSenhaInput.style.border="0.4vh solid rgb(136, 0, 0)";
-
+        
         loginIncompleto++;
     }
     if(loginIncompleto !== 0) {
@@ -185,7 +185,7 @@ let logar = () => {
     localStorage.setItem('tem usuario', true);
 
     selecionaTabuleiro(usuario);
-
+    
     sumir();
 }
 
