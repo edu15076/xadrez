@@ -91,6 +91,7 @@ let blackKing = board[4][0].piece;
 
 // ---------Fim tabuleiro----------
 let pieces = document.querySelectorAll('.piece');
+let bodyEl = document.querySelector('body');
 let squares = document.querySelectorAll('#pieces-move div');
 
 function drawMoves(moves) {
@@ -143,7 +144,16 @@ function getAttacks() {
 let finalMove;
 let movesDrawn = [];
 
+let invisibleImg = new Image();
+invisibleImg.src = 'img/HD_transparent_picture.png';
+
 pieces.forEach(pieceEl => {
+    let pieceCpy = document.createElement('img');
+    pieceCpy.classList.add('piece-cpy');
+    pieceCpy.src = pieceEl.src;
+    pieceCpy.style.top = '-7.5vh';
+    pieceCpy.style.left = '-7.5vh';
+
     pieceEl.addEventListener('click', () => {
         removeMoves(movesDrawn);
         
@@ -159,7 +169,9 @@ pieces.forEach(pieceEl => {
             movesDrawn = [];
     });
 
-    pieceEl.addEventListener('dragstart', () => {
+    pieceEl.addEventListener('dragstart', e => {
+        e.dataTransfer.setDragImage(invisibleImg, 0, 0);
+        
         pieceEl.classList.add('grabed');
         
         removeMoves(movesDrawn);
@@ -171,10 +183,24 @@ pieces.forEach(pieceEl => {
             movesDrawn = board[x][y].piece.moves();
             drawMoves(movesDrawn);
         } else
-            movesDrawn = [];
+        movesDrawn = [];
+
+        bodyEl.insertBefore(pieceCpy, document.getElementById('login'));
+        pieceCpy.style.top = `calc(${e.y}px - 3.75vh)`;
+        pieceCpy.style.left = `calc(${e.x}px - 3.75vh)`;
     });
-            
+    
+    pieceEl.addEventListener('drag', e => {
+        let y = e.y;
+        if (y === 0) return;
+        pieceCpy.style.top = `calc(${y}px - 3.75vh)`;
+        pieceCpy.style.left = `calc(${e.x}px - 3.75vh)`;
+        
+    });
+    
     pieceEl.addEventListener('dragend', () => {
+        bodyEl.removeChild(pieceCpy);
+
         let parent = pieceEl.closest('[data-square]');
         let xPiece = parent.dataset.square.charCodeAt(0) - 97;
         let yPiece = 8 - parent.dataset.square[1];
