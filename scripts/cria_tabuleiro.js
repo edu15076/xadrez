@@ -9,19 +9,19 @@ let lightSquare = 'rgb(240, 217, 181)';
 let selecionaTabuleiro = (user) => {
     switch (user.tema) {
         case 'wood':
-            darkSquare = 'rgb(181, 136, 99)';
+            darkSquare = 'rgb(163, 116, 86)';
             lightSquare = 'rgb(240, 217, 181)';
             break;
         case 'blue':
-            darkSquare = 'rgb(4, 14, 61)';
-            lightSquare = 'rgb(211, 218, 240)';
+            darkSquare = 'rgb(45, 66, 106)';
+            lightSquare = 'rgb(132, 146, 172)';
             break;
         case 'modern':
-            darkSquare = 'rgb(24, 24, 24)';
+            darkSquare = 'rgb(73, 73, 72)';
             lightSquare = 'rgb(170, 170, 170)';
             break;
         case 'traditional':
-            darkSquare = 'rgb(115, 180, 89)';
+            darkSquare = 'rgb(29, 93, 51)';
             lightSquare = 'rgb(233, 227, 219)';
             break;
     }
