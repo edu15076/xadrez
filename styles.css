@@ -16,6 +16,7 @@ header {
     background-color: #02050c;
     display: flex;
     justify-content: space-between;
+    z-index: 2;
 }
 
 header h1 {
@@ -67,6 +68,12 @@ main > h2 {
     position: absolute;
     cursor: grab;
     height: 7.5vh;
+    user-select: none;
+    z-index: 1;
+}
+
+.piece:active {
+    cursor: grabbing;
 }
 
 .grabed {
@@ -117,6 +124,14 @@ main > h2 {
         width: 90vw;
         height: 90vw;
     }
+
+    .piece {
+        height: 11.25vw;
+    }
+    
+    .piece-cpy {
+        height: 11.25vw;
+    }
     
     [data-square$="1"],
     [data-square$="2"],
@@ -148,10 +163,6 @@ main > h2 {
     [data-square^="f"] { right: 22.5vw;  }
     [data-square^="g"] { right: 11.25vw; }
     [data-square^="h"] { right: 0;       }
-
-    #pieces-move div img {
-        height: 11.25vw;
-    }
 
     #configuracoes-janela {
         height: 29vh;
@@ -304,19 +315,19 @@ nav {
 }
 
 #wood {
-    background-image: linear-gradient(to left, rgb(181, 136, 99) 0, rgb(181, 136, 99) 50%, rgb(240, 217, 181) 50%);
+    background-image: linear-gradient(to left, rgb(163, 116, 86) 0, rgb(163, 116, 86) 50%, rgb(240, 217, 181) 50%);
 }
 
 #blue {
-    background-image: linear-gradient(to left, rgb(4, 14, 61) 0, rgb(4, 14, 61) 50%, rgb(211, 218, 240) 50%);
+    background-image: linear-gradient(to left, rgb(45, 66, 106) 0, rgb(45, 66, 106) 50%, rgb(132, 146, 172) 50%);
 }
 
 #modern {
-    background-image: linear-gradient(to left, rgb(24, 24, 24) 0, rgb(24, 24, 24) 50%, rgb(170, 170, 170) 50%);
+    background-image: linear-gradient(to left, rgb(73, 73, 72) 0, rgb(73, 73, 72) 50%, rgb(170, 170, 170) 50%);
 }
 
 #traditional {
-    background-image: linear-gradient(to left, rgb(115, 180, 89) 0, rgb(115, 180, 89) 50%, rgb(233, 227, 219) 50%);
+    background-image: linear-gradient(to left, rgb(29, 93, 51) 0, rgb(29, 93, 51) 50%, rgb(233, 227, 219) 50%);
 }
 
 /*-----------------------------------*/
@@ -330,6 +341,7 @@ nav {
     background-color: #02050c;
     padding: 10.3vh;
     border-radius: 2.8vh;
+    z-index: 99;
 }
 
 #login h2 {

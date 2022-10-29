@@ -22,30 +22,29 @@
             <div id="configuracoes-janela">
                 <div class="temas" id="wood" 
                     data-tema="wood"
-                    data-dark-square="rgb(181, 136, 99)" 
+                    data-dark-square="rgb(163, 116, 86)" 
                     data-light-square="rgb(240, 217, 181)">
                     <h2>Wood</h2>
                 </div>
                 <div class="temas" id="blue"
-                    data-tema="blue" 
-                    data-dark-square="rgb(4, 14, 61)" 
-                    data-light-square="rgb(211, 218, 240)">
+                    data-tema="blue"
+                    data-dark-square="rgb(45, 66, 106)" 
+                    data-light-square="rgb(132, 146, 172)">
                     <h2>Blue</h2>
                 </div>
                 <div class="temas" id="modern"
-                    data-tema="modern" 
-                    data-dark-square="rgb(24, 24, 24)" 
+                    data-tema="modern"  
+                    data-dark-square="rgb(73, 73, 72)" 
                     data-light-square="rgb(170, 170, 170)">
                     <h2>Modern</h2>
                 </div>
                 <div class="temas" id="traditional" 
-                    data-tema="traditional"
-                    data-dark-square="rgb(115, 180, 89)" 
+                    data-dark-square="rgb(29, 93, 51)" 
                     data-light-square="rgb(233, 227, 219)">
                     <h2>Traditional</h2>
                 </div>
                 <div class="botoes-cofiguracoes">
-                    <div class="opcoes">Resetar tabuleiro</div>
+                    <div class="opcoes" id="reset">Resetar tabuleiro</div>
                 </div>
             </div>
         </div>
@@ -73,23 +72,23 @@
             <canvas id="board" width="2400" height="2400"></canvas>
             
             <section id="pieces-move">
-                <div data-square="a1"><img class="piece" src="img/white_rook.svg"></div>
-                <div data-square="b1"><img class="piece" src="img/white_knight.svg"></div>
-                <div data-square="c1"><img class="piece" src="img/white_bishop.svg"></div>
-                <div data-square="d1"><img class="piece" src="img/white_queen.svg"></div>
-                <div data-square="e1"><img class="piece" src="img/white_king.svg"></div>
-                <div data-square="f1"><img class="piece" src="img/white_bishop.svg"></div>
-                <div data-square="g1"><img class="piece" src="img/white_knight.svg"></div>
-                <div data-square="h1"><img class="piece" src="img/white_rook.svg"></div>
+                <div data-square="a1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
+                <div data-square="b1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
+                <div data-square="c1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>
+                <div data-square="d1"><img draggable="false" class="piece" src="img/white_queen.svg"></div>
+                <div data-square="e1"><img draggable="false" class="piece" src="img/white_king.svg"></div>
+                <div data-square="f1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>
+                <div data-square="g1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
+                <div data-square="h1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
 
-                <div data-square="a2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="b2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="c2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="d2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="e2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="f2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="g2"><img class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="h2"><img class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="a2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="b2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="c2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="d2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="e2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="f2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="g2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                <div data-square="h2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
 
                 <div data-square="a3"></div>
                 <div data-square="b3"></div>
@@ -127,23 +126,23 @@
                 <div data-square="g6"></div>
                 <div data-square="h6"></div>
 
-                <div data-square="a7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="b7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="c7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="d7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="e7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="f7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="g7"><img class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="h7"><img class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="a7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="b7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="c7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="d7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="e7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="f7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="g7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                <div data-square="h7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
 
-                <div data-square="a8"><img class="piece" src="img/black_rook.svg"></div>
-                <div data-square="b8"><img class="piece" src="img/black_knight.svg"></div>
-                <div data-square="c8"><img class="piece" src="img/black_bishop.svg"></div>
-                <div data-square="d8"><img class="piece" src="img/black_queen.svg"></div>
-                <div data-square="e8"><img class="piece" src="img/black_king.svg"></div>
-                <div data-square="f8"><img class="piece" src="img/black_bishop.svg"></div>
-                <div data-square="g8"><img class="piece" src="img/black_knight.svg"></div>
-                <div data-square="h8"><img class="piece" src="img/black_rook.svg"></div>
+                <div data-square="a8"><img draggable="false" class="piece" src="img/black_rook.svg"></div>
+                <div data-square="b8"><img draggable="false" class="piece" src="img/black_knight.svg"></div>
+                <div data-square="c8"><img draggable="false" class="piece" src="img/black_bishop.svg"></div>
+                <div data-square="d8"><img draggable="false" class="piece" src="img/black_queen.svg"></div>
+                <div data-square="e8"><img draggable="false" class="piece" src="img/black_king.svg"></div>
+                <div data-square="f8"><img draggable="false" class="piece" src="img/black_bishop.svg"></div>
+                <div data-square="g8"><img draggable="false" class="piece" src="img/black_knight.svg"></div>
+                <div data-square="h8"><img draggable="false" class="piece" src="img/black_rook.svg"></div>
             </section>
 
         </main>
