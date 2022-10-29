@@ -26,8 +26,6 @@ let selecionaTabuleiro = (user) => {
             break;
     }
     
-    console.log(user.tema);
-
     drawBoard();
 }
 
