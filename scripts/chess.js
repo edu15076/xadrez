@@ -378,7 +378,7 @@ pieces.forEach(pieceEl => {
                 }
 
 /**
- * tá dando esse erro, na linha 378, (linha do for):
+ * tá dando esse erro, na linha 384, (linha do for):
  * Uncaught TypeError: Cannot read properties of null (reading 'moves')
  */
                 for (let pieceMove of board[x][y].piece.moves()) {
