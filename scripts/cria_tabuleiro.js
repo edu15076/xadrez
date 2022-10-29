@@ -25,7 +25,7 @@ let selecionaTabuleiro = (user) => {
             lightSquare = 'rgb(233, 227, 219)';
             break;
     }
-    
+
     drawBoard();
 }
 

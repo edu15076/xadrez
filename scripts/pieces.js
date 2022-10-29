@@ -194,6 +194,11 @@ const pawn = {
             && (board[direction[0]][direction[1]].piece != null
             && board[direction[0]][direction[1]].piece.color != this.color))
                 pawnMoves.push(direction);
+            
+            if (verifyBordBarriers(direction[0], direction[1])
+            && enPassant != null
+            && enPassant[0] === direction[0] && enPassant[1] === direction[1])
+                pawnMoves.push(direction);
         });
 
         return pawnMoves;
