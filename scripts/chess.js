@@ -161,20 +161,19 @@ function getDistance(el) {
     return [x, y];
 }
 
+let distanceBoard = getDistance(piecesMoveEl);
+
 addEventListener('resize', () => {
     removeMoves(movesDrawn);
     drawMoves(movesDrawn);
+    distanceBoard = getDistance(piecesMoveEl);
 });
 
-pieces.forEach(pieceEl => {
-    pieceEl.ondragstart = () => false;
-
-    pieceEl.onmousedown = function(e) {
-        removeMoves(movesDrawn);
-
-        let parent = pieceEl.closest('[data-square]');
-        let x = parent.dataset.square.charCodeAt(0) - 97;
-        let y = 8 - parent.dataset.square[1];
+function eventListentersForMove(pieceEl) {
+    function movementStart(parent, x, y) {
+        parent = pieceEl.closest('[data-square]');
+        x = parent.dataset.square.charCodeAt(0) - 97;
+        y = 8 - parent.dataset.square[1];
         pieceEl.style.zIndex = '101';
         
         if (board[x][y].piece.color === turn) {
@@ -182,9 +181,22 @@ pieces.forEach(pieceEl => {
             drawMoves(movesDrawn);
         } else
             movesDrawn = [];
+        
+        return [parent, x, y];
+    }
+
+    pieceEl.ondragstart = () => false;
+
+    pieceEl.onmousedown = function(e) {
+        removeMoves(movesDrawn);
+        let parent, x, y;
+
+        let startCase = movementStart(parent, x, y);
+        parent = startCase[0];
+        x = startCase[1];
+        y = startCase[2];
 
         function movePieceAtBoard(e) {
-            let distanceBoard = getDistance(piecesMoveEl);
             let distancePiece = getDistance(pieceEl.closest('[data-square]'));
 
             if (distanceBoard[0] < e.pageX && distanceBoard[0] + piecesMoveEl.clientWidth > e.pageX)
@@ -202,7 +214,7 @@ pieces.forEach(pieceEl => {
             pieceEl.style.top = '0';
             pieceEl.style.left = '0';
 
-            let finalParent = document.elementsFromPoint(e.pageX, e.pageY)[1].closest('[data-square]');
+            let finalParent = document.elementsFromPoint(e.pageX, e.pageY)[0].closest('[data-square]');
             if (finalParent === null) {
                 pieceEl.style.zIndex = '1';
                 pieceEl.onmouseup = null;
@@ -212,55 +224,45 @@ pieces.forEach(pieceEl => {
             let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
             let yToMove = 8 - finalParent.dataset.square[1];
             
-            if (board[x][y].piece.color === turn) {
-                for (let pieceMove of board[x][y].piece.moves()) {
+            if (board[x][y].piece.color === turn)
+                for (let pieceMove of board[x][y].piece.moves())
                     if (pieceMove[0] === xToMove && pieceMove[1] === yToMove) {
+                        removeMoves(movesDrawn);
+                        movesDrawn = [];
+
                         board[xToMove][yToMove].piece = board[x][y].piece;
                         board[xToMove][yToMove].piece.x = xToMove;
                         board[xToMove][yToMove].piece.y = yToMove;
                         if (board[xToMove][yToMove].piece.moved != undefined)
                             board[xToMove][yToMove].piece.moved = true;
-                        
+
                         board[x][y].piece = null;
-                        
-                        removeMoves(movesDrawn);
-                        movesDrawn = [];
                         
                         finalParent.innerHTML = '';
                         finalParent.appendChild(pieceEl);
                         getAttacks();
                         turn = turn === 'white' ? 'black' : 'white';
+
                         break;
                     }
-                }
-            }
             pieceEl.style.zIndex = '1';
             pieceEl.onmouseup = null;
         }
 
     }
-});
-
-pieces.forEach(pieceEl => {
+    
     let parent, x, y;
 
     pieceEl.addEventListener('touchstart', e => {
         removeMoves(movesDrawn);
 
-        parent = pieceEl.closest('[data-square]');
-        x = parent.dataset.square.charCodeAt(0) - 97;
-        y = 8 - parent.dataset.square[1];
-        pieceEl.style.zIndex = '101';
-        
-        if (board[x][y].piece.color === turn) {
-            movesDrawn = board[x][y].piece.moves();
-            drawMoves(movesDrawn);
-        } else
-            movesDrawn = [];
+        let startCase = movementStart(parent, x, y);
+        parent = startCase[0];
+        x = startCase[1];
+        y = startCase[2];
     });
 
     pieceEl.addEventListener('touchmove', e => {
-        let distanceBoard = getDistance(piecesMoveEl);
         let distancePiece = getDistance(pieceEl.closest('[data-square]'));
 
         for (let i = 0; i < e.changedTouches.length; i++) {
@@ -287,36 +289,38 @@ pieces.forEach(pieceEl => {
         let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
         let yToMove = 8 - finalParent.dataset.square[1];
         
-        if (board[x][y].piece.color === turn) {
-            for (let pieceMove of board[x][y].piece.moves()) {
+        if (board[x][y].piece.color === turn)
+            for (let pieceMove of board[x][y].piece.moves())
                 if (pieceMove[0] === xToMove && pieceMove[1] === yToMove) {
+                    removeMoves(movesDrawn);
+                    movesDrawn = [];
+
                     board[xToMove][yToMove].piece = board[x][y].piece;
                     board[xToMove][yToMove].piece.x = xToMove;
                     board[xToMove][yToMove].piece.y = yToMove;
                     if (board[xToMove][yToMove].piece.moved != undefined)
                         board[xToMove][yToMove].piece.moved = true;
-                    
+
                     board[x][y].piece = null;
-                    
-                    removeMoves(movesDrawn);
-                    movesDrawn = [];
                     
                     finalParent.innerHTML = '';
                     finalParent.appendChild(pieceEl);
                     getAttacks();
                     turn = turn === 'white' ? 'black' : 'white';
+
                     break;
                 }
-            }
-        }
         pieceEl.style.zIndex = '1';
     });
-});
+}
+
+pieces.forEach(eventListentersForMove);
 
 let resetEl = document.getElementById('reset');
 
 resetEl.addEventListener('click', () => {
     originalBoardSettings();
+    turn = 'white';
     
     for (let i = 0; i < 64; i++) {
         let x = squares[i].dataset.square.charCodeAt(0) - 97;
@@ -327,6 +331,8 @@ resetEl.addEventListener('click', () => {
             let newPiece = document.createElement('img');
             newPiece.classList.add('piece');
             newPiece.src = `img/${board[x][y].piece.color}_${board[x][y].piece.piece}.svg`;
+            [newPiece].forEach(eventListentersForMove);
+
             squares[i].appendChild(newPiece);
         }
     }
