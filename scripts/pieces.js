@@ -101,7 +101,7 @@ function findLongAttacks(pieceObj, directions) {
     return attaks;
 }
 
-let king = {
+const king = {
     piece: 'king',
     color: 'white',
     x: 4,
@@ -131,7 +131,7 @@ let king = {
     }
 };
 
-let knight = {
+const knight = {
     piece: 'knight',
     color: 'white',
     x: 1,
@@ -160,7 +160,7 @@ let knight = {
     }
 };
 
-let pawn = {
+const pawn = {
     piece: 'pawn',
     color: 'white',
     x: 0,
@@ -208,7 +208,7 @@ let pawn = {
     }
 };
 
-let bishop = {
+const bishop = {
     piece: 'bishop',
     color: 'white',
     x: 2,
@@ -231,7 +231,7 @@ let bishop = {
     }
 };
 
-let rook = {
+const rook = {
     piece: 'rook',
     color: 'white',
     x: 0,
@@ -255,7 +255,7 @@ let rook = {
     }
 };
 
-let queen = {
+const queen = {
     piece: 'queen',
     color: 'white',
     x: 3,
