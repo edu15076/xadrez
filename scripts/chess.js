@@ -102,6 +102,9 @@ function drawMoves(moves) {
         
         canvasEl.width = side;
         canvasEl.height = side;
+
+        canvasEl.style.width = `${squares[0].offsetWidth}px`;
+        canvasEl.style.height = `${squares[0].offsetWidth}px`;
         
         let ctx = canvasEl.getContext('2d');
         let circle = new Path2D();
@@ -143,25 +146,112 @@ function getAttacks() {
 
 let finalMove;
 let movesDrawn = [];
+let piecesMoveEl = document.getElementById('pieces-move');
 
-let invisibleImg = new Image();
-invisibleImg.src = 'img/HD_transparent_picture.png';
+function getDistance(el) {
+    let x = 0;
+    let y = 0;
+
+    while(el) {
+        x += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+        y += (el.offsetTop - el.scrollTop + el.clientTop);
+
+        el = el.offsetParent;
+    }
+    return [x, y];
+}
+
+addEventListener('resize', () => {
+    removeMoves(movesDrawn);
+    drawMoves(movesDrawn);
+});
 
 pieces.forEach(pieceEl => {
-    let pieceCpy = document.createElement('img');
-    pieceCpy.classList.add('piece-cpy');
-    pieceCpy.src = pieceEl.src;
-    pieceCpy.style.top = '-7.5vh';
-    pieceCpy.style.left = '-7.5vh';
+    pieceEl.ondragstart = () => false;
 
-    pieceEl.addEventListener('click', () => {
+    pieceEl.onmousedown = function(e) {
         removeMoves(movesDrawn);
-        
+
         let parent = pieceEl.closest('[data-square]');
         let x = parent.dataset.square.charCodeAt(0) - 97;
         let y = 8 - parent.dataset.square[1];
+        pieceEl.style.zIndex = '101';
+        
+        if (board[x][y].piece.color === turn) {
+            movesDrawn = board[x][y].piece.moves();
+            drawMoves(movesDrawn);
+        } else
+            movesDrawn = [];
 
-                
+        function movePieceAtBoard(e) {
+            let distanceBoard = getDistance(piecesMoveEl);
+            let distancePiece = getDistance(pieceEl.closest('[data-square]'));
+
+            if (distanceBoard[0] < e.pageX && distanceBoard[0] + piecesMoveEl.clientWidth > e.pageX)
+                pieceEl.style.left = `${e.pageX - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
+
+            if (distanceBoard[1] < e.pageY && distanceBoard[1] + piecesMoveEl.clientHeight > e.pageY)
+                pieceEl.style.top = `${e.pageY - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
+        }
+
+        piecesMoveEl.addEventListener('mousemove', movePieceAtBoard);
+
+        pieceEl.onmouseup = function(e) {
+            piecesMoveEl.removeEventListener('mousemove', movePieceAtBoard);
+
+            pieceEl.style.top = '0';
+            pieceEl.style.left = '0';
+
+            let finalParent = document.elementsFromPoint(e.pageX, e.pageY)[1].closest('[data-square]');
+            if (finalParent === null) {
+                pieceEl.style.zIndex = '1';
+                pieceEl.onmouseup = null;
+                return;
+            }
+
+            let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
+            let yToMove = 8 - finalParent.dataset.square[1];
+            
+            if (board[x][y].piece.color === turn) {
+                for (let pieceMove of board[x][y].piece.moves()) {
+                    if (pieceMove[0] === xToMove && pieceMove[1] === yToMove) {
+                        board[xToMove][yToMove].piece = board[x][y].piece;
+                        board[xToMove][yToMove].piece.x = xToMove;
+                        board[xToMove][yToMove].piece.y = yToMove;
+                        if (board[xToMove][yToMove].piece.moved != undefined)
+                            board[xToMove][yToMove].piece.moved = true;
+                        
+                        board[x][y].piece = null;
+                        
+                        removeMoves(movesDrawn);
+                        movesDrawn = [];
+                        
+                        finalParent.innerHTML = '';
+                        finalParent.appendChild(pieceEl);
+                        getAttacks();
+                        turn = turn === 'white' ? 'black' : 'white';
+                        break;
+                    }
+                }
+            }
+            pieceEl.style.zIndex = '1';
+            pieceEl.onmouseup = null;
+        }
+
+    }
+});
+
+pieces.forEach(pieceEl => {
+    let parent, x, y;
+
+    pieceEl.addEventListener('touchstart', e => {
+        removeMoves(movesDrawn);
+
+        parent = pieceEl.closest('[data-square]');
+        x = parent.dataset.square.charCodeAt(0) - 97;
+        y = 8 - parent.dataset.square[1];
+        pieceEl.style.zIndex = '101';
+        
         if (board[x][y].piece.color === turn) {
             movesDrawn = board[x][y].piece.moves();
             drawMoves(movesDrawn);
@@ -169,74 +259,57 @@ pieces.forEach(pieceEl => {
             movesDrawn = [];
     });
 
-    pieceEl.addEventListener('dragstart', e => {
-        e.dataTransfer.setDragImage(invisibleImg, 0, 0);
-        
-        pieceEl.classList.add('grabed');
-        
-        removeMoves(movesDrawn);
+    pieceEl.addEventListener('touchmove', e => {
+        let distanceBoard = getDistance(piecesMoveEl);
+        let distancePiece = getDistance(pieceEl.closest('[data-square]'));
 
-        let parent = pieceEl.closest('[data-square]');
-        let x = parent.dataset.square.charCodeAt(0) - 97;
-        let y = 8 - parent.dataset.square[1];
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            if (distanceBoard[0] < e.changedTouches[i].pageX && distanceBoard[0] + piecesMoveEl.clientWidth > e.changedTouches[i].pageX)
+                pieceEl.style.left = `${e.changedTouches[i].pageX - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
+
+            if (distanceBoard[1] < e.changedTouches[i].pageY && distanceBoard[1] + piecesMoveEl.clientHeight > e.changedTouches[i].pageY)
+                pieceEl.style.top = `${e.changedTouches[i].pageY - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
+        }
+    });
+
+    pieceEl.addEventListener('touchend', e => {
+        pieceEl.style.top = '0';
+        pieceEl.style.left = '0';
+
+        let finalParent;
+        for (let i = 0; i < e.changedTouches.length; i++)
+            finalParent = document.elementsFromPoint(e.changedTouches[i].pageX, e.changedTouches[i].pageY)[1].closest('[data-square]');
+        if (finalParent === null) {
+            pieceEl.style.zIndex = '1';
+            return;
+        }
+
+        let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
+        let yToMove = 8 - finalParent.dataset.square[1];
+        
         if (board[x][y].piece.color === turn) {
-            movesDrawn = board[x][y].piece.moves();
-            drawMoves(movesDrawn);
-        } else
-        movesDrawn = [];
-
-        bodyEl.insertBefore(pieceCpy, document.getElementById('login'));
-        pieceCpy.style.top = `calc(${e.y}px - 3.75vh)`;
-        pieceCpy.style.left = `calc(${e.x}px - 3.75vh)`;
-    });
-    
-    pieceEl.addEventListener('drag', e => {
-        let y = e.y;
-        if (y === 0) return;
-        pieceCpy.style.top = `calc(${y}px - 3.75vh)`;
-        pieceCpy.style.left = `calc(${e.x}px - 3.75vh)`;
-        
-    });
-    
-    pieceEl.addEventListener('dragend', () => {
-        bodyEl.removeChild(pieceCpy);
-
-        let parent = pieceEl.closest('[data-square]');
-        let xPiece = parent.dataset.square.charCodeAt(0) - 97;
-        let yPiece = 8 - parent.dataset.square[1];
-        
-        let xSquare = finalMove.dataset.square.charCodeAt(0) - 97;
-        let ySquare = 8 - finalMove.dataset.square[1];
-        
-        if (board[xPiece][yPiece].piece.color === turn) {
-            for (let pieceMove of board[xPiece][yPiece].piece.moves()) {
-                if (pieceMove[0] === xSquare && pieceMove[1] === ySquare) {
-                    board[xSquare][ySquare].piece = board[xPiece][yPiece].piece;
-                    board[xSquare][ySquare].piece.x = xSquare;
-                    board[xSquare][ySquare].piece.y = ySquare;
-                    if (board[xSquare][ySquare].piece.moved != undefined)
-                    board[xSquare][ySquare].piece.moved = true;
+            for (let pieceMove of board[x][y].piece.moves()) {
+                if (pieceMove[0] === xToMove && pieceMove[1] === yToMove) {
+                    board[xToMove][yToMove].piece = board[x][y].piece;
+                    board[xToMove][yToMove].piece.x = xToMove;
+                    board[xToMove][yToMove].piece.y = yToMove;
+                    if (board[xToMove][yToMove].piece.moved != undefined)
+                        board[xToMove][yToMove].piece.moved = true;
                     
-                    board[xPiece][yPiece].piece = null;
+                    board[x][y].piece = null;
                     
                     removeMoves(movesDrawn);
                     movesDrawn = [];
                     
-                    finalMove.innerHTML = '';
-                    finalMove.appendChild(pieceEl);
+                    finalParent.innerHTML = '';
+                    finalParent.appendChild(pieceEl);
                     getAttacks();
                     turn = turn === 'white' ? 'black' : 'white';
                     break;
                 }
             }
         }
-        pieceEl.classList.remove('grabed');
-    });
-});
-
-squares.forEach(squareEl => {
-    squareEl.addEventListener('dragenter', e => {
-        finalMove = e.currentTarget;
+        pieceEl.style.zIndex = '1';
     });
 });
 
@@ -244,6 +317,7 @@ let resetEl = document.getElementById('reset');
 
 resetEl.addEventListener('click', () => {
     originalBoardSettings();
+    
     for (let i = 0; i < 64; i++) {
         let x = squares[i].dataset.square.charCodeAt(0) - 97;
         let y = 8 - squares[i].dataset.square[1];
@@ -257,5 +331,3 @@ resetEl.addEventListener('click', () => {
         }
     }
 });
-// ---------Inicio movimentos----------
-

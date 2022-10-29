@@ -33,7 +33,7 @@ function drawBoard() {
     let boardEl = document.getElementById('board');
 
     if (boardEl.getContext) {
-        let boardCtx = boardEl.getContext('2d');
+        let boardCtx = boardEl.getContext('2d', { alpha: false });
 
         for (let i = 0; i < 8; i++)
             for (let j = 0; j < 8; j++) {

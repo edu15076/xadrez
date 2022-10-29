@@ -68,14 +68,12 @@ main > h2 {
     position: absolute;
     cursor: grab;
     height: 7.5vh;
+    user-select: none;
+    z-index: 1;
 }
 
-.piece-cpy {
-    pointer-events: none;
-    position: absolute;
+.piece:active {
     cursor: grabbing;
-    height: 7.5vh;
-    z-index: 1;
 }
 
 .grabed {
@@ -126,6 +124,14 @@ main > h2 {
         width: 90vw;
         height: 90vw;
     }
+
+    .piece {
+        height: 11.25vw;
+    }
+    
+    .piece-cpy {
+        height: 11.25vw;
+    }
     
     [data-square$="1"],
     [data-square$="2"],
@@ -157,10 +163,6 @@ main > h2 {
     [data-square^="f"] { right: 22.5vw;  }
     [data-square^="g"] { right: 11.25vw; }
     [data-square^="h"] { right: 0;       }
-
-    #pieces-move div img {
-        height: 11.25vw;
-    }
 
     #configuracoes-janela {
         height: 29vh;
@@ -339,6 +341,7 @@ nav {
     background-color: #02050c;
     padding: 10.3vh;
     border-radius: 2.8vh;
+    z-index: 99;
 }
 
 #login h2 {
