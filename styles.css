@@ -64,6 +64,41 @@ main > h2 {
     height: 60vh;
 }
 
+#black-promotion,
+#white-promotion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#black-promotion div,
+#white-promotion div {
+    width: 40vh;
+    height: 8.5vh;
+    background-color: rgb(32, 40, 58);
+    display: flex;
+    justify-content: space-around;
+    border-radius: .5vh;
+    align-items: center;
+    align-self: center;
+}
+
+#black-promotion img,
+#white-promotion img {
+    height: 7.5vh;
+    cursor: grab;
+}
+
+#black-promotion {
+    grid-area: 1 / 2 / 2 / 3;
+    display: none;
+}
+
+#white-promotion {
+    grid-area: 3 / 2 / 4 / 3;
+    display: none;
+}
+
 .piece {
     position: absolute;
     cursor: grab;

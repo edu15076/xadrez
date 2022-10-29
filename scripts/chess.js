@@ -215,7 +215,7 @@ function eventListentersForMove(pieceEl) {
     }
 
     function movementEnd(x, y, xToMove, yToMove, finalParent, parent) {
-        if (board[x][y].piece.color === turn)
+        if (board[x][y].piece != null && board[x][y].piece.color === turn)
             for (let pieceMove of board[x][y].piece.moves())
                 if (pieceMove[0] === xToMove && pieceMove[1] === yToMove) {
                     removeMoves(movesDrawn);
@@ -231,7 +231,7 @@ function eventListentersForMove(pieceEl) {
 
                                 doMovementAtEnd(x, y, xToMove, yToMove, finalParent);
                             } else
-                                null;
+                                promotePawn(x, y, xToMove, yToMove, parent, finalParent);
                             enPassant = null;
                         } else {
                             enPassant = [x, y+board[x][y].piece.moveDirection()];
@@ -256,6 +256,51 @@ function eventListentersForMove(pieceEl) {
             if (distanceBoard[1] < e.changedTouches[i].pageY && distanceBoard[1] + piecesMoveEl.clientHeight > e.changedTouches[i].pageY)
                 pieceEl.style.top = `${e.changedTouches[i].pageY - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
         }
+    }
+
+    function promotePawn(x, y, xToMove, yToMove, parent, finalParent) {
+        let pawnColor = board[x][y].piece.color;
+        let promotionEl = document.getElementById(`${pawnColor}-promotion`);
+        let promotionPieceEl = promotionEl.querySelectorAll('div > img');
+        promotionEl.style.display = 'flex';
+        
+        promotionPieceEl.forEach(pieceToSelect => {
+            pieceToSelect.onclick = () => {
+                switch (pieceToSelect.dataset.piece) {
+                    case 'queen':
+                        board[xToMove][yToMove].piece = Object.create(queen);
+                        break;
+                    case 'knight':
+                        board[xToMove][yToMove].piece = Object.create(knight);
+                        break;
+                    case 'rook':
+                        board[xToMove][yToMove].piece = Object.create(rook);
+                        board[xToMove][yToMove].piece.moved = true;
+                        break;
+                    default:
+                        board[xToMove][yToMove].piece = Object.create(bishop);
+                }
+
+                board[xToMove][yToMove].piece.x = xToMove;
+                board[xToMove][yToMove].piece.y = yToMove;
+                board[xToMove][yToMove].piece.color = pawnColor;
+                board[x][y].piece = null;
+                
+                let newPiece = document.createElement('img');
+                newPiece.src = pieceToSelect.src;
+                newPiece.classList.add('piece');
+                newPiece.draggable = false;
+                [newPiece].forEach(eventListentersForMove);
+
+                parent.innerHTML = '';
+                finalParent.innerHTML = '';
+                finalParent.appendChild(newPiece);
+                getAttacks();
+                turn = turn === 'white' ? 'black' : 'white';
+                promotionEl.style.display = 'none';
+                pieceToSelect.onclick = null;
+            }
+        });
     }
 
     pieceEl.onclick = function() {
