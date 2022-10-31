@@ -50,7 +50,7 @@ function originalBoardSettings() {
         whiteKing = board[4][7].piece;
         blackKing = board[4][0].piece;
 }
-originalBoardSettings(0);
+originalBoardSettings();
 getAttacks();
 
 // ---------Fim tabuleiro----------
