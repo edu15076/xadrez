@@ -51,7 +51,6 @@ function originalBoardSettings() {
         blackKing = board[4][0].piece;
 }
 originalBoardSettings();
-getAttacks();
 
 // ---------Fim tabuleiro----------
 let pieces = document.querySelectorAll('.piece');
