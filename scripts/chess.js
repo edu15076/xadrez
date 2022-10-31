@@ -8,105 +8,66 @@ let square = {
     piece: null
 };
 
+let whiteKing, blackKing;
 let board = [[],[],[],[],[],[],[],[]];
 
 function originalBoardSettings() {
     for (let i = 0; i < 8; i++)
         for (let j = 0; j < 8; j++) {
             board[i][j] = Object.create(square);
-            if (j === 3 || j === 4)
-                board[i][j].whiteAttack = board[i][j].blackAttack = false; 
-            else if (j === 5)
-                board[i][j].whiteAttack = true;
-            else if (j === 2)
-                board[i][j].blackAttack = true;
-            else if (j === 0) {
-                board[i][j].whiteAttack = false;
-                if (i === 0 || i === 7) {
-                    board[i][j].blackAttack = false;
-                    board[i][j].piece = Object.create(rook);
-                    board[i][j].piece.x = i;
-                    board[i][j].piece.y = 0;
-                    board[i][j].piece.color = 'black';
-                } else if (i === 1 || i === 6) {
-                    board[i][j].blackAttack = true;
-                    board[i][j].piece = Object.create(knight);
-                    board[i][j].piece.x = i;
-                    board[i][j].piece.y = 0;
-                    board[i][j].piece.color = 'black';
-                } else if (i === 2 || i === 5) {
-                    board[i][j].blackAttack = true;
-                    board[i][j].piece = Object.create(bishop);
-                    board[i][j].piece.x = i;
-                    board[i][j].piece.y = 0;
-                    board[i][j].piece.color = 'black';
-                } else if (i === 3) {
-                    board[i][j].blackAttack = true;
-                    board[i][j].piece = Object.create(queen);
-                    board[i][j].piece.y = 0;
-                    board[i][j].piece.color = 'black';
+            if (j === 0 || j === 1 || j === 6 || j === 7) {
+                if (j === 1 || j === 6) {
+                    board[i][j].piece = Object.create(pawn);
+                    if (j === 1)
+                        board[i][j].piece.color = 'black';
                 } else {
-                    board[i][j].blackAttack = true;
-                    board[i][j].piece = Object.create(king);
-                    board[i][j].piece.y = 0;
-                    board[i][j].piece.color = 'black';
+                    if (i === 0 || i === 7) {
+                        board[i][j].piece = Object.create(rook);
+                        if (j === 0)
+                            board[i][j].piece.color = 'black';
+                    } else if (i === 1 || i === 6) {
+                        board[i][j].piece = Object.create(knight);
+                        if (j === 0)
+                            board[i][j].piece.color = 'black';
+                    } else if (i === 2 || i === 5) {
+                        board[i][j].piece = Object.create(bishop);
+                        if (j === 0)
+                            board[i][j].piece.color = 'black';
+                    } else if (i === 3) {
+                        board[i][j].piece = Object.create(queen);
+                        if (j === 0)
+                            board[i][j].piece.color = 'black';
+                    } else {
+                        board[i][j].piece = Object.create(king);
+                        if (j === 0)
+                            board[i][j].piece.color = 'black';
+                    }
                 }
-            } else if (j === 1) {
-                board[i][j].whiteAttack = false;
-                board[i][j].blackAttack = true;
-                board[i][j].piece = Object.create(pawn);
                 board[i][j].piece.x = i;
-                board[i][j].piece.y = 1;
-                board[i][j].piece.color = 'black';
-            } else if (j === 6) {
-                board[i][j].blackAttack = false;
-                board[i][j].whiteAttack = true;
-                board[i][j].piece = Object.create(pawn);
-                board[i][j].piece.x = i;
-            } else if (j === 7) {
-                board[i][j].blackAttack = false;
-                if (i === 0 || i === 7) {
-                    board[i][j].piece = Object.create(rook);
-                    board[i][j].piece.x = i;
-                } else if (i === 1 || i === 6) {
-                    board[i][j].whiteAttack = true;
-                    board[i][j].piece = Object.create(knight);
-                    board[i][j].piece.x = i;
-                } else if (i === 2 || i === 5) {
-                    board[i][j].whiteAttack = true;
-                    board[i][j].piece = Object.create(bishop);
-                    board[i][j].piece.x = i;
-                } else if (i === 3) {
-                    board[i][j].whiteAttack = true;
-                    board[i][j].piece = Object.create(queen);
-                } else {
-                    board[i][j].whiteAttack = true;
-                    board[i][j].piece = Object.create(king);
-                }
+                board[i][j].piece.y = j;
             }
         }
+        whiteKing = board[4][7].piece;
+        blackKing = board[4][0].piece;
 }
-originalBoardSettings();
-let whiteKing = board[4][7].piece;
-let blackKing = board[4][0].piece;
+originalBoardSettings(0);
+getAttacks();
 
 // ---------Fim tabuleiro----------
 let pieces = document.querySelectorAll('.piece');
 let bodyEl = document.querySelector('body');
-let possiblesMoves = [];
 let squares = document.querySelectorAll('#pieces-move div');
 
 function drawMoves(moves) {
     for (let move of moves) {
         let canvasEl = document.createElement('canvas');
-        let boardEl = document.getElementById('board');
-        let side = boardEl.clientWidth / 8;
+        let side = squares[0].offsetWidth;
         
         canvasEl.width = side;
         canvasEl.height = side;
 
-        canvasEl.style.width = `${squares[0].offsetWidth}px`;
-        canvasEl.style.height = `${squares[0].offsetWidth}px`;
+        canvasEl.style.width = `${side}px`;
+        canvasEl.style.height = `${side}px`;
         
         let ctx = canvasEl.getContext('2d');
         let circle = new Path2D();
@@ -121,7 +82,6 @@ function drawMoves(moves) {
             ctx.fill(circle);
         }
         squares[move[0] - 8 * move[1] + 56].appendChild(canvasEl);
-        possiblesMoves.push(squares[move[0] - 8 * move[1] + 56]);
     }
 }
 
@@ -131,13 +91,16 @@ function removeMoves(moves) {
         if (canvas != null)
             squares[move[0] - 8 * move[1] + 56].removeChild(canvas);
     });
-    possiblesMoves = [];
 }
 
-function getAttacks() {
+function removeAttacks() {
     for (let x = 0; x < 8; x++)
         for (let y = 0; y < 8; y++)
             board[x][y].blackAttack = board[x][y].whiteAttack = false;
+}
+
+function getAttacks() {
+    removeAttacks();
 
     for (let x = 0; x < 8; x++)
         for (let y = 0; y < 8; y++)
@@ -147,6 +110,34 @@ function getAttacks() {
                     board[attack[0]][attack[1]][`${board[x][y].piece.color}Attack`] = true;
                 });
             }
+}
+getAttacks();
+
+function getCheck(kingX, kingY) {
+    removeAttacks();
+    let opositeColor = turn === 'white' ? 'black' : 'white';
+
+    for (let i = 0; i < 8; i++)
+        for (let j = 0; j < 8; j++)
+            if (board[i][j].piece != null && board[i][j].piece.color === opositeColor) {
+                let attacks = board[i][j].piece.attacks();
+                attacks.forEach(attack => {
+                    board[attack[0]][attack[1]][`${opositeColor}Attack`] = true;
+                });
+                if (board[kingX][kingY][`${opositeColor}Attack`])
+                    return true;
+            }
+
+    return false;
+}
+
+function getMate() {
+    for (let i = 0; i < 8; i++)
+        for (let j = 0; j < 8; j++)
+            if (board[i][j].piece != null && board[i][j].piece.color === turn)
+                if (board[i][j].piece.moves().length != 0)
+                    return false;
+    return true;
 }
 
 let finalMove;
@@ -172,7 +163,10 @@ addEventListener('resize', () => {
     removeMoves(movesDrawn);
     drawMoves(movesDrawn);
     distanceBoard = getDistance(piecesMoveEl);
+    rotateBoard(document.querySelector(`[data-color="${piecesUser}"]`));
 });
+
+let gameOverEl = document.getElementById('game-over');
 
 function preventDefault(e) { e.preventDefault(); }
 
@@ -222,10 +216,6 @@ function eventListentersForMove(pieceEl) {
                 removeMoves(movesDrawn);
             }
         });
-    }
-    
-    pieceEl.onfocus = () => {
-        disableScroll();
     }
 
     function movementStart(parent, x, y) {
@@ -292,9 +282,24 @@ function eventListentersForMove(pieceEl) {
                         doMovementAtEnd(x, y, xToMove, yToMove, finalParent);
                         enPassant = null;
                     }
-                    
+
                     removeMoves(movesDrawn);
                     movesDrawn = [];
+                    
+                    let colorKing = turn === 'white' ? whiteKing : blackKing;
+                    let opositeColor = turn === 'white' ? 'black' : 'white';
+                    if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`])
+                    if (getMate()) {
+                            let gameResultEl = gameOverEl.querySelector('h2');
+                            let resultColor = opositeColor === piecesUser ? 'greenyellow' : 'red';
+
+                            gameOverEl.querySelector('p').innerHTML = 'by checkmate';
+                            gameResultEl.innerHTML = `${opositeColor.charAt(0).toUpperCase()+opositeColor.slice(1)} won`;
+                            gameResultEl.style.color = resultColor;
+                            gameResultEl.style.filter = `drop-shadow(0 0 2.5vh ${resultColor})`;
+                            gameOverEl.style.zIndex = '100';
+                            gameOverEl.style.opacity = '100';
+                        }
                     break;
                 }
         pieceEl.style.zIndex = '1';
@@ -315,38 +320,32 @@ function eventListentersForMove(pieceEl) {
         }
     }
 
-    pieceEl.onclick = function() {
-        removeMoves(movesDrawn);
-        let parent, x, y;
-
-        let startCase = movementStart(parent, x, y);
-        parent = startCase[0];
-        x = startCase[1];
-        y = startCase[2];
-        
-        for (let possibleMove of possiblesMoves) {
-            possibleMove.onclick = function(e) {
-                
+    let parentClick, xClick, yClick;
+    squares.forEach(moveSquare => {
+        moveSquare.onclick = function(e) {
+            let tempX = e.currentTarget.dataset.square.charCodeAt(0) - 97;
+            let tempY = 8 - e.currentTarget.dataset.square[1];
+            if (board[tempX][tempY].piece != null && board[tempX][tempY].piece.color === turn) {
+                parentClick = e.currentTarget;
+                xClick = tempX;
+                yClick = tempY;
+            } else if ((board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn) && parentClick != undefined) {
                 let finalParent = e.currentTarget;
+
                 let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
                 let yToMove = 8 - finalParent.dataset.square[1];
-                
-                if (finalParent === null) {
-                    pieceEl.style.zIndex = '1';
-                    return;
-                }
-                
-                movementEnd(x, y, xToMove, yToMove, finalParent, parent);
-                x = xToMove;
-                y = yToMove;
-                parent = finalParent;
+                pieceEl = parentClick.querySelector('img');
+
+                movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
+                parentClick = undefined;
             }
         }
-    }
+    });
 
     pieceEl.ondragstart = () => false;
 
     pieceEl.onmousedown = function(e) {
+        pieceEl = e.currentTarget;
         removeMoves(movesDrawn);
         let parent, x, y;
 
@@ -386,6 +385,7 @@ function eventListentersForMove(pieceEl) {
     pieceEl.addEventListener('touchstart', e => {
         removeMoves(movesDrawn);
 
+        pieceEl = e.currentTarget;
         let startCase = movementStart(parent, x, y);
         parent = startCase[0];
         x = startCase[1];
@@ -420,24 +420,29 @@ function eventListentersForMove(pieceEl) {
 
 pieces.forEach(eventListentersForMove);
 
-let resetEl = document.getElementById('reset');
+let resetEls = document.querySelectorAll('.reset');
 
-resetEl.addEventListener('click', () => {
-    originalBoardSettings();
-    turn = 'white';
-    
-    for (let i = 0; i < 64; i++) {
-        let x = squares[i].dataset.square.charCodeAt(0) - 97;
-        let y = 8 - squares[i].dataset.square[1];
+resetEls.forEach(resetEl => {
+    resetEl.onclick = () => {
+        originalBoardSettings();
+        getAttacks();
+        turn = 'white';
         
-        squares[i].innerHTML = '';
-        if (board[x][y].piece != null) {
-            let newPiece = document.createElement('img');
-            newPiece.classList.add('piece');
-            newPiece.src = `img/${board[x][y].piece.color}_${board[x][y].piece.piece}.svg`;
-            [newPiece].forEach(eventListentersForMove);
+        for (let i = 0; i < 64; i++) {
+            let x = squares[i].dataset.square.charCodeAt(0) - 97;
+            let y = 8 - squares[i].dataset.square[1];
+            
+            squares[i].innerHTML = '';
+            if (board[x][y].piece != null) {
+                let newPiece = document.createElement('img');
+                newPiece.classList.add('piece');
+                newPiece.src = `img/${board[x][y].piece.color}_${board[x][y].piece.piece}.svg`;
+                [newPiece].forEach(eventListentersForMove);
 
-            squares[i].appendChild(newPiece);
+                squares[i].appendChild(newPiece);
+            }
         }
+        gameOverEl.style.opacity = '0';
+        gameOverEl.style.zIndex = '-100';
     }
 });
