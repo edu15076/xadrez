@@ -24,7 +24,7 @@ let criarContaEl = {
 }
 
 
-
+localStorage.getItem('logado', false);
 localStorage.getItem('tem usuario', false);
 
 let sumir = () => {
@@ -50,8 +50,8 @@ function apareceConfirmacao() {
     criarContaEl.confirmacao.senha.style.right = '58vh';
 }
 
-let confirmaSenha = (validador, senha) => {
-    if(senha === validador) {
+let confirma = (validador, aSerValidado) => {
+    if(aSerValidado === validador) {
         return true;
     }
     else {
@@ -104,9 +104,9 @@ let criarPerfil = () => {
     }
 
     let temp;
-        criarContaEl.confirmacao.torre.style.top = '77vh';
-        temp = setTimeout(moveEsquerda, 2000);
-        temp = setTimeout(apareceConfirmacao, 4200);
+    criarContaEl.confirmacao.torre.style.top = '77vh';
+    temp = setTimeout(moveEsquerda, 2000);
+    temp = setTimeout(apareceConfirmacao, 4200);
 
     botaoConfirmar.addEventListener("click", () => {
         confirmacao = confirmaSenha(criarContaEl.senha, senhaConfirmacaoInput.value);
@@ -127,7 +127,9 @@ let criarPerfil = () => {
 
     localStorage.setItem('usuario', JSON.stringify(usuario));
 
-    localStorage.setItem('tem usuario', JSON.stringify(true));
+    localStorage.setItem('tem usuario', true);
+
+    localStorage.setItem('logado', true);
 
     if(confirmacao === true) {
         sumir(); 
@@ -151,7 +153,7 @@ botaoConta.addEventListener('click', () => {
 
 let logar = () => {
     let loginIncompleto = 0;
-    let confirmacao;
+    let confirmacaoUser, confirmacaoSenha;
 
     if(!loginNomeInput.value) {
         loginNomeInput.placeholder="Digite um nome válido";
@@ -169,20 +171,22 @@ let logar = () => {
         return;
     }
 
-    let usuario = localStorage.getItem('usuario');
-    usuario = JSON.parse(usuario);
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
 
-    confirmacao = confirmaSenha(usuario.senha, loginSenhaInput.value);
+    confirmacaoSenha = confirma(usuario.senha, loginSenhaInput.value);
+    confirmacaoUser = confirma(usuario.nome, loginNomeInput.value);
 
-    if(!confirmacao) {
-        loginSenhaInput.value = '';
-        loginSenhaInput.placeholder="Senha incorreta";
-        loginSenhaInput.style.border="0.4vh solid rgb(136, 0, 0)";
+    if(!confirmacaoSenha || !confirmacaoUser) {
+        loginNomeInput.value = loginSenhaInput.value = '';
+        loginNomeInput.placeholder = loginSenhaInput.placeholder = "incorreto";
+        loginNomeInput.style.border = loginSenhaInput.style.border = "0.4vh solid rgb(136, 0, 0)";
 
         return;
     }
 
     localStorage.setItem('tem usuario', true);
+
+    localStorage.setItem('logado',true);
 
     selecionaTabuleiro(usuario);
     
