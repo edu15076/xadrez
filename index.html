@@ -3,14 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
         <title>Chess</title>
         <link rel="stylesheet" href="styles.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Raleway:wght@500&display=swap" rel="stylesheet">
     </head>
-    <body onload="drawBoard();">
+    <body>
         <div id="open-page">
             <!--this div is desapearing when ' ' is pressed-->
             <h1>Chess</h1>
@@ -44,13 +44,13 @@
                     <h2>Traditional</h2>
                 </div>
                 <div class="botoes-cofiguracoes">
-                    <div class="opcoes" id="reset">Resetar tabuleiro</div>
+                    <div class="opcoes reset">Resetar tabuleiro</div>
                 </div>
             </div>
         </div>
         <!--------------------------------------->
         <header>
-            <h1>Chess</h1>
+            <a href="/">Chess</a>
             <div class="container">
                 <input type="checkbox" id="checkbox-menu">
             
@@ -63,12 +63,48 @@
         </header>
 
         <nav>
+            <div id="choose-color">
+                <p>Play as:</p>
+                <div>
+                    <span data-color="white">White</span>
+                    <span data-color="black">Black</span>
+                </div>
+            </div>
             <div class="opcoes" id="login-btn">Login</div>
             <div class="opcoes" id="configuracoes-btn">Configurações</div>
             <div class="opcoes"><a href="desenvolvedores.html">Desenvolvedores</a></div>
         </nav>
         <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
         <main>
+
+            <section id="game-over">
+                <div>
+                    <div>
+                        <h2></h2>
+                        <p></p>
+                    </div>
+                    <div class="opcoes reset">Play again</div>
+                </div>
+            </section>
+
+            <section id="black-promotion">
+                <div>
+                    <img draggable="false" data-piece="queen" src="img/black_queen.svg">
+                    <img draggable="false" data-piece="knight" src="img/black_knight.svg">
+                    <img draggable="false" data-piece="rook" src="img/black_rook.svg">
+                    <img draggable="false" data-piece="bishop" src="img/black_bishop.svg">
+                </div>
+            </section>
+
+            <section id="white-promotion">
+                <div>
+                    <img draggable="false" data-piece="queen" src="img/white_queen.svg">
+                    <img draggable="false" data-piece="knight" src="img/white_knight.svg">
+                    <img draggable="false" data-piece="rook" src="img/white_rook.svg">
+                    <img draggable="false" data-piece="bishop" src="img/white_bishop.svg">
+                </div>
+            </section>
+
             <canvas id="board" width="2400" height="2400"></canvas>
             
             <section id="pieces-move">
@@ -146,6 +182,7 @@
             </section>
 
         </main>
+
         <div id="login">
             <h2>Login</h2>
             <label> <!-- colocar icone -->
@@ -172,6 +209,7 @@
             </label>
             <button id="botao-confirmar" class="sumir botoes" type="submit">Criar!</button>
         </div>
+
         <script src="scripts/cria_tabuleiro.js"></script>
         <script src="scripts/pieces.js"></script>
         <script src="scripts/chess.js"></script>

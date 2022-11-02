@@ -8,12 +8,11 @@ function saveKingMoves(pieceObj) {
     pieceMoves.forEach(move => {
         let x = pieceObj.piece === 'king' ? move[0] : colorKing.x;
         let y = pieceObj.piece === 'king' ? move[1] : colorKing.y;
-        
+
         let lastPiece = board[move[0]][move[1]].piece;
         board[pieceObj.x][pieceObj.y].piece = null;
         board[move[0]][move[1]].piece = pieceObj;
-        getAttacks();
-        if (!board[x][y][`${pieceObj.opositeColor()}Attack`])
+        if (!getCheck(x, y))
             newPieceMoves.push(move);
         board[pieceObj.x][pieceObj.y].piece = pieceObj;
         board[move[0]][move[1]].piece = lastPiece;

@@ -1,3 +1,4 @@
+
 const temas = document.querySelectorAll('.temas');
 
 let temUsuario = localStorage.getItem('tem usuario');
@@ -11,67 +12,63 @@ let selecionaTabuleiro = (user) => {
         case 'wood':
             darkSquare = 'rgb(163, 116, 86)';
             lightSquare = 'rgb(240, 217, 181)';
-            break;
+        break;
         case 'blue':
             darkSquare = 'rgb(45, 66, 106)';
             lightSquare = 'rgb(132, 146, 172)';
-            break;
+        break;
         case 'modern':
             darkSquare = 'rgb(73, 73, 72)';
             lightSquare = 'rgb(170, 170, 170)';
-            break;
+        break;
         case 'traditional':
             darkSquare = 'rgb(29, 93, 51)';
             lightSquare = 'rgb(233, 227, 219)';
-            break;
-    }
-
+        break;
+        }
+        
     drawBoard();
 }
-
+    
 function drawBoard() {
     let boardEl = document.getElementById('board');
-
+        
     if (boardEl.getContext) {
         let boardCtx = boardEl.getContext('2d', { alpha: false });
-
+            
         for (let i = 0; i < 8; i++)
-            for (let j = 0; j < 8; j++) {
-                boardCtx.fillStyle = (j + i) % 2 == 0 ? lightSquare : darkSquare;
-                boardCtx.fillRect(i * 300, j * 300, 300, 300);
-            }
+        for (let j = 0; j < 8; j++) {
+            boardCtx.fillStyle = (j + i) % 2 == 0 ? lightSquare : darkSquare;
+            boardCtx.fillRect(i * 300, j * 300, 300, 300);
+        }
     }
 }
-
+    
 function mudaCor(tema) {
-    /*
-        Essa função tem que salvar a cor que a pessoa escolheu seja
-        localStorage mas não consigo acessar o user.tema
-     */
-    
-    
-    
+       
     tema.addEventListener('click', (e) => {
         let user = localStorage.getItem('usuario');
         user = JSON.parse(user);
-
-        if(temUsuario) {
-            user.tema = tema.dataset.tema;
-            localStorage.setItem('usuario', JSON.stringify(user));
-        }
-
-        let temaEscolhido = e.currentTarget;
-
-
-
-
-        darkSquare = temaEscolhido.dataset.darkSquare;
-        lightSquare = temaEscolhido.dataset.lightSquare;
-
-        drawBoard();
-
-        fechaConfiguracoes();
-    });
+           
+           if(temUsuario) {
+               user.tema = tema.dataset.tema;
+               localStorage.setItem('usuario', JSON.stringify(user));
+            }
+            
+            let temaEscolhido = e.currentTarget;
+            
+            
+            
+            
+            darkSquare = temaEscolhido.dataset.darkSquare;
+            lightSquare = temaEscolhido.dataset.lightSquare;
+            
+            drawBoard();
+            
+            fechaConfiguracoes();
+        });
 }
-
+    
 temas.forEach(mudaCor);
+    
+onload = drawBoard();

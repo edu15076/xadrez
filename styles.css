@@ -1,6 +1,5 @@
 html {
     min-height: 100%;
-    /*overflow: hidden;*/
 }
 
 body {
@@ -19,8 +18,16 @@ header {
     z-index: 2;
 }
 
-header h1 {
+a {
+    color: white;
+}
+
+header h1,
+header a {
     font-size: 4.0404vh;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Raleway', sans-serif;
 }
 
 h1, h2, h3, h4 {
@@ -62,6 +69,78 @@ main > h2 {
     top: 1.6vh;
     width: 60vh;
     height: 60vh;
+}
+
+#black-promotion,
+#white-promotion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#black-promotion div,
+#white-promotion div {
+    width: 40vh;
+    height: 8.5vh;
+    background-color: rgb(32, 40, 58);
+    display: flex;
+    justify-content: space-around;
+    border-radius: .5vh;
+    align-items: center;
+    align-self: center;
+}
+
+#black-promotion img,
+#white-promotion img {
+    height: 7.5vh;
+    cursor: grab;
+}
+
+#black-promotion {
+    grid-area: 1 / 2 / 2 / 3;
+    display: none;
+}
+
+#white-promotion {
+    grid-area: 3 / 2 / 4 / 3;
+    display: none;
+}
+
+#game-over > div {
+    width: 52.5vh;
+    height: 75vh;
+    background-color: #02050c;
+    border-radius: 2.5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    align-self: center;
+}
+
+#game-over h2,
+#game-over p {
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    user-select: none;
+}
+
+#game-over h2 {
+    font-size: 5vh;
+}
+
+#game-over p {
+    font-size: 2vh;
+    color: rgb(181, 181, 181);
+}
+
+#game-over {
+    z-index: -100;
+    grid-area: 1 / 2 / 4 / 3;
+    display: flex;
+    opacity: 0;
+    transition: all .25s ease-out;
+    justify-content: center;
 }
 
 .piece {
@@ -249,9 +328,10 @@ nav {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    user-select: none;
 }
 
-.opcoes a:link, a:visited {
+.opcoes a:link, .opcoes a:visited {
     text-decoration: none;
     color: #02050c;
 }
@@ -259,6 +339,53 @@ nav {
 .opcoes:hover {
     background-color: rgb(218, 216, 216);
 }
+
+#choose-color {
+    height: 8vh;
+    width: 20.886vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#choose-color div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#choose-color span {
+    width: 10vh;
+    height: 4.177vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.536vh;
+    font-weight: bold;
+    border-radius: .746vh;
+    user-select: none;
+    cursor: pointer;
+}
+
+[data-color="black"]:hover {
+    background-color: #202020;
+}
+
+[data-color="white"],
+[data-color="black"]:active {
+    background-color: white;
+    color: #02050c;
+}
+
+[data-color="white"]:hover {
+    background-color: rgb(218, 216, 216);
+}
+
+[data-color="black"],
+[data-color="white"]:active {
+    background-color: #131313;
+    color: white;
+}
+
 
 .aberto {
     right: 0;
