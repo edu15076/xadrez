@@ -1,5 +1,6 @@
-let verifyBordBarriers = (x, y) => (x <= 7 && x >= 0 && y <= 7 && y >= 0);
+let verifyBoardBarriers = (x, y) => (x <= 7 && x >= 0 && y <= 7 && y >= 0);
 
+/** Find the moves of a `piece` that do not let the same colored king in check. */
 function saveKingMoves(pieceObj) {
     const pieceMoves = pieceObj.notSavingKingMoves();
     let newPieceMoves = [];
@@ -29,7 +30,7 @@ function findKingMoves(pieceObj) {
     const directions = [[x+1, y], [x+1, y+1], [x, y+1], [x-1, y+1], [x-1, y], [x-1, y-1], [x, y-1], [x+1, y-1]];
 
     directions.forEach(direction => {
-        if (verifyBordBarriers(direction[0], direction[1])
+        if (verifyBoardBarriers(direction[0], direction[1])
         && !board[direction[0]][direction[1]][`${pieceObj.opositeColor()}Attack`]
         && (board[direction[0]][direction[1]].piece === null
         || board[direction[0]][direction[1]].piece.color === pieceObj.opositeColor()))
@@ -42,7 +43,7 @@ function findShortMoves(pieceObj, directions) {
     let possibleMoves = [];
     
     directions.forEach(direction => {
-        if (verifyBordBarriers(direction[0], direction[1]) && (board[direction[0]][direction[1]].piece === null || board[direction[0]][direction[1]].piece.color != pieceObj.color))
+        if (verifyBoardBarriers(direction[0], direction[1]) && (board[direction[0]][direction[1]].piece === null || board[direction[0]][direction[1]].piece.color != pieceObj.color))
             possibleMoves.push(direction);
     });
     
@@ -53,7 +54,7 @@ function findShortAttacks(directions) {
     let attacks = [];
     
     directions.forEach(direction => {
-        if (verifyBordBarriers(direction[0], direction[1]))
+        if (verifyBoardBarriers(direction[0], direction[1]))
             attacks.push(direction);
     });
     
@@ -67,7 +68,7 @@ function findLongMoves(pieceObj, directions) {
         let x = direction[0] + pieceObj.x;
         let y = direction[1] + pieceObj.y;
         for ( ; x >= 0 && y >= 0; x += direction[0], y += direction[1])
-            if (verifyBordBarriers(x, y)) {
+            if (verifyBoardBarriers(x, y)) {
                 if (board[x][y].piece === null)
                     possibleMoves.push([x, y]);
                 else if (board[x][y].piece.color != pieceObj.color) {
@@ -87,7 +88,7 @@ function findLongAttacks(pieceObj, directions) {
         let x = direction[0] + pieceObj.x;
         let y = direction[1] + pieceObj.y;
         for ( ; x >= 0 && y >= 0; x += direction[0], y += direction[1])
-            if (verifyBordBarriers(x, y)) {
+            if (verifyBoardBarriers(x, y)) {
                 if (board[x][y].piece === null)
                     attaks.push([x, y]);
                 else {
@@ -108,10 +109,6 @@ const king = {
     moved: false,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
-    },
-
-    checked() {
-        return board[this.x][this.y][`${this.opositeColor()}Attack`];
     },
 
     notSavingKingMoves() {
@@ -179,22 +176,22 @@ const pawn = {
 
         let pawnMoves = [];
 
-        if (verifyBordBarriers(directionsToMove[0][0], directionsToMove[0][1])
+        if (verifyBoardBarriers(directionsToMove[0][0], directionsToMove[0][1])
         && board[directionsToMove[0][0]][directionsToMove[0][1]].piece === null)
             pawnMoves.push(directionsToMove[0]);
         if (!this.moved)
-            if (verifyBordBarriers(directionsToMove[1][0], directionsToMove[1][1])
+            if (verifyBoardBarriers(directionsToMove[1][0], directionsToMove[1][1])
             && board[directionsToMove[1][0]][directionsToMove[1][1]].piece === null
             && board[directionsToMove[1][0]][directionsToMove[1][1] - this.moveDirection()].piece === null)
                 pawnMoves.push(directionsToMove[1]);
 
         directionsToTake.forEach(direction => {
-            if (verifyBordBarriers(direction[0], direction[1])
+            if (verifyBoardBarriers(direction[0], direction[1])
             && (board[direction[0]][direction[1]].piece != null
             && board[direction[0]][direction[1]].piece.color != this.color))
                 pawnMoves.push(direction);
             
-            if (verifyBordBarriers(direction[0], direction[1])
+            if (verifyBoardBarriers(direction[0], direction[1])
             && enPassant != null
             && enPassant[0] === direction[0] && enPassant[1] === direction[1])
                 pawnMoves.push(direction);

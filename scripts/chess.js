@@ -1,7 +1,18 @@
-// ---------ínicio tabuleiro----------
+/** The current piece color to move. */
 let turn = 'white';
+
+/**
+ * If en passant is possible it contains the possition, an `Array`, where en passant is possible.
+ * 
+ * `null` if en passant is not possible.
+*/
 let enPassant = null;
 
+/**
+ * This is an `Object` that contains: 
+ * - Attacks from black and white
+ * - A piece
+*/
 let square = {
     whiteAttack: false,
     blackAttack: false,
@@ -9,8 +20,11 @@ let square = {
 };
 
 let whiteKing, blackKing;
+
+/** This is a matrix of `square`, it contains one `square` for each position on a chess board. */
 let board = [[],[],[],[],[],[],[],[]];
 
+/** Set the global variable `board` to its initial configuration. */
 function originalBoardSettings() {
     for (let i = 0; i < 8; i++)
         for (let j = 0; j < 8; j++) {
@@ -47,16 +61,20 @@ function originalBoardSettings() {
                 board[i][j].piece.y = j;
             }
         }
-        whiteKing = board[4][7].piece;
-        blackKing = board[4][0].piece;
+    whiteKing = board[4][7].piece;
+    blackKing = board[4][0].piece;
+    getAttacks();
 }
-originalBoardSettings();
 
-// ---------Fim tabuleiro----------
 let pieces = document.querySelectorAll('.piece');
 let bodyEl = document.querySelector('body');
 let squares = document.querySelectorAll('#pieces-move div');
 
+/**
+ * Draw the possible `piece` moves on the board.
+ * 
+ * @param {moves} moves The possible moves of a `piece`.
+ */
 function drawMoves(moves) {
     for (let move of moves) {
         let canvasEl = document.createElement('canvas');
@@ -84,6 +102,11 @@ function drawMoves(moves) {
     }
 }
 
+/**
+ * Erase the possible `piece` moves on the board.
+ * 
+ * @param {moves} moves The possible moves of a `piece`.
+ */
 function removeMoves(moves) {
     moves.forEach(move => {
         let canvas = squares[move[0] - 8 * move[1] + 56].querySelector('canvas');
@@ -92,12 +115,18 @@ function removeMoves(moves) {
     });
 }
 
+/**
+ * Set all `Atacks` on the global variable `board` to `false`.
+ */
 function removeAttacks() {
     for (let x = 0; x < 8; x++)
         for (let y = 0; y < 8; y++)
             board[x][y].blackAttack = board[x][y].whiteAttack = false;
 }
 
+/**
+ * Set possible `Atacks` for each color to `true` on the global variable `board`.
+ */
 function getAttacks() {
     removeAttacks();
 
@@ -110,8 +139,16 @@ function getAttacks() {
                 });
             }
 }
-getAttacks();
 
+originalBoardSettings();
+
+/**
+ * Check whether the `king`, independing on its color, is under a check.
+ * 
+ * @param {kingX} kingX The position o the `king` on x.
+ * @param {kingY} kingY The position o the `king` on y.
+ * @returns `true` if the king is checked or `false` if it is not.
+ */
 function getCheck(kingX, kingY) {
     removeAttacks();
     let opositeColor = turn === 'white' ? 'black' : 'white';
@@ -130,6 +167,11 @@ function getCheck(kingX, kingY) {
     return false;
 }
 
+/**
+ * Check whether the `king` of the current `turn` is mated.
+ * 
+ * @returns `true` if the `king` from the current `turn` is mated or `false` if it is not.
+ */
 function getMate() {
     for (let i = 0; i < 8; i++)
         for (let j = 0; j < 8; j++)
@@ -139,7 +181,6 @@ function getMate() {
     return true;
 }
 
-let finalMove;
 let movesDrawn = [];
 let piecesMoveEl = document.getElementById('pieces-move');
 
@@ -169,12 +210,21 @@ let gameOverEl = document.getElementById('game-over');
 
 function preventDefault(e) { e.preventDefault(); }
 
-function eventListentersForMove(pieceEl) {
+/** Let a `piece` move. */
+function eventListenersForMove(pieceEl) {
     function promotePawn(x, y, xToMove, yToMove, parent, finalParent) {
         let pawnColor = board[x][y].piece.color;
         let promotionEl = document.getElementById(`${pawnColor}-promotion`);
         let promotionPieceEl = promotionEl.querySelectorAll('div > img');
         promotionEl.style.display = 'flex';
+        
+        bodyEl.onclick = () => {
+            bodyEl.onclick = e => {
+                if (e.target.closest('section') != promotionEl)
+                    promotionEl.style.display = 'none';
+                bodyEl.onclick = null;
+            }
+        }
         
         promotionPieceEl.forEach(pieceToSelect => {
             pieceToSelect.onclick = () => {
@@ -202,7 +252,7 @@ function eventListentersForMove(pieceEl) {
                 newPiece.src = pieceToSelect.src;
                 newPiece.classList.add('piece');
                 newPiece.draggable = false;
-                [newPiece].forEach(eventListentersForMove);
+                [newPiece].forEach(eventListenersForMove);
 
                 parent.innerHTML = '';
                 finalParent.innerHTML = '';
@@ -296,7 +346,7 @@ function eventListentersForMove(pieceEl) {
                             gameResultEl.innerHTML = `${opositeColor.charAt(0).toUpperCase()+opositeColor.slice(1)} won`;
                             gameResultEl.style.color = resultColor;
                             gameResultEl.style.filter = `drop-shadow(0 0 2.5vh ${resultColor})`;
-                            gameOverEl.style.zIndex = '100';
+                            gameOverEl.style.zIndex = '50';
                             gameOverEl.style.opacity = '100';
                         }
                     break;
@@ -417,14 +467,13 @@ function eventListentersForMove(pieceEl) {
     });
 }
 
-pieces.forEach(eventListentersForMove);
+pieces.forEach(eventListenersForMove);
 
 let resetEls = document.querySelectorAll('.reset');
 
 resetEls.forEach(resetEl => {
     resetEl.onclick = () => {
         originalBoardSettings();
-        getAttacks();
         turn = 'white';
         
         for (let i = 0; i < 64; i++) {
@@ -436,7 +485,7 @@ resetEls.forEach(resetEl => {
                 let newPiece = document.createElement('img');
                 newPiece.classList.add('piece');
                 newPiece.src = `img/${board[x][y].piece.color}_${board[x][y].piece.piece}.svg`;
-                [newPiece].forEach(eventListentersForMove);
+                [newPiece].forEach(eventListenersForMove);
 
                 squares[i].appendChild(newPiece);
             }

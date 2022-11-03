@@ -8,15 +8,15 @@ let configuracaoJanela = document.querySelector('#configuracoes-janela');
 let temasEl = document.querySelectorAll('.temas');
 
 const abreConfiguracoes = () => {
-    configuracaoEl.classList.toggle('pop-up-configuracoes-fechado');
-    configuracaoEl.classList.toggle('pop-up-configuracoes-aberto');
-    menuEl.classList.toggle('aberto');
+    configuracaoEl.classList.remove('pop-up-configuracoes-fechado');
+    configuracaoEl.classList.add('pop-up-configuracoes-aberto');
+    menuEl.classList.remove('aberto');
     checkboxMenuEl.checked = false;
 };
 
 const fechaConfiguracoes = () => {
-    configuracaoEl.classList.toggle('pop-up-configuracoes-fechado');
-    configuracaoEl.classList.toggle('pop-up-configuracoes-aberto');
+    configuracaoEl.classList.add('pop-up-configuracoes-fechado');
+    configuracaoEl.classList.remove('pop-up-configuracoes-aberto');
 };
 
 boxEl.addEventListener('change', () => {

@@ -29,7 +29,8 @@ let selecionaTabuleiro = (user) => {
         
     drawBoard();
 }
-    
+
+/** Draw the chess board on the screen. */
 function drawBoard() {
     let boardEl = document.getElementById('board');
         

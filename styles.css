@@ -15,7 +15,7 @@ header {
     background-color: #02050c;
     display: flex;
     justify-content: space-between;
-    z-index: 2;
+    z-index: 99;
 }
 
 a {
@@ -130,7 +130,6 @@ main > h2 {
 }
 
 #game-over p {
-    font-size: 2vh;
     color: rgb(181, 181, 181);
 }
 
@@ -189,65 +188,6 @@ main > h2 {
 [data-square^="f"] { right: 15vh;   }
 [data-square^="g"] { right: 7.5vh;  }
 [data-square^="h"] { right: 0;      }
-
-@media screen and (orientation: portrait) {
-    #board {
-        width: 90vw;
-        height: 90vw;
-        border: 1vw solid rgb(32, 40, 58);
-    }
-
-    #pieces-move {
-        left: 1vw;
-        top: 1vw;
-        width: 90vw;
-        height: 90vw;
-    }
-
-    .piece {
-        height: 11.25vw;
-    }
-    
-    .piece-cpy {
-        height: 11.25vw;
-    }
-    
-    [data-square$="1"],
-    [data-square$="2"],
-    [data-square$="3"],
-    [data-square$="4"],
-    [data-square$="5"],
-    [data-square$="6"],
-    [data-square$="7"],
-    [data-square$="8"] {
-        position: absolute;
-        width: 11.25vw;
-        height: 11.25vw;
-    }
-    
-    [data-square$="1"] { top: 78.75vw; }
-    [data-square$="2"] { top: 67.5vw;  }
-    [data-square$="3"] { top: 56.25vw; }
-    [data-square$="4"] { top: 45vw;    }
-    [data-square$="5"] { top: 33.75vw; }
-    [data-square$="6"] { top: 22.5vw;  }
-    [data-square$="7"] { top: 11.25vw; }
-    [data-square$="8"] { top: 0;       }
-    
-    [data-square^="a"] { right: 78.75vw; }
-    [data-square^="b"] { right: 67.5vw;  }
-    [data-square^="c"] { right: 56.25vw; }
-    [data-square^="d"] { right: 45vw;    }
-    [data-square^="e"] { right: 33.75vw; }
-    [data-square^="f"] { right: 22.5vw;  }
-    [data-square^="g"] { right: 11.25vw; }
-    [data-square^="h"] { right: 0;       }
-
-    #configuracoes-janela {
-        height: 29vh;
-        width: 40vh;
-    }
-}
 
 .container {
     z-index: 100;
@@ -348,6 +288,10 @@ nav {
     justify-content: space-between;
 }
 
+#choose-color p {
+    font-size: 2.3vh;
+}
+
 #choose-color div {
     display: flex;
     justify-content: space-between;
@@ -390,6 +334,7 @@ nav {
 .aberto {
     right: 0;
 }
+
 /*estilização da janela de configurações, incompleta*/
 .pop-up-configuracoes-fechado {
     display: none;
@@ -593,7 +538,6 @@ nav {
 .conteudo p {
     text-align: justify;
     margin: 0 6vh 0 4vh;
-
 }
 
 .github {
@@ -620,10 +564,103 @@ nav {
     margin: 0 3vh 3vh 0;
     text-align: left;
 }
+
 #torre-animacao {
     height: 10vh;
     width: 10vh;
     top: -10vh;
     right: 10vh;
     transition: 2s all ease;
+}
+
+@media screen and (max-aspect-ratio: 13/20) {
+    #board {
+        width: 90vw;
+        height: 90vw;
+        border: 2vw solid rgb(32, 40, 58);
+    }
+
+    #pieces-move {
+        left: 2vw;
+        top: 2vw;
+        width: 90vw;
+        height: 90vw;
+    }
+
+    .piece {
+        height: 11.25vw;
+    }
+    
+    .piece-cpy {
+        height: 11.25vw;
+    }
+
+    #black-promotion div,
+    #white-promotion div {
+        width: 58.5vw;
+        height: 13vw;
+    }
+
+    #black-promotion img,
+    #white-promotion img {
+        height: 11.25vw;
+    }
+
+    #game-over > div {
+        width: 80vw;
+        height: 115vw;
+        border-radius: 2.5vh;
+    }
+    
+    #game-over h2 {
+        font-size: 7.75vw;
+    }
+    
+    #game-over p {
+        font-size: 3.1vw;
+    }
+    
+    [data-square$="1"],
+    [data-square$="2"],
+    [data-square$="3"],
+    [data-square$="4"],
+    [data-square$="5"],
+    [data-square$="6"],
+    [data-square$="7"],
+    [data-square$="8"] {
+        position: absolute;
+        width: 11.25vw;
+        height: 11.25vw;
+    }
+    
+    [data-square$="1"] { top: 78.75vw; }
+    [data-square$="2"] { top: 67.5vw;  }
+    [data-square$="3"] { top: 56.25vw; }
+    [data-square$="4"] { top: 45vw;    }
+    [data-square$="5"] { top: 33.75vw; }
+    [data-square$="6"] { top: 22.5vw;  }
+    [data-square$="7"] { top: 11.25vw; }
+    [data-square$="8"] { top: 0;       }
+    
+    [data-square^="a"] { right: 78.75vw; }
+    [data-square^="b"] { right: 67.5vw;  }
+    [data-square^="c"] { right: 56.25vw; }
+    [data-square^="d"] { right: 45vw;    }
+    [data-square^="e"] { right: 33.75vw; }
+    [data-square^="f"] { right: 22.5vw;  }
+    [data-square^="g"] { right: 11.25vw; }
+    [data-square^="h"] { right: 0;       }
+
+    #configuracoes-janela {
+        height: 80vw;
+        width: 85vw;
+    }
+
+    #game-over .opcoes {
+        height: 6.474vw;
+        width: 32.333vw;
+        border-radius: 1.156vw;
+        padding: .925vw .462vw .925vw .462vw;
+        font-size: 3.931vw;
+    }
 }
