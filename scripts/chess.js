@@ -212,19 +212,19 @@ function preventDefault(e) { e.preventDefault(); }
 
 /** Let a `piece` move. */
 function eventListenersForMove(pieceEl) {
+    let movedByTouch = false;
     function promotePawn(x, y, xToMove, yToMove, parent, finalParent) {
         let pawnColor = board[x][y].piece.color;
         let promotionEl = document.getElementById(`${pawnColor}-promotion`);
         let promotionPieceEl = promotionEl.querySelectorAll('div > img');
         promotionEl.style.display = 'flex';
         
-        bodyEl.onclick = () => {
-            bodyEl.onclick = e => {
-                if (e.target.closest('section') != promotionEl)
-                    promotionEl.style.display = 'none';
-                bodyEl.onclick = null;
-            }
+        function undoPromotion(e) {
+            if (e.target.closest('section') != promotionEl)
+                promotionEl.style.display = 'none';
+            bodyEl.onclick = null;
         }
+        bodyEl.onclick = movedByTouch ? undoPromotion : () => { bodyEl.onclick = undoPromotion; };
         
         promotionPieceEl.forEach(pieceToSelect => {
             pieceToSelect.onclick = () => {
@@ -352,6 +352,7 @@ function eventListenersForMove(pieceEl) {
                     break;
                 }
         pieceEl.style.zIndex = '1';
+        movedByTouch = false;
     }
 
     function movePieceAtBoardTouch(e) {
@@ -441,6 +442,7 @@ function eventListenersForMove(pieceEl) {
         y = startCase[2];
 
         movePieceAtBoardTouch(e);
+        movedByTouch = true;
     });
 
     pieceEl.addEventListener('touchmove', movePieceAtBoardTouch);
