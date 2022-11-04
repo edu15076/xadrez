@@ -28,6 +28,25 @@ function findKingMoves(pieceObj) {
     const x = pieceObj.x;
     const y = pieceObj.y;
     const directions = [[x+1, y], [x+1, y+1], [x, y+1], [x-1, y+1], [x-1, y], [x-1, y-1], [x, y-1], [x+1, y-1]];
+    const roqueMoves = [[x-2, y], [x+2, y]];
+
+    if (!pieceObj.moved && !board[x][y][`${pieceObj.opositeColor()}Attack`]) {
+        for (let roqueOption of roqueMoves) {
+            if (roqueMoves.indexOf(roqueOption)) {
+                if (board[x+3][y].piece != null && !board[x+3][y].piece.moved
+                    && board[x+1][y].piece === null && board[x+2][y].piece === null
+                    && !board[x+1][y][`${pieceObj.opositeColor()}Attack`] && !board[x+2][y][`${pieceObj.opositeColor()}Attack`]) {
+                    kingMoves.push(roqueOption);
+                }
+            }
+            else {
+                if (board[x-4][y].piece != null && !board[x-4][y].piece.moved
+                    && board[x-1][y].piece === null && board[x-2][y].piece === null && board[x-3][y].piece === null
+                    && !board[x-1][y][`${pieceObj.opositeColor()}Attack`] && !board[x-2][y][`${pieceObj.opositeColor()}Attack`])
+                    kingMoves.push(roqueOption);
+            }
+        }
+    }
 
     directions.forEach(direction => {
         if (verifyBoardBarriers(direction[0], direction[1])

@@ -293,6 +293,19 @@ function eventListenersForMove(pieceEl) {
     }
 
     function doMovementAtEnd(x, y, xToMove, yToMove, finalParent) {
+        if (board[x][y].piece.piece === 'king' && Math.abs(x-xToMove) === 2) {
+            let xRook = x-xToMove > 0 ? 0 : 7;
+            let xRookToMove = x-xToMove > 0 ? 3 : 5;
+            board[xRookToMove][y].piece = board[x+3][y].piece;
+            board[xRookToMove][y].piece.moved = true;
+            board[xRookToMove][y].piece.x = xRookToMove;
+            board[xRook][y].piece = null;
+            
+            squares[xRookToMove - 8 * y + 56].appendChild(squares[xRook - 8 * y + 56].querySelector('img'));
+            squares[xRook - 8 * y + 56].innerHTML = '';
+            [squares[xRookToMove - 8 * y + 56].querySelector('img')].forEach(eventListenersForMove);
+        }
+        
         board[xToMove][yToMove].piece = board[x][y].piece;
         board[xToMove][yToMove].piece.x = xToMove;
         board[xToMove][yToMove].piece.y = yToMove;
