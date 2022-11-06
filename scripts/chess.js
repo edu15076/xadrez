@@ -244,9 +244,9 @@ function eventListenersForMove(pieceEl) {
             }
 
             if (piecesUser === 'black')
-                promotionEl.style.left = `${(7 - xToMove) * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0] + 0.5}px`;
+                promotionEl.style.left = `${(7 - xToMove) * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0]}px`;
             else
-                promotionEl.style.left = `${xToMove * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0] + 0.5}px`;
+                promotionEl.style.left = `${xToMove * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0]}px`;
         }
         positionPromotionDiv();
 
