@@ -8,6 +8,8 @@ let turn = 'white';
 */
 let enPassant = null;
 
+let gameOn = false;
+
 /**
  * This is an `Object` that contains: 
  * - Attacks from black and white
@@ -80,22 +82,22 @@ function drawMoves(moves) {
         let canvasEl = document.createElement('canvas');
         let side = squares[0].offsetWidth;
         
-        canvasEl.width = side;
-        canvasEl.height = side;
+        canvasEl.width = 300;
+        canvasEl.height = 300;
 
         canvasEl.style.width = `${side}px`;
         canvasEl.style.height = `${side}px`;
         
         let ctx = canvasEl.getContext('2d');
         let circle = new Path2D();
-        ctx.fillStyle = '#1212128f';
+        ctx.fillStyle = '#2e2e2e5a';
         
         if (squares[move[0] - 8 * move[1] + 56].querySelector(':first-child') === null) {
-            circle.arc(side / 2, side / 2, side / 4, 0, 2 * Math.PI);
+            circle.arc(150, 150, 60, 0, 2 * Math.PI);
             ctx.fill(circle);
         } else {
-            circle.arc(side / 2, side / 2, side / 2, 0, 2 * Math.PI, true);
-            circle.arc(side / 2, side / 2, side / 2.5, 0, 2 * Math.PI, false);
+            circle.arc(150, 150, 150, 0, 2 * Math.PI, true);
+            circle.arc(150, 150, 120, 0, 2 * Math.PI, false);
             ctx.fill(circle);
         }
         squares[move[0] - 8 * move[1] + 56].appendChild(canvasEl);
@@ -108,6 +110,7 @@ function drawMoves(moves) {
  * @param {moves} moves The possible moves of a `piece`.
  */
 function removeMoves(moves) {
+    if (moves.length === 0) return;
     moves.forEach(move => {
         let canvas = squares[move[0] - 8 * move[1] + 56].querySelector('canvas');
         if (canvas != null)
@@ -199,32 +202,75 @@ function getDistance(el) {
 
 let distanceBoard = getDistance(piecesMoveEl);
 
+function roundToHalf(n) {
+    n = Math.abs(n)
+    if (n % 1 < .25)
+        return Math.floor(n);
+    if (n % 1 >= .75)
+        return Math.ceil(n);
+    return n - n % 1 + .5;
+}
+
 addEventListener('resize', () => {
     removeMoves(movesDrawn);
     drawMoves(movesDrawn);
     distanceBoard = getDistance(piecesMoveEl);
-    rotateBoard(document.querySelector(`[data-color="${piecesUser}"]`));
 });
 
 let gameOverEl = document.getElementById('game-over');
 
 function preventDefault(e) { e.preventDefault(); }
 
+let lastParent;
+let lastParentToMove;
+let lastFinalParent;
+
 /** Let a `piece` move. */
 function eventListenersForMove(pieceEl) {
-    let movedByTouch = false;
+    let movedByClick = false;
+
     function promotePawn(x, y, xToMove, yToMove, parent, finalParent) {
         let pawnColor = board[x][y].piece.color;
         let promotionEl = document.getElementById(`${pawnColor}-promotion`);
-        let promotionPieceEl = promotionEl.querySelectorAll('div > img');
-        promotionEl.style.display = 'flex';
-        
+        let promotionPieceEl = promotionEl.querySelectorAll('img');
+
+        function positionPromotionDiv() {
+            if (pawnColor != piecesUser) {
+                promotionEl.style.flexDirection = 'column-reverse';
+                promotionEl.style.top = `${piecesMoveEl.clientHeight / 2 + getDistance(piecesMoveEl)[1]}px`;
+            } else {
+                promotionEl.style.flexDirection = 'column';
+                promotionEl.style.top = `${getDistance(piecesMoveEl)[1] - 0.5}px`;
+            }
+
+            if (piecesUser === 'black')
+                promotionEl.style.left = `${(7 - xToMove) * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0] + 0.5}px`;
+            else
+                promotionEl.style.left = `${xToMove * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0] + 0.5}px`;
+        }
+        positionPromotionDiv();
+
+        promotionEl.style.zIndex = '101';
+        promotionEl.style.opacity = '100';
+
+        let parentS = parent.querySelector('img');
+        let finalParentS = finalParent.querySelector('img');
+        parent.innerHTML = '';
+        finalParent.innerHTML = '';
+
+        addEventListener('resize', () => { positionPromotionDiv(); });
+
         function undoPromotion(e) {
-            if (e.target.closest('section') != promotionEl)
-                promotionEl.style.display = 'none';
+            if (e.target.closest('section') != promotionEl) {
+                promotionEl.style.opacity = '0';
+                promotionEl.style.zIndex = '-100';
+
+                parent.appendChild(parentS);
+                if (finalParentS != null) finalParent.appendChild(finalParentS);
+            }
             bodyEl.onclick = null;
         }
-        bodyEl.onclick = movedByTouch ? undoPromotion : () => { bodyEl.onclick = undoPromotion; };
+        bodyEl.onclick = !movedByClick ? undoPromotion : () => { bodyEl.onclick = undoPromotion; };
         
         promotionPieceEl.forEach(pieceToSelect => {
             pieceToSelect.onclick = () => {
@@ -254,12 +300,11 @@ function eventListenersForMove(pieceEl) {
                 newPiece.draggable = false;
                 [newPiece].forEach(eventListenersForMove);
 
-                parent.innerHTML = '';
-                finalParent.innerHTML = '';
                 finalParent.appendChild(newPiece);
                 getAttacks();
                 turn = turn === 'white' ? 'black' : 'white';
-                promotionEl.style.display = 'none';
+                promotionEl.style.opacity = '0';
+                promotionEl.style.zIndex = '-100';
                 pieceToSelect.onclick = null;
 
                 removeMoves(movesDrawn);
@@ -268,10 +313,18 @@ function eventListenersForMove(pieceEl) {
     }
 
     function movementStart(parent, x, y) {
+        bodyEl.style.overflow = 'hidden';
+
         parent = pieceEl.closest('[data-square]');
         x = parent.dataset.square.charCodeAt(0) - 97;
         y = 8 - parent.dataset.square[1];
         pieceEl.style.zIndex = '101';
+
+        if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
+        parent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+        lastParent = parent;
+        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+
         
         if (board[x][y].piece.color === turn) {
             movesDrawn = board[x][y].piece.moves();
@@ -362,10 +415,26 @@ function eventListenersForMove(pieceEl) {
                             gameOverEl.style.zIndex = '50';
                             gameOverEl.style.opacity = '100';
                         }
+
+                    if (gameOn) {
+                        lastParentToMove.style.backgroundColor = 'transparent';
+                        lastFinalParent.style.backgroundColor = 'transparent';
+                    }
+                    finalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+                    lastParentToMove = parent;
+                    lastFinalParent = finalParent;
+                    gameOn = true;
+
                     break;
+                } else if (movedByClick && x != xToMove && y != yToMove) {
+                    parent.style.backgroundColor = 'transparent';
+                    removeMoves(movesDrawn);
+                    movesDrawn = [];
                 }
-        pieceEl.style.zIndex = '1';
-        movedByTouch = false;
+        
+        if (pieceEl != undefined)
+                pieceEl.style.zIndex = '1';
+        movedByClick = false;
     }
 
     function movePieceAtBoardTouch(e) {
@@ -384,25 +453,30 @@ function eventListenersForMove(pieceEl) {
     }
 
     let parentClick, xClick, yClick;
+
+    function moveByClick(e) {
+        let tempX = e.currentTarget.dataset.square.charCodeAt(0) - 97;
+        let tempY = 8 - e.currentTarget.dataset.square[1];
+        if (board[tempX][tempY].piece != null && board[tempX][tempY].piece.color === turn) {
+            parentClick = e.currentTarget;
+            xClick = tempX;
+            yClick = tempY;
+        } else if ((board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn) && parentClick != undefined) {
+            let finalParent = e.currentTarget;
+
+            let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
+            let yToMove = 8 - finalParent.dataset.square[1];
+            pieceEl = parentClick.querySelector('img');
+
+            movedByClick = true;
+            movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
+            parentClick = undefined;
+        } else if (lastParent != undefined && board[tempX][tempY].piece === null)
+            lastParent.style.backgroundColor = 'transparent';
+    }
+
     squares.forEach(moveSquare => {
-        moveSquare.onclick = function(e) {
-            let tempX = e.currentTarget.dataset.square.charCodeAt(0) - 97;
-            let tempY = 8 - e.currentTarget.dataset.square[1];
-            if (board[tempX][tempY].piece != null && board[tempX][tempY].piece.color === turn) {
-                parentClick = e.currentTarget;
-                xClick = tempX;
-                yClick = tempY;
-            } else if ((board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn) && parentClick != undefined) {
-                let finalParent = e.currentTarget;
-
-                let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
-                let yToMove = 8 - finalParent.dataset.square[1];
-                pieceEl = parentClick.querySelector('img');
-
-                movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
-                parentClick = undefined;
-            }
-        }
+        moveSquare.onclick = e => moveByClick(e);
     });
 
     pieceEl.ondragstart = () => false;
@@ -423,6 +497,7 @@ function eventListenersForMove(pieceEl) {
 
         pieceEl.onmouseup = function(e) {
             piecesMoveEl.removeEventListener('mousemove', movePieceAtBoard);
+            bodyEl.style.overflow = 'auto';
 
             pieceEl.style.top = '0';
             pieceEl.style.left = '0';
@@ -455,7 +530,6 @@ function eventListenersForMove(pieceEl) {
         y = startCase[2];
 
         movePieceAtBoardTouch(e);
-        movedByTouch = true;
     });
 
     pieceEl.addEventListener('touchmove', movePieceAtBoardTouch);
@@ -479,6 +553,16 @@ function eventListenersForMove(pieceEl) {
         let yToMove = 8 - finalParent.dataset.square[1];
         
         movementEnd(x, y, xToMove, yToMove, finalParent, parent);
+
+        if (board[x][y].piece != null && board[x][y].piece.color === turn) {
+            parentClick = parent;
+            xClick = x;
+            yClick = y;
+
+            squares.forEach(moveSquare => {
+                moveSquare.onclick = e => moveByClick(e);
+            });
+        }
     });
 }
 
@@ -507,5 +591,6 @@ resetEls.forEach(resetEl => {
         }
         gameOverEl.style.opacity = '0';
         gameOverEl.style.zIndex = '-100';
+        gameOn = false;
     }
 });

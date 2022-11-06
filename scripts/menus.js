@@ -37,27 +37,17 @@ let chooseColorButtons = document.querySelectorAll('#choose-color span');
 function rotateBoard(choosedColor) {
     let newColor = choosedColor.dataset.color;
     if (newColor != piecesUser) {
-        let opositeColor = newColor === 'white' ? 'black' : 'white';
-
-        document.getElementById(`${newColor}-promotion`).style.gridArea = '3 / 2 / 4 / 3';
-        document.getElementById(`${opositeColor}-promotion`).style.gridArea = '1 / 2 / 2 / 3';
-
         squares.forEach(squareEl => {
-            squareEl.style.left = `${7 * piecesMoveEl.clientHeight / 8 - squareEl.offsetLeft}px`;
-            squareEl.style.top = `${7 * piecesMoveEl.clientHeight / 8 - squareEl.offsetTop}px`;
+            let left = 87.5 - 100 * squareEl.offsetLeft / piecesMoveEl.clientHeight;
+            let top = 87.5 - 100 * squareEl.offsetTop / piecesMoveEl.clientHeight;
+            
+            left = left % 1 === 0.5 ? left : roundToHalf(left);
+            top = top % 1 === 0.5 ? top : roundToHalf(top);
+
+            squareEl.style.left = `${left}%`;
+            squareEl.style.top = `${top}%`;
         });
         piecesUser = newColor;
-    } else {
-        squares.forEach(squareEl => {
-            let x = squareEl.dataset.square.charCodeAt(0) - 97;
-            let y = 8 - squareEl.dataset.square[1];
-            if (piecesUser === 'black') {
-                x = 7 - x;
-                y = 7 - y;
-            }
-            squareEl.style.left = `${x * piecesMoveEl.clientHeight / 8}px`;
-            squareEl.style.top = `${y * piecesMoveEl.clientHeight / 8}px`;
-        });
     }
 }
 
