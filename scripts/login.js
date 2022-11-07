@@ -109,7 +109,7 @@ let criarPerfil = () => {
     temp = setTimeout(apareceConfirmacao, 4200);
 
     botaoConfirmar.addEventListener("click", () => {
-        confirmacao = confirmaSenha(criarContaEl.senha, senhaConfirmacaoInput.value);
+        confirmacao = confirma(criarContaEl.senha, senhaConfirmacaoInput.value);
     })
 
     localStorage.removeItem('usuario');
@@ -121,8 +121,8 @@ let criarPerfil = () => {
         score: 0,
         vitorias: 0,
         derrotas: 0,
-        empates: 0,
-        tema: 'wood'
+        tema: 'wood',
+        tabuleiro: ''
     }
 
     localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -135,6 +135,7 @@ let criarPerfil = () => {
         sumir(); 
     }
     else {
+        criaInformacoesDeUsuario();
         return;
     }
 }
@@ -188,8 +189,10 @@ let logar = () => {
 
     localStorage.setItem('logado',true);
 
+    criaInformacoesDeUsuario();
+
     selecionaTabuleiro(usuario);
-    
+
     sumir();
 }
 

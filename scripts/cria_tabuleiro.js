@@ -1,4 +1,3 @@
-
 const temas = document.querySelectorAll('.temas');
 
 let temUsuario = localStorage.getItem('tem usuario');
@@ -56,9 +55,6 @@ function mudaCor(tema) {
             }
             
             let temaEscolhido = e.currentTarget;
-            
-            
-            
             
             darkSquare = temaEscolhido.dataset.darkSquare;
             lightSquare = temaEscolhido.dataset.lightSquare;

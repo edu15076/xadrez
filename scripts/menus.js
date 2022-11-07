@@ -64,3 +64,37 @@ function rotateBoard(choosedColor) {
 chooseColorButtons.forEach(choosedColor => {
     choosedColor.onclick = () => {rotateBoard(choosedColor)};
 });
+
+let loginMenuBtn = document.querySelector('#login-btn');
+
+let criaInformacoesDeUsuario = () => {
+    menuEl.removeChild(loginMenuBtn);
+
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    let divInformacoesDoUsuarioEl = document.createElement('div');
+    let informacoesEl = document.createElement('ul');
+
+    menuEl.insertBefore(divInformacoesDoUsuarioEl, document.querySelector('#choose-color'))
+
+    divInformacoesDoUsuarioEl.appendChild(informacoesEl);
+
+    let derrotasDoUsuario = document.createElement('li');
+    derrotasDoUsuario.innerHTML = `Derrotas: <strong>${usuario.derrotas}</strong>`;
+    informacoesEl.appendChild(derrotasDoUsuario);
+
+    
+    let vitoriasDoUsuario = document.createElement('li');
+    vitoriasDoUsuario.innerHTML = `Vitórias: <strong>${usuario.vitorias}</strong>`;
+    informacoesEl.insertBefore(vitoriasDoUsuario, derrotasDoUsuario);
+    
+    let pontuacaoDoUsuario = document.createElement('li');
+    pontuacaoDoUsuario.innerHTML = `Pontuação: <strong>${usuario.score}</strong>`;
+    informacoesEl.insertBefore(pontuacaoDoUsuario, vitoriasDoUsuario);
+ 
+    let nomeDoUsuario = document.createElement('li');
+    nomeDoUsuario.innerHTML = `<strong>${usuario.nome}</strong>`;
+    informacoesEl.insertBefore(nomeDoUsuario, pontuacaoDoUsuario);
+    
+    divInformacoesDoUsuarioEl.classList.add('usuario-informacoes');
+}

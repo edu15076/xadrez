@@ -348,6 +348,11 @@ nav {
     justify-content: space-between;
 }
 
+#choose-color p {
+    text-align: center;
+    font-size: large;
+}
+
 #choose-color div {
     display: flex;
     justify-content: space-between;
@@ -626,4 +631,30 @@ nav {
     top: -10vh;
     right: 10vh;
     transition: 2s all ease;
+}
+
+.usuario-informacoes {
+    text-align: center;
+}
+
+.usuario-informacoes ul {
+    list-style: none;
+    font-size: large;
+}
+
+.usuario-informacoes ul li{
+    padding: 0.4vh;
+}
+
+.usuario-informacoes ul li:first-child {
+    font-size: larger;
+    font-family: 'Raleway', sans-serif;;
+}
+
+.usuario-informacoes ul li:nth-child(3) strong{
+    color: rgb(0, 185, 0);
+}
+
+.usuario-informacoes ul li:nth-child(4) strong{
+    color: rgb(212, 3, 3);
 }
