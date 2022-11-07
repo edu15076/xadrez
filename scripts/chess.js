@@ -576,6 +576,7 @@ resetEls.forEach(resetEl => {
         turn = 'white';
         
         for (let i = 0; i < 64; i++) {
+            squares[i].style.backgroundColor = 'transparent';
             let x = squares[i].dataset.square.charCodeAt(0) - 97;
             let y = 8 - squares[i].dataset.square[1];
             
