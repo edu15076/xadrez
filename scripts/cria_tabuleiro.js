@@ -3,7 +3,7 @@ const temas = document.querySelectorAll('.temas');
 let temUsuario = localStorage.getItem('tem usuario');
 temUsuario = JSON.parse(temUsuario);
 
-let darkSquare = 'rgb(181, 136, 99)';
+let darkSquare = 'rgb(163, 116, 86)';
 let lightSquare = 'rgb(240, 217, 181)';
 
 let selecionaTabuleiro = (user) => {
@@ -28,7 +28,8 @@ let selecionaTabuleiro = (user) => {
         
     drawBoard();
 }
-    
+
+/** Draw the chess board on the screen. */
 function drawBoard() {
     let boardEl = document.getElementById('board');
         

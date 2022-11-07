@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 html {
     min-height: 100%;
 }
@@ -15,7 +21,7 @@ header {
     background-color: #02050c;
     display: flex;
     justify-content: space-between;
-    z-index: 2;
+    z-index: 99;
 }
 
 a {
@@ -32,11 +38,6 @@ header a {
 
 h1, h2, h3, h4 {
     font-family: 'Raleway', sans-serif;
-}
-
-* {
-    margin: 0;
-    padding: 0;
 }
 
 #open-page {
@@ -56,54 +57,38 @@ main > h2 {
 #board {
     position: relative;
     grid-area: 2 / 2 / 3 / 3;
-    width: 60vh;
-    height: 60vh;
-    border: 1.6vh solid rgb(32, 40, 58);
-    border-radius: .5vh;
+    width: 72vh;
+    height: 72vh;
+    border-radius: 1vh;
 }
 
 #pieces-move {
     position: relative;
     grid-area: 2 / 2 / 3 / 3;
-    left: 1.6vh;
-    top: 1.6vh;
-    width: 60vh;
-    height: 60vh;
+    width: 72vh;
+    height: 72vh;
 }
 
 #black-promotion,
 #white-promotion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#black-promotion div,
-#white-promotion div {
-    width: 40vh;
-    height: 8.5vh;
+    position: absolute;
+    width: 9vh;
+    height: 36vh;
     background-color: rgb(32, 40, 58);
     display: flex;
     justify-content: space-around;
-    border-radius: .5vh;
+    flex-direction: column;
     align-items: center;
     align-self: center;
+    opacity: 0;
+    z-index: -100;
+    transition: opacity .1s ease-out;
 }
 
 #black-promotion img,
 #white-promotion img {
-    height: 7.5vh;
+    height: 9vh;
     cursor: grab;
-}
-
-#black-promotion {
-    grid-area: 1 / 2 / 2 / 3;
-    display: none;
-}
-
-#white-promotion {
-    grid-area: 3 / 2 / 4 / 3;
-    display: none;
 }
 
 #game-over > div {
@@ -130,7 +115,6 @@ main > h2 {
 }
 
 #game-over p {
-    font-size: 2vh;
     color: rgb(181, 181, 181);
 }
 
@@ -146,17 +130,13 @@ main > h2 {
 .piece {
     position: absolute;
     cursor: grab;
-    height: 7.5vh;
+    height: 9vh;
     user-select: none;
     z-index: 1;
 }
 
 .piece:active {
     cursor: grabbing;
-}
-
-.grabed {
-    opacity: 0;
 }
 
 [data-square$="1"],
@@ -168,86 +148,27 @@ main > h2 {
 [data-square$="7"],
 [data-square$="8"] {
     position: absolute;
-    width: 7.5vh;
-    height: 7.5vh;
+    width: 12.5%;
+    height: 12.5%;
 }
 
-[data-square$="1"] { top: 52.5vh; }
-[data-square$="2"] { top: 45vh;   }
-[data-square$="3"] { top: 37.5vh; }
-[data-square$="4"] { top: 30vh;   }
-[data-square$="5"] { top: 22.5vh; }
-[data-square$="6"] { top: 15vh;   }
-[data-square$="7"] { top: 7.5vh;  }
-[data-square$="8"] { top: 0;      }
+[data-square$="1"] { top: 87.5%; }
+[data-square$="2"] { top: 75%;   }
+[data-square$="3"] { top: 62.5%; }
+[data-square$="4"] { top: 50%;   }
+[data-square$="5"] { top: 37.5%; }
+[data-square$="6"] { top: 25%;   }
+[data-square$="7"] { top: 12.5%; }
+[data-square$="8"] { top: 0;     }
 
-[data-square^="a"] { right: 52.5vh; }
-[data-square^="b"] { right: 45vh;   }
-[data-square^="c"] { right: 37.5vh; }
-[data-square^="d"] { right: 30vh;   }
-[data-square^="e"] { right: 22.5vh; }
-[data-square^="f"] { right: 15vh;   }
-[data-square^="g"] { right: 7.5vh;  }
-[data-square^="h"] { right: 0;      }
-
-@media screen and (orientation: portrait) {
-    #board {
-        width: 90vw;
-        height: 90vw;
-        border: 1vw solid rgb(32, 40, 58);
-    }
-
-    #pieces-move {
-        left: 1vw;
-        top: 1vw;
-        width: 90vw;
-        height: 90vw;
-    }
-
-    .piece {
-        height: 11.25vw;
-    }
-    
-    .piece-cpy {
-        height: 11.25vw;
-    }
-    
-    [data-square$="1"],
-    [data-square$="2"],
-    [data-square$="3"],
-    [data-square$="4"],
-    [data-square$="5"],
-    [data-square$="6"],
-    [data-square$="7"],
-    [data-square$="8"] {
-        position: absolute;
-        width: 11.25vw;
-        height: 11.25vw;
-    }
-    
-    [data-square$="1"] { top: 78.75vw; }
-    [data-square$="2"] { top: 67.5vw;  }
-    [data-square$="3"] { top: 56.25vw; }
-    [data-square$="4"] { top: 45vw;    }
-    [data-square$="5"] { top: 33.75vw; }
-    [data-square$="6"] { top: 22.5vw;  }
-    [data-square$="7"] { top: 11.25vw; }
-    [data-square$="8"] { top: 0;       }
-    
-    [data-square^="a"] { right: 78.75vw; }
-    [data-square^="b"] { right: 67.5vw;  }
-    [data-square^="c"] { right: 56.25vw; }
-    [data-square^="d"] { right: 45vw;    }
-    [data-square^="e"] { right: 33.75vw; }
-    [data-square^="f"] { right: 22.5vw;  }
-    [data-square^="g"] { right: 11.25vw; }
-    [data-square^="h"] { right: 0;       }
-
-    #configuracoes-janela {
-        height: 29vh;
-        width: 40vh;
-    }
-}
+[data-square^="a"] { left: 0;     }
+[data-square^="b"] { left: 12.5%; }
+[data-square^="c"] { left: 25%;   }
+[data-square^="d"] { left: 37.5%; }
+[data-square^="e"] { left: 50%;   }
+[data-square^="f"] { left: 62.5%; }
+[data-square^="g"] { left: 75%;   }
+[data-square^="h"] { left: 87.5%; }
 
 .container {
     z-index: 100;
@@ -395,6 +316,7 @@ nav {
 .aberto {
     right: 0;
 }
+
 /*estilização da janela de configurações, incompleta*/
 .pop-up-configuracoes-fechado {
     display: none;
@@ -598,7 +520,6 @@ nav {
 .conteudo p {
     text-align: justify;
     margin: 0 6vh 0 4vh;
-
 }
 
 .github {
@@ -625,6 +546,7 @@ nav {
     margin: 0 3vh 3vh 0;
     text-align: left;
 }
+
 #torre-animacao {
     height: 10vh;
     width: 10vh;
@@ -657,4 +579,72 @@ nav {
 
 .usuario-informacoes ul li:nth-child(4) strong{
     color: rgb(212, 3, 3);
+}
+@media screen and (max-aspect-ratio: 3/4) {
+    #board {
+        width: 96vw;
+        height: 96vw;
+    }
+
+    #pieces-move {
+        width: 96vw;
+        height: 96vw;
+    }
+
+    .piece {
+        height: 12vw;
+    }
+    
+    .piece-cpy {
+        height: 12vw;
+    }
+
+    #black-promotion div,
+    #white-promotion div {
+        width: 58.5vw;
+        height: 13vw;
+    }
+
+    #black-promotion img,
+    #white-promotion img {
+        height: 11.25vw;
+    }
+
+    #game-over > div {
+        width: 80vw;
+        height: 115vw;
+        border-radius: 2.5vh;
+    }
+    
+    #game-over h2 {
+        font-size: 7.75vw;
+    }
+    
+    #game-over p {
+        font-size: 3.1vw;
+    }
+
+    #configuracoes-janela {
+        height: 80vw;
+        width: 85vw;
+    }
+
+    #game-over .opcoes {
+        height: 6.474vw;
+        width: 32.333vw;
+        border-radius: 1.156vw;
+        padding: .925vw .462vw .925vw .462vw;
+        font-size: 3.931vw;
+    }
+
+    #black-promotion,
+    #white-promotion {
+        width: 12vw;
+        height: 48vw;
+    }
+
+    #black-promotion img,
+    #white-promotion img {
+        height: 12vw;
+    }
 }
