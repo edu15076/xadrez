@@ -469,9 +469,9 @@ function eventListenersForMove(pieceEl) {
             movedByClick = true;
             movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
             parentClick = undefined;
-            if (lastParent != undefined && board[tempX][tempY].piece === null)
+            if (lastParent != undefined && (board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn))
                 lastParent.style.backgroundColor = 'transparent';
-        } else if (lastParent != undefined && board[tempX][tempY].piece === null)
+        } else if (lastParent != undefined && (board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn))
             lastParent.style.backgroundColor = 'transparent';
     }
 
