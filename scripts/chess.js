@@ -319,14 +319,13 @@ function eventListenersForMove(pieceEl) {
         x = parent.dataset.square.charCodeAt(0) - 97;
         y = 8 - parent.dataset.square[1];
         pieceEl.style.zIndex = '101';
-
-        if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
-        parent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
-        lastParent = parent;
-        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
-
         
         if (board[x][y].piece.color === turn) {
+            if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
+            parent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+            lastParent = parent;
+            if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+
             movesDrawn = board[x][y].piece.moves();
             drawMoves(movesDrawn);
         } else
@@ -419,15 +418,14 @@ function eventListenersForMove(pieceEl) {
                     if (gameOn) {
                         lastParentToMove.style.backgroundColor = 'transparent';
                         lastFinalParent.style.backgroundColor = 'transparent';
-                    }
+                    } else
+                        gameOn = true;
                     finalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
                     lastParentToMove = parent;
                     lastFinalParent = finalParent;
-                    gameOn = true;
 
                     break;
                 } else if (movedByClick && x != xToMove && y != yToMove) {
-                    parent.style.backgroundColor = 'transparent';
                     removeMoves(movesDrawn);
                     movesDrawn = [];
                 }
@@ -471,6 +469,8 @@ function eventListenersForMove(pieceEl) {
             movedByClick = true;
             movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
             parentClick = undefined;
+            if (lastParent != undefined && board[tempX][tempY].piece === null)
+                lastParent.style.backgroundColor = 'transparent';
         } else if (lastParent != undefined && board[tempX][tempY].piece === null)
             lastParent.style.backgroundColor = 'transparent';
     }
