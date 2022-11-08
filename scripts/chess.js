@@ -593,5 +593,6 @@ resetEls.forEach(resetEl => {
         gameOverEl.style.opacity = '0';
         gameOverEl.style.zIndex = '-100';
         gameOn = false;
+        lastParent = lastParentToMove = lastFinalParent = undefined;
     }
 });
