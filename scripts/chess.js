@@ -267,6 +267,9 @@ function eventListenersForMove(pieceEl) {
 
                 parent.appendChild(parentS);
                 if (finalParentS != null) finalParent.appendChild(finalParentS);
+                lastFinalParent.style.backgroundColor = 'transparent';
+                lastParentToMove.style.backgroundColor = 'transparent';
+                lastParent = lastParentToMove = lastFinalParent = undefined;
             }
             bodyEl.onclick = null;
         }
@@ -416,23 +419,26 @@ function eventListenersForMove(pieceEl) {
                         }
 
                     if (gameOn) {
-                        lastParentToMove.style.backgroundColor = 'transparent';
-                        lastFinalParent.style.backgroundColor = 'transparent';
+                        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'transparent';
+                        if (lastFinalParent != undefined) lastFinalParent.style.backgroundColor = 'transparent';
                     } else
                         gameOn = true;
                     finalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
                     lastParentToMove = parent;
                     lastFinalParent = finalParent;
-
-                    break;
+                    
+                    if (pieceEl != undefined)
+                        pieceEl.style.zIndex = '1';
+                    movedByClick = false;
+                    return true;
                 } else if (movedByClick && x != xToMove && y != yToMove) {
                     removeMoves(movesDrawn);
                     movesDrawn = [];
                 }
-        
         if (pieceEl != undefined)
                 pieceEl.style.zIndex = '1';
         movedByClick = false;
+        return false;
     }
 
     function movePieceAtBoardTouch(e) {
@@ -467,12 +473,12 @@ function eventListenersForMove(pieceEl) {
             pieceEl = parentClick.querySelector('img');
 
             movedByClick = true;
-            movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
-            parentClick = undefined;
-            if (lastParent != undefined && (board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn))
+            if (!movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick) && lastParent != undefined) {
                 lastParent.style.backgroundColor = 'transparent';
-        } else if (lastParent != undefined && (board[tempX][tempY].piece === null || board[tempX][tempY].piece.color != turn))
-            lastParent.style.backgroundColor = 'transparent';
+                removeMoves(movesDrawn);
+            }
+            parentClick = undefined;
+        }
     }
 
     squares.forEach(moveSquare => {
