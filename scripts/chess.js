@@ -8,6 +8,7 @@ let turn = 'white';
 */
 let enPassant = null;
 
+/** If there is a game on going */
 let gameOn = false;
 
 /**
@@ -22,6 +23,9 @@ let square = {
 };
 
 let whiteKing, blackKing;
+
+let whitePieces = [];
+let blackPieces = [];
 
 /** This is a matrix of `square`, it contains one `square` for each position on a chess board. */
 let board = [[],[],[],[],[],[],[],[]];
@@ -61,11 +65,43 @@ function originalBoardSettings() {
                 }
                 board[i][j].piece.x = i;
                 board[i][j].piece.y = j;
+
+                switch (board[i][j].piece.color) {
+                    case 'white': whitePieces.push(board[i][j].piece); break;
+                    default: blackPieces.push(board[i][j].piece);
+                }
             }
         }
     whiteKing = board[4][7].piece;
     blackKing = board[4][0].piece;
     getAttacks();
+}
+
+function removePiece(piece) {
+    let index;
+    let color = piece.color;
+    switch (color) {
+        case 'white':
+            index = whitePieces.indexOf(piece);
+            whitePieces.splice(index, 1);
+            break;
+        default:
+            index = blackPieces.indexOf(piece);
+            blackPieces.splice(index, 1);
+    }
+}
+
+function substitutePiece(piece, newPiece) {
+    let color = piece.color;
+    switch (color) {
+        case 'white':
+            whitePieces.splice(whitePieces.indexOf(piece), 1);
+            whitePieces.push(newPiece);
+            break;
+        default:
+            blackPieces.splice(blackPieces.indexOf(piece), 1);
+            blackPieces.push(newPiece);
+    }
 }
 
 let pieces = document.querySelectorAll('.piece');
@@ -277,6 +313,9 @@ function eventListenersForMove(pieceEl) {
         
         promotionPieceEl.forEach(pieceToSelect => {
             pieceToSelect.onclick = () => {
+                if (board[xToMove][yToMove].piece != null)
+                    removePiece(board[xToMove][yToMove].piece);
+
                 switch (pieceToSelect.dataset.piece) {
                     case 'queen':
                         board[xToMove][yToMove].piece = Object.create(queen);
@@ -295,6 +334,9 @@ function eventListenersForMove(pieceEl) {
                 board[xToMove][yToMove].piece.x = xToMove;
                 board[xToMove][yToMove].piece.y = yToMove;
                 board[xToMove][yToMove].piece.color = pawnColor;
+
+                substitutePiece(board[x][y].piece, board[xToMove][yToMove].piece);
+
                 board[x][y].piece = null;
                 
                 let newPiece = document.createElement('img');
@@ -342,9 +384,17 @@ function eventListenersForMove(pieceEl) {
 
         if (distanceBoard[0] < e.pageX && distanceBoard[0] + piecesMoveEl.clientWidth > e.pageX)
             pieceEl.style.left = `${e.pageX - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
+        else if (e.pageX < distanceBoard[0])
+            pieceEl.style.left = `${distanceBoard[0] - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
+        else
+            pieceEl.style.left = `${distanceBoard[0] + piecesMoveEl.clientWidth - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
 
         if (distanceBoard[1] < e.pageY && distanceBoard[1] + piecesMoveEl.clientHeight > e.pageY)
             pieceEl.style.top = `${e.pageY - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
+        else if (e.pageY < distanceBoard[1])
+            pieceEl.style.top = `${distanceBoard[1] - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
+        else 
+            pieceEl.style.top = `${distanceBoard[1] + piecesMoveEl.clientHeight - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
     }
 
     function doMovementAtEnd(x, y, xToMove, yToMove, finalParent) {
@@ -360,6 +410,9 @@ function eventListenersForMove(pieceEl) {
             squares[xRook - 8 * y + 56].innerHTML = '';
             [squares[xRookToMove - 8 * y + 56].querySelector('img')].forEach(eventListenersForMove);
         }
+
+        if (board[xToMove][yToMove].piece != null)
+            removePiece(board[xToMove][yToMove].piece);
         
         board[xToMove][yToMove].piece = board[x][y].piece;
         board[xToMove][yToMove].piece.x = xToMove;
@@ -383,6 +436,7 @@ function eventListenersForMove(pieceEl) {
                         if (Math.abs(yToMove - y) != 2) {
                             if (yToMove != 7 && yToMove != 0) {
                                 if (enPassant != null && xToMove === enPassant[0] && yToMove === enPassant[1]) {
+                                    removePiece(board[xToMove][yToMove-board[x][y].piece.moveDirection()].piece);
                                     board[xToMove][yToMove-board[x][y].piece.moveDirection()].piece = null;
                                     squares[xToMove - 8 * (yToMove-board[x][y].piece.moveDirection()) + 56].innerHTML = '';
                                 }
@@ -499,10 +553,10 @@ function eventListenersForMove(pieceEl) {
 
         movePieceAtBoard(e);
 
-        piecesMoveEl.addEventListener('mousemove', movePieceAtBoard);
+        bodyEl.addEventListener('mousemove', movePieceAtBoard);
 
-        pieceEl.onmouseup = function(e) {
-            piecesMoveEl.removeEventListener('mousemove', movePieceAtBoard);
+        bodyEl.onmouseup = function(e) {
+            bodyEl.removeEventListener('mousemove', movePieceAtBoard);
             bodyEl.style.overflow = 'auto';
 
             pieceEl.style.top = '0';
@@ -519,7 +573,7 @@ function eventListenersForMove(pieceEl) {
             let yToMove = 8 - finalParent.dataset.square[1];
             
             movementEnd(x, y, xToMove, yToMove, finalParent, parent);
-            pieceEl.onmouseup = null;
+            bodyEl.onmouseup = null;
         }
 
     }
