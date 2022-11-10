@@ -267,6 +267,9 @@ function eventListenersForMove(pieceEl) {
 
                 parent.appendChild(parentS);
                 if (finalParentS != null) finalParent.appendChild(finalParentS);
+                lastFinalParent.style.backgroundColor = 'transparent';
+                lastParentToMove.style.backgroundColor = 'transparent';
+                lastParent = lastParentToMove = lastFinalParent = undefined;
             }
             bodyEl.onclick = null;
         }
@@ -319,14 +322,13 @@ function eventListenersForMove(pieceEl) {
         x = parent.dataset.square.charCodeAt(0) - 97;
         y = 8 - parent.dataset.square[1];
         pieceEl.style.zIndex = '101';
-
-        if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
-        parent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
-        lastParent = parent;
-        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
-
         
         if (board[x][y].piece.color === turn) {
+            if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
+            parent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+            lastParent = parent;
+            if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+
             movesDrawn = board[x][y].piece.moves();
             drawMoves(movesDrawn);
         } else
@@ -417,24 +419,26 @@ function eventListenersForMove(pieceEl) {
                         }
 
                     if (gameOn) {
-                        lastParentToMove.style.backgroundColor = 'transparent';
-                        lastFinalParent.style.backgroundColor = 'transparent';
-                    }
+                        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'transparent';
+                        if (lastFinalParent != undefined) lastFinalParent.style.backgroundColor = 'transparent';
+                    } else
+                        gameOn = true;
                     finalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
                     lastParentToMove = parent;
                     lastFinalParent = finalParent;
-                    gameOn = true;
-
-                    break;
+                    
+                    if (pieceEl != undefined)
+                        pieceEl.style.zIndex = '1';
+                    movedByClick = false;
+                    return true;
                 } else if (movedByClick && x != xToMove && y != yToMove) {
-                    parent.style.backgroundColor = 'transparent';
                     removeMoves(movesDrawn);
                     movesDrawn = [];
                 }
-        
         if (pieceEl != undefined)
                 pieceEl.style.zIndex = '1';
         movedByClick = false;
+        return false;
     }
 
     function movePieceAtBoardTouch(e) {
@@ -469,10 +473,12 @@ function eventListenersForMove(pieceEl) {
             pieceEl = parentClick.querySelector('img');
 
             movedByClick = true;
-            movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick);
+            if (!movementEnd(xClick, yClick, xToMove, yToMove, finalParent, parentClick) && lastParent != undefined) {
+                lastParent.style.backgroundColor = 'transparent';
+                removeMoves(movesDrawn);
+            }
             parentClick = undefined;
-        } else if (lastParent != undefined && board[tempX][tempY].piece === null)
-            lastParent.style.backgroundColor = 'transparent';
+        }
     }
 
     squares.forEach(moveSquare => {
@@ -576,6 +582,7 @@ resetEls.forEach(resetEl => {
         turn = 'white';
         
         for (let i = 0; i < 64; i++) {
+            squares[i].style.backgroundColor = 'transparent';
             let x = squares[i].dataset.square.charCodeAt(0) - 97;
             let y = 8 - squares[i].dataset.square[1];
             
@@ -592,5 +599,6 @@ resetEls.forEach(resetEl => {
         gameOverEl.style.opacity = '0';
         gameOverEl.style.zIndex = '-100';
         gameOn = false;
+        lastParent = lastParentToMove = lastFinalParent = undefined;
     }
 });
