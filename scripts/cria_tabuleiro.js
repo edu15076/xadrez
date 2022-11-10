@@ -50,22 +50,25 @@ function mudaCor(tema) {
         let user = localStorage.getItem('usuario');
         user = JSON.parse(user);
            
-           if(temUsuario) {
-               user.tema = tema.dataset.tema;
-               localStorage.setItem('usuario', JSON.stringify(user));
-            }
+        if(temUsuario) {
+           user.tema = tema.dataset.tema;
+           localStorage.setItem('usuario', JSON.stringify(user));
+        }
             
-            let temaEscolhido = e.currentTarget;
+        let temaEscolhido = e.currentTarget;
             
-            darkSquare = temaEscolhido.dataset.darkSquare;
-            lightSquare = temaEscolhido.dataset.lightSquare;
-            
-            drawBoard();
-            
-            fechaConfiguracoes();
-        });
+        darkSquare = temaEscolhido.dataset.darkSquare;
+        lightSquare = temaEscolhido.dataset.lightSquare;
+        
+        drawBoard();
+        
+        fechaConfiguracoes();
+    });
 }
     
 temas.forEach(mudaCor);
     
-onload = drawBoard();
+onload = () => {
+    drawBoard();
+    loginNomeInput.focus();
+} 

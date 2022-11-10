@@ -23,6 +23,18 @@ let criarContaEl = {
     }
 }
 
+loginNomeInput.addEventListener('keyup', e => {
+    if(e.key === 'Enter') {
+        loginSenhaInput.focus();
+    }
+});
+
+criarContaEl.nome.addEventListener('keyup', e => {
+    if(e.key === 'Enter') {
+        criarContaEl.senha.focus();
+    }
+});
+
 
 localStorage.getItem('logado', false);
 localStorage.getItem('tem usuario', false);
@@ -38,6 +50,8 @@ let sumir = () => {
         senhaEl.style.left = '-100vh';
         botaoConfirmar.style.transition = 'none';
         botaoConfirmar.style.left = '-100vh';
+        criarContaEl.confirmacao.torre.style.display = 'none';
+        senhaConfirmacaoInput.style.display = 'none';
 }
 
 function moveEsquerda() {
@@ -51,13 +65,15 @@ function apareceConfirmacao() {
 }
 
 let confirma = (validador, aSerValidado) => {
-    if(aSerValidado === validador) {
+    if(aSerValidado === validador && aSerValidado && validador) {
         return true;
     }
     else {
         return false;
     }
 }
+
+
 
 for (let botao of botoesSumir) {
     botao.addEventListener('click', () => {
@@ -76,14 +92,13 @@ for (let botao of botoesSumir) {
     });
 }
 
-let criarPerfil = () => {
+let camposCompletos = () => {
     let loginIncompleto = 0;
-    let confirmacao;
 
     if(!criarContaEl.nome.value) {
         criarContaEl.nome.placeholder="Digite um nome válido";
         criarContaEl.nome.style.border="0.4vh solid rgb(136, 0, 0)";
-
+    
         loginIncompleto++;
     }
     if(!criarContaEl.senha.value) {
@@ -92,28 +107,19 @@ let criarPerfil = () => {
         
         loginIncompleto++;
     }
-    if(!criarContaEl.idade.value) {
-        criarContaEl.idade.placeholder="Selecione uma idade válida";
-        criarContaEl.idade.style.border="0.4vh solid rgb(136, 0, 0)";
-        
-        loginIncompleto++;
-    }
-
+    
+    
     if(loginIncompleto !== 0) {
-        return;
+        return false;
     }
 
-    let temp;
-    criarContaEl.confirmacao.torre.style.top = '77vh';
-    temp = setTimeout(moveEsquerda, 2000);
-    temp = setTimeout(apareceConfirmacao, 4200);
+    return true;
+    
+}
 
-    botaoConfirmar.addEventListener("click", () => {
-        confirmacao = confirma(criarContaEl.senha, senhaConfirmacaoInput.value);
-    })
-
+let criarPerfil = () => {
     localStorage.removeItem('usuario');
-
+    
     let usuario = {
         nome: criarContaEl.nome.value,
         idade: idadeEl.value,
@@ -124,20 +130,14 @@ let criarPerfil = () => {
         tema: 'wood',
         tabuleiro: ''
     }
-
+    
     localStorage.setItem('usuario', JSON.stringify(usuario));
-
+    
     localStorage.setItem('tem usuario', true);
-
+    
     localStorage.setItem('logado', true);
-
-    if(confirmacao === true) {
-        sumir(); 
-    }
-    else {
-        criaInformacoesDeUsuario();
-        return;
-    }
+    
+    sumir(); 
 }
 
 botaoConta.addEventListener('click', () => {
@@ -150,12 +150,14 @@ botaoConta.addEventListener('click', () => {
     senhaEl.style.left = '84.2vh';
     botaoConfirmar.style.left = '92vh';
     botaoConfirmar.style.top = '89vh';
+
+    criarContaEl.nome.focus();
 });
 
 let logar = () => {
     let loginIncompleto = 0;
     let confirmacaoUser, confirmacaoSenha;
-
+    
     if(!loginNomeInput.value) {
         loginNomeInput.placeholder="Digite um nome válido";
         loginNomeInput.style.border="0.4vh solid rgb(136, 0, 0)";
@@ -176,15 +178,15 @@ let logar = () => {
 
     confirmacaoSenha = confirma(usuario.senha, loginSenhaInput.value);
     confirmacaoUser = confirma(usuario.nome, loginNomeInput.value);
-
+    
     if(!confirmacaoSenha || !confirmacaoUser) {
         loginNomeInput.value = loginSenhaInput.value = '';
         loginNomeInput.placeholder = loginSenhaInput.placeholder = "incorreto";
         loginNomeInput.style.border = loginSenhaInput.style.border = "0.4vh solid rgb(136, 0, 0)";
-
+        
         return;
     }
-
+    
     localStorage.setItem('tem usuario', true);
 
     localStorage.setItem('logado',true);
@@ -196,8 +198,54 @@ let logar = () => {
     sumir();
 }
 
+loginSenhaInput.addEventListener('keyup', e => {
+    if(e.key === 'Enter') {
+        logar();
+    }
+});
+
+criarContaEl.senha.addEventListener('keyup', e => {
+    if(e.key === 'Enter'&& camposCompletos() === true) {
+        let temp;
+        criarContaEl.confirmacao.torre.style.top = '77vh';
+        temp = setTimeout(moveEsquerda, 2000);
+        temp = setTimeout(apareceConfirmacao, 4200);
+
+        senhaConfirmacaoInput.focus();
+    
+        criarContaEl.confirmacao.senha.addEventListener('keyup', (e) => {
+            if(e.key === 'Enter' && confirma(criarContaEl.senha.value, senhaConfirmacaoInput.value)) {
+                criarPerfil();
+            }
+            else if(e.key === 'Enter' && !confirma(criarContaEl.senha.value, senhaConfirmacaoInput.value)) {
+                    senhaConfirmacaoInput.value = '';
+                    senhaConfirmacaoInput.placeholder="senha incorreta";
+                    senhaConfirmacaoInput.style.border="0.4vh solid rgb(136, 0, 0)";
+            }
+        });
+	}
+});
+
 mainEl.addEventListener('click', sumir);
 
-botaoConfirmar.addEventListener('click', criarPerfil);
+botaoConfirmar.addEventListener('click', () => {
+    let temp;
+    criarContaEl.confirmacao.torre.style.top = '77vh';
+    temp = setTimeout(moveEsquerda, 2000);
+    temp = setTimeout(apareceConfirmacao, 4200);
+
+    senhaConfirmacaoInput.focus();
+
+    botaoConfirmar.addEventListener("click", () => {
+        if(confirma(criarContaEl.senha.value, senhaConfirmacaoInput.value)) {
+            criarPerfil();
+        }
+        else if(!criarContaEl.confirmacao.senha.value) {
+            senhaConfirmacaoInput.value = '';
+            senhaConfirmacaoInput.placeholder="senha incorreta";
+            senhaConfirmacaoInput.style.border="0.4vh solid rgb(136, 0, 0)";
+        }
+    });
+});
 
 loginBtnEl.addEventListener('click', logar);
