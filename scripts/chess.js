@@ -91,6 +91,16 @@ function removePiece(piece) {
     }
 }
 
+function addPiece(piece) {
+    switch (piece.color) {
+        case 'white':
+            whitePieces.push(piece);
+            break;
+        default:
+            blackPieces.push(piece);
+    }
+}
+
 function substitutePiece(piece, newPiece) {
     let color = piece.color;
     switch (color) {
