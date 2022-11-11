@@ -570,14 +570,36 @@ nav {
 
 .usuario-informacoes ul li:first-child {
     font-size: larger;
-    font-family: 'Raleway', sans-serif;;
+    font-family: 'Raleway', sans-serif;
+    border-bottom: 0.4vh solid white;
+    margin-bottom: 1vh;
 }
 
-.usuario-informacoes ul li:nth-child(3) strong{
+.usuario-informacoes ul {
+    margin-bottom: 1.5vh;
+}
+
+.usuario-informacoes table{
+    margin-top: 0vh;
+    text-align: center;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.usuario-informacoes table td {
+    padding: 1vh 3vh;
+}
+
+.usuario-informacoes table td:nth-child(odd) {
+    border-right: 0.3vh solid white;
+}
+
+.usuario-informacoes table tr:nth-child(2) td:nth-child(1) strong{
     color: rgb(0, 185, 0);
 }
 
-.usuario-informacoes ul li:nth-child(4) strong{
+
+.usuario-informacoes table tr:nth-child(2) td:nth-child(2) strong{
     color: rgb(212, 3, 3);
 }
 @media screen and (max-aspect-ratio: 3/4) {

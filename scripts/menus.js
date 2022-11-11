@@ -67,24 +67,20 @@ let criaInformacoesDeUsuario = () => {
 
     menuEl.insertBefore(divInformacoesDoUsuarioEl, document.querySelector('#choose-color'))
 
-    divInformacoesDoUsuarioEl.appendChild(informacoesEl);
-
-    let derrotasDoUsuario = document.createElement('li');
-    derrotasDoUsuario.innerHTML = `Derrotas: <strong>${usuario.derrotas}</strong>`;
-    informacoesEl.appendChild(derrotasDoUsuario);
-
+    let tableEl = document.createElement('table');
+    tableEl.innerHTML = `<tr><td><strong>V</strong></td><td><strong>D</strong></td></tr>\
+    <tr><td><strong>${usuario.vitorias}</strong></td><td><strong>${usuario.derrotas}</strong></td></tr>`
+    divInformacoesDoUsuarioEl.appendChild(tableEl);
     
-    let vitoriasDoUsuario = document.createElement('li');
-    vitoriasDoUsuario.innerHTML = `Vitórias: <strong>${usuario.vitorias}</strong>`;
-    informacoesEl.insertBefore(vitoriasDoUsuario, derrotasDoUsuario);
+    divInformacoesDoUsuarioEl.insertBefore(informacoesEl, tableEl);
     
-    let pontuacaoDoUsuario = document.createElement('li');
-    pontuacaoDoUsuario.innerHTML = `Pontuação: <strong>${usuario.score}</strong>`;
-    informacoesEl.insertBefore(pontuacaoDoUsuario, vitoriasDoUsuario);
- 
+    let pontos = document.createElement('li');
+    pontos.innerHTML = `<strong>${usuario.score}</strong>`;
+    informacoesEl.appendChild(pontos);
+    
     let nomeDoUsuario = document.createElement('li');
     nomeDoUsuario.innerHTML = `<strong>${usuario.nome}</strong>`;
-    informacoesEl.insertBefore(nomeDoUsuario, pontuacaoDoUsuario);
+    informacoesEl.insertBefore(nomeDoUsuario, pontos);
     
     divInformacoesDoUsuarioEl.classList.add('usuario-informacoes');
 }
