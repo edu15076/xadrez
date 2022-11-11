@@ -571,7 +571,12 @@ nav {
 .usuario-informacoes ul li:first-child {
     font-size: larger;
     font-family: 'Raleway', sans-serif;
+    margin-bottom: 1vh;
+}
+
+.usuario-informacoes ul li:nth-child(2) {
     border-bottom: 0.4vh solid white;
+    border-top: 0.4vh solid white;
     margin-bottom: 1vh;
 }
 
