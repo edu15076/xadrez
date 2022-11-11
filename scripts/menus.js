@@ -1,12 +1,39 @@
 let boxEl = document.querySelector('.container');
 let checkboxMenuEl = document.querySelector('#checkbox-menu');
 let menuEl = document.querySelector('nav');
+let main = document.querySelector('main');
 
 let configuracoesBtn = document.querySelector('#configuracoes-btn');
 let configuracaoEl = document.querySelector('#configuracoes');
 let configuracaoJanela = document.querySelector('#configuracoes-janela');
 let temasEl = document.querySelectorAll('.temas');
 
+const fechaMenu = () => {
+    menuEl.classList.remove('aberto');
+    checkboxMenuEl.checked = false;
+};
+
+/* Pensei em colocar atalhos de teclado mas to
+estudando a melhor forma de fazer.
+
+function keyPressed(evt){
+    evt = evt || window.event;
+    var key = evt.keyCode || evt.which;
+    return String.fromCharCode(key); 
+}
+
+let acionaAtalho = e => {
+    let tecla = keyPressed(e);
+
+    if(tecla === 'C' || tecla === 'c') {
+        abreConfiguracoes();
+        console.log(1);
+    }
+}
+
+//document.onkeydown = acionaAtalho
+main.addEventListener('keyup', acionaAtalho);
+*/
 const abreConfiguracoes = () => {
     configuracaoEl.classList.remove('pop-up-configuracoes-fechado');
     configuracaoEl.classList.add('pop-up-configuracoes-aberto');
@@ -26,6 +53,8 @@ boxEl.addEventListener('change', () => {
 configuracoesBtn.addEventListener('click', abreConfiguracoes);
 
 configuracaoEl.addEventListener('click', fechaConfiguracoes);
+
+main.addEventListener('click', fechaMenu);
 
 for (const tema of temas) {
     tema.addEventListener('click', fechaConfiguracoes);

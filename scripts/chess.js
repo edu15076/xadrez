@@ -492,6 +492,7 @@ function eventListenersForMove(pieceEl) {
         if (pieceEl != undefined)
                 pieceEl.style.zIndex = '1';
         movedByClick = false;
+
         return false;
     }
 

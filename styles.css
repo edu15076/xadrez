@@ -317,7 +317,7 @@ nav {
     right: 0;
 }
 
-/*estilização da janela de configurações, incompleta*/
+
 .pop-up-configuracoes-fechado {
     display: none;
 }
@@ -510,7 +510,6 @@ nav {
     border-radius: 1vh;
     padding: 1vh;
     display: flex;
-    flex-direction: row;
 }
 
 .conteudo h3 {
@@ -527,7 +526,7 @@ nav {
     margin-left: 1vh;
 }
 
-.github a:visited:hover, .github a:link:hover {
+.github a:link:hover {
     text-decoration: underline;
 }
 
@@ -545,6 +544,43 @@ nav {
     border-radius: 50%;
     margin: 0 3vh 3vh 0;
     text-align: left;
+}
+
+@media (max-width: 950px) {
+    #desenvolvedores {
+        display: block;
+        margin: 5vh 15vh 5vh 15vh;
+    }
+
+    .conteudo{
+        flex-direction: column;
+    }
+
+    #desenvolvedores section article{
+        padding: 2vh;
+        margin: 3vh 1vh 3vh 1vh;
+    }
+        
+    .dev-dados {
+        margin: 0 2vh 1vh 2vh;
+        display: block;
+        text-align: center;
+        justify-content: center;
+        border-right: none;
+        border-bottom: 0.8vh solid #02050c;
+    }
+    
+    .conteudo h3 {
+        margin: auto;
+    }
+    
+    .conteudo p {
+        margin: 0 3vh 0 3vh;
+    }
+    
+    .conteudo img {
+        margin: 0 0 3vh 0;
+    }
 }
 
 #torre-animacao {
@@ -571,12 +607,16 @@ nav {
 .usuario-informacoes ul li:first-child {
     font-size: larger;
     font-family: 'Raleway', sans-serif;
-    border-bottom: 0.4vh solid white;
     margin-bottom: 1vh;
 }
 
+.usuario-informacoes ul li:nth-child(2) {
+    border-top: 0.4vh solid white;
+    margin-bottom: 0vh;
+}
+
 .usuario-informacoes ul {
-    margin-bottom: 1.5vh;
+    margin-bottom: 1vh;
 }
 
 .usuario-informacoes table{
@@ -584,6 +624,7 @@ nav {
     text-align: center;
     margin: 0 auto;
     border-collapse: collapse;
+    border-top: 0.3vh solid white;
 }
 
 .usuario-informacoes table td {
@@ -670,3 +711,4 @@ nav {
         height: 12vw;
     }
 }
+
