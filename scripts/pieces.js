@@ -11,12 +11,16 @@ function saveKingMoves(pieceObj) {
         let y = pieceObj.piece === 'king' ? move[1] : colorKing.y;
 
         let lastPiece = board[move[0]][move[1]].piece;
+        if (lastPiece != null)
+            removePiece(lastPiece);
         board[pieceObj.x][pieceObj.y].piece = null;
         board[move[0]][move[1]].piece = pieceObj;
         if (!getCheck(x, y))
             newPieceMoves.push(move);
         board[pieceObj.x][pieceObj.y].piece = pieceObj;
         board[move[0]][move[1]].piece = lastPiece;
+        if (lastPiece != null)
+            addPiece(lastPiece);
     });
     getAttacks();
     

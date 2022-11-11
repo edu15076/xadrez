@@ -91,6 +91,16 @@ function removePiece(piece) {
     }
 }
 
+function addPiece(piece) {
+    switch (piece.color) {
+        case 'white':
+            whitePieces.push(piece);
+            break;
+        default:
+            blackPieces.push(piece);
+    }
+}
+
 function substitutePiece(piece, newPiece) {
     let color = piece.color;
     switch (color) {
@@ -169,14 +179,19 @@ function removeAttacks() {
 function getAttacks() {
     removeAttacks();
 
-    for (let x = 0; x < 8; x++)
-        for (let y = 0; y < 8; y++)
-            if (board[x][y].piece != null) {
-                let attacks = board[x][y].piece.attacks();
-                attacks.forEach(attack => {
-                    board[attack[0]][attack[1]][`${board[x][y].piece.color}Attack`] = true;
-                });
-            }
+    whitePieces.forEach(whitePiece => {
+        let attacks = whitePiece.attacks();
+        attacks.forEach(attack => {
+            board[attack[0]][attack[1]]['whiteAttack'] = true;
+        });
+    });
+
+    blackPieces.forEach(blackPiece => {
+        let attacks = blackPiece.attacks();
+        attacks.forEach(attack => {
+            board[attack[0]][attack[1]]['blackAttack'] = true;
+        });
+    });
 }
 
 originalBoardSettings();
@@ -189,19 +204,19 @@ originalBoardSettings();
  * @returns `true` if the king is checked or `false` if it is not.
  */
 function getCheck(kingX, kingY) {
-    removeAttacks();
     let opositeColor = turn === 'white' ? 'black' : 'white';
+    let colorPieces = turn === 'white' ? blackPieces : whitePieces;
+    board[kingX][kingY][`${opositeColor}Attack`] = false;
 
-    for (let i = 0; i < 8; i++)
-        for (let j = 0; j < 8; j++)
-            if (board[i][j].piece != null && board[i][j].piece.color === opositeColor) {
-                let attacks = board[i][j].piece.attacks();
-                attacks.forEach(attack => {
-                    board[attack[0]][attack[1]][`${opositeColor}Attack`] = true;
-                });
-                if (board[kingX][kingY][`${opositeColor}Attack`])
-                    return true;
-            }
+    
+    for (let colorPiece of colorPieces) {
+        let attacks = colorPiece.attacks();
+        attacks.forEach(attack => {
+            board[attack[0]][attack[1]][`${opositeColor}Attack`] = true;
+        });
+        if (board[kingX][kingY][`${opositeColor}Attack`])
+            return true;
+    }
 
     return false;
 }
@@ -212,11 +227,12 @@ function getCheck(kingX, kingY) {
  * @returns `true` if the `king` from the current `turn` is mated or `false` if it is not.
  */
 function getMate() {
-    for (let i = 0; i < 8; i++)
-        for (let j = 0; j < 8; j++)
-            if (board[i][j].piece != null && board[i][j].piece.color === turn)
-                if (board[i][j].piece.moves().length != 0)
-                    return false;
+    let movePieces = turn === 'white' ? whitePieces : blackPieces;
+    movePieces.forEach(possibleMove => {
+        if (possibleMove.moves().length != 0)
+            return false;
+    });
+
     return true;
 }
 
@@ -384,14 +400,14 @@ function eventListenersForMove(pieceEl) {
 
         if (distanceBoard[0] < e.pageX && distanceBoard[0] + piecesMoveEl.clientWidth > e.pageX)
             pieceEl.style.left = `${e.pageX - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
-        else if (e.pageX < distanceBoard[0])
+        else if (e.pageX <= distanceBoard[0])
             pieceEl.style.left = `${distanceBoard[0] - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
         else
             pieceEl.style.left = `${distanceBoard[0] + piecesMoveEl.clientWidth - distancePiece[0] - pieceEl.offsetWidth / 2}px`;
 
         if (distanceBoard[1] < e.pageY && distanceBoard[1] + piecesMoveEl.clientHeight > e.pageY)
             pieceEl.style.top = `${e.pageY - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
-        else if (e.pageY < distanceBoard[1])
+        else if (e.pageY <= distanceBoard[1])
             pieceEl.style.top = `${distanceBoard[1] - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
         else 
             pieceEl.style.top = `${distanceBoard[1] + piecesMoveEl.clientHeight - distancePiece[1] - pieceEl.offsetWidth / 2}px`;
@@ -459,8 +475,8 @@ function eventListenersForMove(pieceEl) {
                     
                     let colorKing = turn === 'white' ? whiteKing : blackKing;
                     let opositeColor = turn === 'white' ? 'black' : 'white';
-                    if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`])
-                    if (getMate()) {
+                    if (turn, colorKing, board[colorKing.x][colorKing.y].piece.moves().length === 0) {
+                        if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && getMate()) {
                             let gameResultEl = gameOverEl.querySelector('h2');
                             let resultColor = opositeColor === piecesUser ? 'greenyellow' : 'red';
 
@@ -471,6 +487,7 @@ function eventListenersForMove(pieceEl) {
                             gameOverEl.style.zIndex = '50';
                             gameOverEl.style.opacity = '100';
                         }
+                    }
 
                     if (gameOn) {
                         if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'transparent';
@@ -633,6 +650,8 @@ let resetEls = document.querySelectorAll('.reset');
 
 resetEls.forEach(resetEl => {
     resetEl.onclick = () => {
+        whitePieces = [];
+        blackPieces = [];
         originalBoardSettings();
         turn = 'white';
         

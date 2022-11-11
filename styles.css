@@ -607,6 +607,7 @@ nav {
 .usuario-informacoes ul li:first-child {
     font-size: larger;
     font-family: 'Raleway', sans-serif;
+    border-bottom: 0.4vh solid white;
     margin-bottom: 1vh;
 }
 
