@@ -170,6 +170,11 @@ main > h2 {
 [data-square^="g"] { left: 75%;   }
 [data-square^="h"] { left: 87.5%; }
 
+header {
+    position: sticky;
+    top: 0vh;
+}
+
 .container {
     z-index: 100;
     margin: 1vh;
@@ -254,6 +259,7 @@ nav {
 
 .opcoes a:link, .opcoes a:visited {
     text-decoration: none;
+    font-size: medium;
     color: #02050c;
 }
 
@@ -549,7 +555,7 @@ nav {
 @media (max-width: 950px) {
     #desenvolvedores {
         display: block;
-        margin: 5vh 15vh 5vh 15vh;
+        margin: 5vw 15vw;
     }
 
     .conteudo{
@@ -558,11 +564,11 @@ nav {
 
     #desenvolvedores section article{
         padding: 2vh;
-        margin: 3vh 1vh 3vh 1vh;
+        margin: 3vw 1vw;
     }
-        
+            
     .dev-dados {
-        margin: 0 2vh 1vh 2vh;
+        margin: 0 2vw 1vw 2vw;
         display: block;
         text-align: center;
         justify-content: center;
@@ -575,11 +581,11 @@ nav {
     }
     
     .conteudo p {
-        margin: 0 3vh 0 3vh;
+        margin: 0 3vw;
     }
     
     .conteudo img {
-        margin: 0 0 3vh 0;
+        margin: 0;
     }
 }
 
@@ -612,7 +618,6 @@ nav {
 }
 
 .usuario-informacoes ul li:nth-child(2) {
-    border-top: 0.4vh solid white;
     margin-bottom: 0vh;
 }
 
