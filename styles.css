@@ -492,6 +492,7 @@ nav {
 #desenvolvedores {
     display: block;
     margin: 5vh 30vh 5vh 30vh;
+    height: 100vh;
 }
 
 #desenvolvedores section article{
@@ -555,18 +556,21 @@ nav {
 @media (max-width: 950px) {
     #desenvolvedores {
         display: block;
-        margin: 5vw 15vw;
+        padding: 5vw 10vw;
+        margin: 0;
+        height: 100vh;
     }
 
     .conteudo{
         flex-direction: column;
+        border: 0.9vh solid #02050c;
     }
 
     #desenvolvedores section article{
-        padding: 2vh;
+        padding: 1.5vh;
         margin: 3vw 1vw;
     }
-            
+
     .dev-dados {
         margin: 0 2vw 1vw 2vw;
         display: block;
