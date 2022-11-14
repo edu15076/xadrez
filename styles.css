@@ -636,7 +636,7 @@ nav {
         display: block;
         padding: 5vw 10vw;
         margin: 0;
-        height: 100vh;
+        height: auto;
     }
 
     .conteudo {
