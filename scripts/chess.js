@@ -67,8 +67,11 @@ function originalBoardSettings() {
                 board[i][j].piece.y = j;
 
                 switch (board[i][j].piece.color) {
-                    case 'white': whitePieces.push(board[i][j].piece); break;
-                    default: blackPieces.push(board[i][j].piece);
+                    case 'white': 
+                        whitePieces.push(board[i][j].piece); break;
+                    default: 
+                        blackPieces.push(board[i][j].piece);
+                        board[i][j].piece.score = board[i][j].piece * -1;
                 }
             }
         }
@@ -105,6 +108,7 @@ function createPiceForBoard(pieceName, x, y, color, moved) {
     newPiece.y = y;
     newPiece.color = color;
     newPiece.piece = pieceName;
+    newPiece.score = (color === 'black') ? newPiece.score * -1 : newPiece.score;
 
     return newPiece;
 }
