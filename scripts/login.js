@@ -128,7 +128,11 @@ let criarPerfil = () => {
         vitorias: 0,
         derrotas: 0,
         tema: 'wood',
-        tabuleiro: ''
+        tabuleiro: {
+            html: 'none',
+            board: [],
+            turn: 'white'
+        }
     }
     
     localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -137,6 +141,8 @@ let criarPerfil = () => {
     
     localStorage.setItem('logado', true);
     
+console.log(board[0][0].piece.piece);
+
     sumir(); 
 }
 
@@ -194,6 +200,8 @@ let logar = () => {
     criaInformacoesDeUsuario();
 
     selecionaTabuleiro(usuario);
+
+    carregaTabuleiro()
 
     sumir();
 }

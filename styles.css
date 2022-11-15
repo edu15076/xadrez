@@ -549,11 +549,9 @@ nav {
 
 #desenvolvedores-html body::-webkit-scrollbar-thumb {
     background-color: white;
-    /* color of the scroll thumb */
     border-radius: 20px;
-    /* roundness of the scroll thumb */
     border: 3px solid #02050c;
-    /* creates padding around scroll thumb */
+    
 }
 
 #desenvolvedores {
@@ -636,7 +634,7 @@ nav {
         display: block;
         padding: 5vw 10vw;
         margin: 0;
-        height: 100vh;
+        height: auto;
     }
 
     .conteudo {

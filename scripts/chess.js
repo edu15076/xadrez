@@ -38,40 +38,58 @@ function originalBoardSettings() {
             if (j === 0 || j === 1 || j === 6 || j === 7) {
                 if (j === 1 || j === 6) {
                     board[i][j].piece = Object.create(pawn);
-                    if (j === 1)
+                    board[i][j].piece.piece = 'pawn';
+                    if (j === 1) 
                         board[i][j].piece.color = 'black';
+                    else if (j === 6)
+                        board[i][j].piece.color = 'white';
                 } else {
                     if (i === 0 || i === 7) {
                         board[i][j].piece = Object.create(rook);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'rook';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else if (i === 1 || i === 6) {
                         board[i][j].piece = Object.create(knight);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'knight';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else if (i === 2 || i === 5) {
                         board[i][j].piece = Object.create(bishop);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'bishop';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else if (i === 3) {
                         board[i][j].piece = Object.create(queen);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'queen';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else {
                         board[i][j].piece = Object.create(king);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'king';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     }
                 }
                 board[i][j].piece.x = i;
                 board[i][j].piece.y = j;
 
                 switch (board[i][j].piece.color) {
-                    case 'white': 
+                    case 'white':
                         whitePieces.push(board[i][j].piece); break;
                     default: 
                         blackPieces.push(board[i][j].piece);
-                        board[i][j].piece.score = board[i][j].piece * -1;
+                        board[i][j].piece.score = board[i][j].piece.score * (-1);
                 }
             }
         }
@@ -108,9 +126,17 @@ function createPiceForBoard(pieceName, x, y, color, moved) {
     newPiece.y = y;
     newPiece.color = color;
     newPiece.piece = pieceName;
-    newPiece.score = (color === 'black') ? newPiece.score * -1 : newPiece.score;
+    newPiece.score = (color === 'black') ? newPiece.score * (-1) : newPiece.score;
 
     return newPiece;
+}
+
+let = removePieceAtBoard = (i, j) => {
+    board[i][j].piece = null;
+}
+
+let = addPieceForBoard = (i, j, piece) => {
+    board[i][j].piece = createPiceForBoard(piece.piece, i, j, piece.color, piece.moved);
 }
 
 function removePiece(piece) {
@@ -576,6 +602,8 @@ function eventListenersForMove(pieceEl) {
         if (pieceEl != undefined)
                 pieceEl.style.zIndex = '1';
         movedByClick = false;
+        
+        
         return false;
     }
 
@@ -617,6 +645,7 @@ function eventListenersForMove(pieceEl) {
             }
             parentClick = undefined;
         }
+        salvaTabuleiro();
     }
 
     squares.forEach(moveSquare => {
@@ -754,3 +783,58 @@ resetEls.forEach(resetEl => {
         lastParent = lastParentToMove = lastFinalParent = undefined;
     }
 });
+
+let salvaTabuleiro = () => {
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
+    
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if (board[i][j].piece !== undefined && board[i][j].piece !== null) {
+                usuario.tabuleiro.board.push(board[i][j].piece);
+            }
+        }
+    }
+
+    usuario.tabuleiro.html = document.querySelector('#pieces-move').innerHTML;
+    usuario.tabuleiro.turn = turn;
+
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+}
+
+let carregaTabuleiro = () => {
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
+    turn = usuario.tabuleiro.turn;
+
+    whitePieces = [];
+    blackPieces = [];
+
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if (board[i][j].piece != null) {
+                removePiece(board[i][j].piece);
+                removePieceAtBoard(i, j);
+            }
+        }
+    }
+
+    for (const piece of usuario.tabuleiro.board) {
+        addPieceForBoard(piece.x, piece.y, piece);
+    }
+
+
+    for (let i = 0; i < 64; i++) {
+        squares[i].style.backgroundColor = 'transparent';
+        let x = squares[i].dataset.square.charCodeAt(0) - 97;
+        let y = 8 - squares[i].dataset.square[1];
+        
+        squares[i].innerHTML = '';
+        if (board[x][y].piece != null) {
+            let newPiece = document.createElement('img');
+            newPiece.classList.add('piece');
+            newPiece.src = `img/${board[x][y].piece.color}_${board[x][y].piece.piece}.svg`;
+            [newPiece].forEach(eventListenersForMove);
+
+            squares[i].appendChild(newPiece);
+        }
+    }    
+}
