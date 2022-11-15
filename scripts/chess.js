@@ -645,7 +645,6 @@ function eventListenersForMove(pieceEl) {
             }
             parentClick = undefined;
         }
-        salvaTabuleiro();
     }
 
     squares.forEach(moveSquare => {
