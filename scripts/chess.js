@@ -376,6 +376,8 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     lastFinalParent = squares[boardToSquares(xToMove, yToMove)];
     lastFinalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
     lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+
+    exibeTabuleiroFinal();
     
     movedByClick = false;
 }

@@ -113,3 +113,25 @@ let criaInformacoesDeUsuario = () => {
     
     divInformacoesDoUsuarioEl.classList.add('usuario-informacoes');
 }
+
+let saveBtn = document.querySelector('#save');
+
+let exibeTabuleiroFinal = () => {
+    html2canvas(document.querySelector('#tabuleiro-e-pecas')).then(canvas => {
+        let imagemCodificadaEmURL = canvas.toDataURL();
+    
+        document.querySelector('#pecas-resultado').src = imagemCodificadaEmURL;
+    });
+}
+
+let salvaTabuleiroFinal = () => {
+    let linkEl = document.createElement('a');
+    linkEl.download = 'resultado.png';
+    linkEl.href = document.querySelector('#pecas-resultado').src;
+
+    document.body.appendChild(linkEl);
+
+    linkEl.click();
+}
+
+saveBtn.addEventListener('click', salvaTabuleiroFinal);

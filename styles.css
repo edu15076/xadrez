@@ -50,6 +50,14 @@ main {
     height: 91.224vh;
 }
 
+#tabuleiro-e-pecas {
+    grid-area: 2 / 2 / 3 / 3;
+    display: grid;
+    grid-template: 1fr auto 1fr / 1fr auto 1fr;
+    height: 72vh;
+    height: 72vh;
+}
+
 main>h2 {
     font-size: 9vh;
 }
@@ -125,6 +133,11 @@ main>h2 {
     opacity: 0;
     transition: all .25s ease-out;
     justify-content: center;
+}
+
+#game-over img {
+    max-width: 45vh;
+    max-height: 45vh;
 }
 
 .piece {
