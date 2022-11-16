@@ -59,10 +59,10 @@ main {
 
 #tabuleiro-e-pecas {
     grid-area: 2 / 2 / 3 / 3;
+    position: relative;
     display: grid;
     grid-template: 1fr auto 1fr / 1fr auto 1fr;
-    height: 72vh;
-    height: 72vh;
+    border-radius: 1vh;
 }
 
 main>h2 {
@@ -143,8 +143,9 @@ main>h2 {
 }
 
 #game-over img {
-    max-width: 45vh;
-    max-height: 45vh;
+    max-width: 35vh;
+    max-height: 35vh;
+    margin: 1.5vh;
 }
 
 .piece {
@@ -152,7 +153,7 @@ main>h2 {
     cursor: grab;
     height: 9vh;
     user-select: none;
-    z-index: 1;
+    z-index: 90;
 }
 
 [data-square$="1"],

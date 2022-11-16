@@ -129,6 +129,7 @@ let criarPerfil = () => {
         derrotas: 0,
         tema: 'wood',
         tabuleiro: {
+            moved: false,
             html: 'none',
             board: [],
             turn: 'white'
@@ -200,8 +201,6 @@ let logar = () => {
     criaInformacoesDeUsuario();
 
     selecionaTabuleiro(usuario);
-
-    carregaTabuleiro()
 
     sumir();
 }

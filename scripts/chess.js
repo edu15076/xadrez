@@ -40,29 +40,47 @@ function originalBoardSettings() {
             if (j === 0 || j === 1 || j === 6 || j === 7) {
                 if (j === 1 || j === 6) {
                     board[i][j].piece = Object.create(pawn);
-                    if (j === 1)
+                    board[i][j].piece.piece = 'pawn';
+                    if (j === 1) 
                         board[i][j].piece.color = 'black';
+                    else if (j === 6)
+                        board[i][j].piece.color = 'white';
                 } else {
                     if (i === 0 || i === 7) {
                         board[i][j].piece = Object.create(rook);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'rook';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else if (i === 1 || i === 6) {
                         board[i][j].piece = Object.create(knight);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'knight';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else if (i === 2 || i === 5) {
                         board[i][j].piece = Object.create(bishop);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'bishop';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else if (i === 3) {
                         board[i][j].piece = Object.create(queen);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'queen';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     } else {
                         board[i][j].piece = Object.create(king);
-                        if (j === 0)
+                        board[i][j].piece.piece = 'king';
+                        if (j === 0) 
                             board[i][j].piece.color = 'black';
+                        else if (j === 7)
+                            board[i][j].piece.color = 'white';
                     }
                 }
                 board[i][j].piece.x = i;
@@ -81,6 +99,7 @@ function originalBoardSettings() {
     blackKing = board[4][0].piece;
     getAttacks();
 }
+
 
 function createPiceForBoard(pieceName, x, y, color, moved) {
     let newPiece;
@@ -791,7 +810,7 @@ let salvaTabuleiro = () => {
 
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
-            if (board[i][j].piece !== undefined && board[i][j].piece !== null) {
+            if (board[i][j].piece !== null) {
                 usuario.tabuleiro.board.push(board[i][j].piece);
             }
         }
