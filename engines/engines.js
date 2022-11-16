@@ -18,3 +18,16 @@ function randEngine() {
 
     moveAtBoard([piecesTurn[randNum].x, piecesTurn[randNum].y], randMovesOfPiece, piece);
 }
+
+let fnWhite, fnBlack;
+let delay;
+
+function flowControl() {
+    switch (turn) {
+        case 'white':
+            delay ? setTimeout(fnWhite, 500) : fnWhite();
+            break;
+        default:
+            delay ? setTimeout(fnBlack, 500) : fnBlack();
+    }
+}

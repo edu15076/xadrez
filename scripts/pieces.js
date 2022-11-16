@@ -37,14 +37,14 @@ function findKingMoves(pieceObj) {
     if (!pieceObj.moved && !board[x][y][`${pieceObj.opositeColor()}Attack`]) {
         for (let roqueOption of roqueMoves) {
             if (roqueMoves.indexOf(roqueOption)) {
-                if (board[x+3][y].piece != null && !board[x+3][y].piece.moved
+                if (board[x+3][y].piece != null && board[x+3][y].piece.piece === 'rook' && !board[x+3][y].piece.moved
                     && board[x+1][y].piece === null && board[x+2][y].piece === null
                     && !board[x+1][y][`${pieceObj.opositeColor()}Attack`] && !board[x+2][y][`${pieceObj.opositeColor()}Attack`]) {
                     kingMoves.push(roqueOption);
                 }
             }
             else {
-                if (board[x-4][y].piece != null && !board[x-4][y].piece.moved
+                if (board[x-4][y].piece != null && board[x-4][y].piece.piece === 'rook' && !board[x-4][y].piece.moved
                     && board[x-1][y].piece === null && board[x-2][y].piece === null && board[x-3][y].piece === null
                     && !board[x-1][y][`${pieceObj.opositeColor()}Attack`] && !board[x-2][y][`${pieceObj.opositeColor()}Attack`])
                     kingMoves.push(roqueOption);

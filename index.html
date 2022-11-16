@@ -99,86 +99,119 @@
                     <div>
                         <h2></h2>
                         <p></p>
+                        <div id="tabuleiro-final"><img src="img/devs/8 Sem Título_20221023114358.png" id="pecas-resultado"></div>
                     </div>
                     <div class="opcoes reset">Play again</div>
+                    <div class="opcoes" id="save">Save</div>
                 </div>
             </section>
 
-            <canvas id="board" width="2400" height="2400"></canvas>
-            
-            <section id="pieces-move">
-                <div data-square="a1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
-                <div data-square="b1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
-                <div data-square="c1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>
-                <div data-square="d1"><img draggable="false" class="piece" src="img/white_queen.svg"></div>
-                <div data-square="e1"><img draggable="false" class="piece" src="img/white_king.svg"></div>
-                <div data-square="f1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>
-                <div data-square="g1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
-                <div data-square="h1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
+            <span id="color-black"></span>
+            <p id="black-player"></p>
+            <div id="choose-black-player">
+                <select>
+                    <option class="option" value="you">you</option>
+                    <option class="option" value="cumbuca (2000)">cumbuca</option>
+                    <option class="option" value="stockdog (2000)">stockdog</option>
+                    <option class="option" value="random engine (???)">random engine</option>
+                </select>
+            </div>
 
-                <div data-square="a2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="b2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="c2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="d2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="e2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="f2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="g2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
-                <div data-square="h2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+            <span id="color-white"></span>
+            <p id="white-player"></p>
+            <div id="choose-white-player">
+                <select>
+                    <option class="option" value="you">you</option>
+                    <option class="option" value="cumbuca (2000)">cumbuca</option>
+                    <option class="option" value="stockdog (2000)">stockdog</option>
+                    <option class="option" value="random engine (???)">random engine</option>
+                </select>
+            </div>
 
-                <div data-square="a3"></div>
-                <div data-square="b3"></div>
-                <div data-square="c3"></div>
-                <div data-square="d3"></div>
-                <div data-square="e3"></div>
-                <div data-square="f3"></div>
-                <div data-square="g3"></div>
-                <div data-square="h3"></div>
 
-                <div data-square="a4"></div>
-                <div data-square="b4"></div>
-                <div data-square="c4"></div>
-                <div data-square="d4"></div>
-                <div data-square="e4"></div>
-                <div data-square="f4"></div>
-                <div data-square="g4"></div>
-                <div data-square="h4"></div>
-
-                <div data-square="a5"></div>
-                <div data-square="b5"></div>
-                <div data-square="c5"></div>
-                <div data-square="d5"></div>
-                <div data-square="e5"></div>
-                <div data-square="f5"></div>
-                <div data-square="g5"></div>
-                <div data-square="h5"></div>
-
-                <div data-square="a6"></div>
-                <div data-square="b6"></div>
-                <div data-square="c6"></div>
-                <div data-square="d6"></div>
-                <div data-square="e6"></div>
-                <div data-square="f6"></div>
-                <div data-square="g6"></div>
-                <div data-square="h6"></div>
-
-                <div data-square="a7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="b7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="c7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="d7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="e7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="f7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="g7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-                <div data-square="h7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
-
-                <div data-square="a8"><img draggable="false" class="piece" src="img/black_rook.svg"></div>
-                <div data-square="b8"><img draggable="false" class="piece" src="img/black_knight.svg"></div>
-                <div data-square="c8"><img draggable="false" class="piece" src="img/black_bishop.svg"></div>
-                <div data-square="d8"><img draggable="false" class="piece" src="img/black_queen.svg"></div>
-                <div data-square="e8"><img draggable="false" class="piece" src="img/black_king.svg"></div>
-                <div data-square="f8"><img draggable="false" class="piece" src="img/black_bishop.svg"></div>
-                <div data-square="g8"><img draggable="false" class="piece" src="img/black_knight.svg"></div>
-                <div data-square="h8"><img draggable="false" class="piece" src="img/black_rook.svg"></div>
+            <section id="play">
+                <div>
+                    <div class="opcoes">Play</div>
+                </div>
             </section>
+            
+            <div id="tabuleiro-e-pecas">
+                <canvas id="board" width="2400" height="2400"></canvas>
+
+                <section id="pieces-move">
+                    <div data-square="a1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
+                    <div data-square="b1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
+                    <div data-square="c1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>
+                    <div data-square="d1"><img draggable="false" class="piece" src="img/white_queen.svg"></div>
+                    <div data-square="e1"><img draggable="false" class="piece" src="img/white_king.svg"></div>
+                    <div data-square="f1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>
+                    <div data-square="g1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
+                    <div data-square="h1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
+
+                    <div data-square="a2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="b2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="c2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="d2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="e2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="f2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="g2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+                    <div data-square="h2"><img draggable="false" class="piece" src="img/white_pawn.svg"></div>
+
+                    <div data-square="a3"></div>
+                    <div data-square="b3"></div>
+                    <div data-square="c3"></div>
+                    <div data-square="d3"></div>
+                    <div data-square="e3"></div>
+                    <div data-square="f3"></div>
+                    <div data-square="g3"></div>
+                    <div data-square="h3"></div>
+
+                    <div data-square="a4"></div>
+                    <div data-square="b4"></div>
+                    <div data-square="c4"></div>
+                    <div data-square="d4"></div>
+                    <div data-square="e4"></div>
+                    <div data-square="f4"></div>
+                    <div data-square="g4"></div>
+                    <div data-square="h4"></div>
+
+                    <div data-square="a5"></div>
+                    <div data-square="b5"></div>
+                    <div data-square="c5"></div>
+                    <div data-square="d5"></div>
+                    <div data-square="e5"></div>
+                    <div data-square="f5"></div>
+                    <div data-square="g5"></div>
+                    <div data-square="h5"></div>
+
+                    <div data-square="a6"></div>
+                    <div data-square="b6"></div>
+                    <div data-square="c6"></div>
+                    <div data-square="d6"></div>
+                    <div data-square="e6"></div>
+                    <div data-square="f6"></div>
+                    <div data-square="g6"></div>
+                    <div data-square="h6"></div>
+
+                    <div data-square="a7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="b7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="c7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="d7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="e7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="f7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="g7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+                    <div data-square="h7"><img draggable="false" class="piece" src="img/black_pawn.svg"></div>
+
+                    <div data-square="a8"><img draggable="false" class="piece" src="img/black_rook.svg"></div>
+                    <div data-square="b8"><img draggable="false" class="piece" src="img/black_knight.svg"></div>
+                    <div data-square="c8"><img draggable="false" class="piece" src="img/black_bishop.svg"></div>
+                    <div data-square="d8"><img draggable="false" class="piece" src="img/black_queen.svg"></div>
+                    <div data-square="e8"><img draggable="false" class="piece" src="img/black_king.svg"></div>
+                    <div data-square="f8"><img draggable="false" class="piece" src="img/black_bishop.svg"></div>
+                    <div data-square="g8"><img draggable="false" class="piece" src="img/black_knight.svg"></div>
+                    <div data-square="h8"><img draggable="false" class="piece" src="img/black_rook.svg"></div>
+                </section>
+            </div>
 
         </main>
 
@@ -215,5 +248,6 @@
         <script src="scripts/menus.js"></script>
         <script src="scripts/login.js"></script>
         <script src="engines/engines.js"></script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
     </body>
 </html>

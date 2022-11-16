@@ -8,8 +8,10 @@ let turn = 'white';
 */
 let enPassant = null;
 
-/** If there is a game on going */
-let gameOn = false;
+/** If a piece has moved */
+let firstMoved = false;
+
+let gameOn = true;
 
 /**
  * This is an `Object` that contains: 
@@ -38,47 +40,29 @@ function originalBoardSettings() {
             if (j === 0 || j === 1 || j === 6 || j === 7) {
                 if (j === 1 || j === 6) {
                     board[i][j].piece = Object.create(pawn);
-                    board[i][j].piece.piece = 'pawn';
-                    if (j === 1) 
+                    if (j === 1)
                         board[i][j].piece.color = 'black';
-                    else if (j === 6)
-                        board[i][j].piece.color = 'white';
                 } else {
                     if (i === 0 || i === 7) {
                         board[i][j].piece = Object.create(rook);
-                        board[i][j].piece.piece = 'rook';
-                        if (j === 0) 
+                        if (j === 0)
                             board[i][j].piece.color = 'black';
-                        else if (j === 7)
-                            board[i][j].piece.color = 'white';
                     } else if (i === 1 || i === 6) {
                         board[i][j].piece = Object.create(knight);
-                        board[i][j].piece.piece = 'knight';
-                        if (j === 0) 
+                        if (j === 0)
                             board[i][j].piece.color = 'black';
-                        else if (j === 7)
-                            board[i][j].piece.color = 'white';
                     } else if (i === 2 || i === 5) {
                         board[i][j].piece = Object.create(bishop);
-                        board[i][j].piece.piece = 'bishop';
-                        if (j === 0) 
+                        if (j === 0)
                             board[i][j].piece.color = 'black';
-                        else if (j === 7)
-                            board[i][j].piece.color = 'white';
                     } else if (i === 3) {
                         board[i][j].piece = Object.create(queen);
-                        board[i][j].piece.piece = 'queen';
-                        if (j === 0) 
+                        if (j === 0)
                             board[i][j].piece.color = 'black';
-                        else if (j === 7)
-                            board[i][j].piece.color = 'white';
                     } else {
                         board[i][j].piece = Object.create(king);
-                        board[i][j].piece.piece = 'king';
-                        if (j === 0) 
+                        if (j === 0)
                             board[i][j].piece.color = 'black';
-                        else if (j === 7)
-                            board[i][j].piece.color = 'white';
                     }
                 }
                 board[i][j].piece.x = i;
@@ -290,10 +274,10 @@ function getCheck(kingX, kingY) {
  */
 function getMate() {
     let movePieces = turn === 'white' ? whitePieces : blackPieces;
-    movePieces.forEach(possibleMove => {
-        if (possibleMove.moves().length != 0)
+
+    for (let piece of movePieces)
+        if (piece.moves().length != 0)
             return false;
-    });
 
     return true;
 }
@@ -349,10 +333,22 @@ let lastFinalParent;
 function finalStepAtBoard(x, y, xToMove, yToMove) {
     removeMoves(movesDrawn);
     movesDrawn = [];
+
+    if (firstMoved) {
+        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'transparent';
+        if (lastFinalParent != undefined) lastFinalParent.style.backgroundColor = 'transparent';
+    } else
+        firstMoved = true;
+    if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
+    lastParentToMove = squares[boardToSquares(x, y)];
+    lastFinalParent = squares[boardToSquares(xToMove, yToMove)];
+    lastFinalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+    lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+    lastParent = undefined;
     
     let colorKing = turn === 'white' ? whiteKing : blackKing;
     let opositeColor = turn === 'white' ? 'black' : 'white';
-    if (turn, colorKing, board[colorKing.x][colorKing.y].piece.moves().length === 0) {
+    if (board[colorKing.x][colorKing.y].piece.moves().length === 0) {
         if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && getMate()) {
             let gameResultEl = gameOverEl.querySelector('h2');
             let resultColor = opositeColor === piecesUser ? 'greenyellow' : 'red';
@@ -363,19 +359,12 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
             gameResultEl.style.filter = `drop-shadow(0 0 2.5vh ${resultColor})`;
             gameOverEl.style.zIndex = '50';
             gameOverEl.style.opacity = '100';
+
+            gameOn = false;
+
+            exibeTabuleiroFinal();
         }
     }
-
-    if (gameOn) {
-        if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'transparent';
-        if (lastFinalParent != undefined) lastFinalParent.style.backgroundColor = 'transparent';
-    } else
-        gameOn = true;
-    if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
-    lastParentToMove = squares[boardToSquares(x, y)];
-    lastFinalParent = squares[boardToSquares(xToMove, yToMove)];
-    lastFinalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
-    lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
     
     movedByClick = false;
 }
@@ -403,7 +392,7 @@ function moveAtBoard(startingPosition, finalPosition, piece) {
     if (piece === 'king' && Math.abs(startingPosition[0]-finalPosition[0]) === 2) {
         let xRook = startingPosition[0]-finalPosition[0] > 0 ? 0 : 7;
         let xRookToMove = startingPosition[0]-finalPosition[0] > 0 ? 3 : 5;
-        board[xRookToMove][startingPosition[1]].piece = board[startingPosition[0]+3][startingPosition[1]].piece;
+        board[xRookToMove][startingPosition[1]].piece = board[xRook][startingPosition[1]].piece;
         board[xRookToMove][startingPosition[1]].piece.moved = true;
         board[xRookToMove][startingPosition[1]].piece.x = xRookToMove;
         board[xRook][startingPosition[1]].piece = null;
@@ -443,6 +432,7 @@ function moveAtBoard(startingPosition, finalPosition, piece) {
     turn = turn === 'white' ? 'black' : 'white';
 
     finalStepAtBoard(startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1]);
+    if (gameOn) flowControl();
 }
 
 /** Let a `piece` move. */
@@ -539,6 +529,7 @@ function eventListenersForMove(pieceEl) {
                 pieceToSelect.onclick = null;
 
                 removeMoves(movesDrawn);
+                if (gameOn) flowControl();
             }
         });
         finalStepAtBoard(x, y, xToMove, yToMove);
@@ -602,8 +593,7 @@ function eventListenersForMove(pieceEl) {
         if (pieceEl != undefined)
                 pieceEl.style.zIndex = '1';
         movedByClick = false;
-        
-        
+
         return false;
     }
 
@@ -639,7 +629,10 @@ function eventListenersForMove(pieceEl) {
             pieceEl = parentClick.querySelector('img');
 
             movedByClick = true;
-            if (!movementEnd(xClick, yClick, xToMove, yToMove) && lastParent != undefined) {
+
+            movementEnd(xClick, yClick, xToMove, yToMove);
+
+            if (lastParent != undefined) {
                 lastParent.style.backgroundColor = 'transparent';
                 removeMoves(movesDrawn);
             }
@@ -665,6 +658,8 @@ function eventListenersForMove(pieceEl) {
 
         movePieceAtBoard(e);
 
+        pieceEl.style.cursor = 'grabbing';
+
         if (lastParent != undefined && board[x][y].piece.color != turn) {
             lastParent.style.backgroundColor = 'transparent';
             removeMoves(movesDrawn);
@@ -689,14 +684,16 @@ function eventListenersForMove(pieceEl) {
 
             let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
             let yToMove = 8 - finalParent.dataset.square[1];
+            pieceEl.style.cursor = 'grab';
             
             movementEnd(x, y, xToMove, yToMove);
             bodyEl.onmouseup = null;
         }
-
     }
     
     let parent, x, y;
+
+    let timerVerify = false;
 
     pieceEl.addEventListener('touchstart', e => {
         removeMoves(movesDrawn);
@@ -714,6 +711,8 @@ function eventListenersForMove(pieceEl) {
             removeMoves(movesDrawn);
             movesDrawn = [];
         }
+
+        setTimeout(() => { timerVerify = true; }, 85);
     });
 
     pieceEl.addEventListener('touchmove', movePieceAtBoardTouch);
@@ -725,18 +724,22 @@ function eventListenersForMove(pieceEl) {
         pieceEl.style.top = '0';
         pieceEl.style.left = '0';
 
-        let finalParent;
-        for (let i = 0; i < e.changedTouches.length; i++)
-            finalParent = document.elementsFromPoint(e.changedTouches[i].pageX, e.changedTouches[i].pageY)[1].closest('[data-square]');
-        if (finalParent === null) {
-            pieceEl.style.zIndex = '1';
-            return;
-        }
+        if (timerVerify) {
+            let finalParent;
+            for (let i = 0; i < e.changedTouches.length; i++)
+                finalParent = document.elementsFromPoint(e.changedTouches[i].pageX, e.changedTouches[i].pageY)[1].closest('[data-square]');
+            if (finalParent === null) {
+                pieceEl.style.zIndex = '1';
+                return;
+            }
 
-        let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
-        let yToMove = 8 - finalParent.dataset.square[1];
-        
-        movementEnd(x, y, xToMove, yToMove);
+            let xToMove = finalParent.dataset.square.charCodeAt(0) - 97;
+            let yToMove = 8 - finalParent.dataset.square[1];
+            
+            movementEnd(x, y, xToMove, yToMove);
+
+            timerVerify = false;
+        }
 
         if (board[x][y].piece != null && board[x][y].piece.color === turn) {
             parentClick = parent;
@@ -778,14 +781,14 @@ resetEls.forEach(resetEl => {
         }
         gameOverEl.style.opacity = '0';
         gameOverEl.style.zIndex = '-100';
-        gameOn = false;
+        firstMoved = false;
         lastParent = lastParentToMove = lastFinalParent = undefined;
     }
 });
 
 let salvaTabuleiro = () => {
     let usuario = JSON.parse(localStorage.getItem('usuario'));
-    
+
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if (board[i][j].piece !== undefined && board[i][j].piece !== null) {
@@ -825,7 +828,7 @@ let carregaTabuleiro = () => {
         squares[i].style.backgroundColor = 'transparent';
         let x = squares[i].dataset.square.charCodeAt(0) - 97;
         let y = 8 - squares[i].dataset.square[1];
-        
+
         squares[i].innerHTML = '';
         if (board[x][y].piece != null) {
             let newPiece = document.createElement('img');

@@ -84,6 +84,63 @@ chooseColorButtons.forEach(choosedColor => {
     choosedColor.onclick = () => {rotateBoard(choosedColor)};
 });
 
+let playEl = document.querySelector('#play .opcoes');
+let chooseBlackEl = document.querySelector('#choose-black-player');
+let chooseWhiteEl = document.querySelector('#choose-white-player');
+let blackPlayerEl = document.getElementById('black-player');
+let whitePlayerEl = document.getElementById('white-player');
+
+playEl.onclick = () => {
+    let valBlack = chooseBlackEl.querySelector('select').value;
+    let valWhite = chooseWhiteEl.querySelector('select').value;
+
+    blackPlayerEl.style.display = 'inline';
+    whitePlayerEl.style.display = 'inline';
+    blackPlayerEl.innerHTML = valBlack;
+    whitePlayerEl.innerHTML = valWhite;
+    chooseBlackEl.style.display = 'none';
+    chooseWhiteEl.style.display = 'none';
+    document.getElementById('play').style.display = 'none';
+
+    let enginesPlaying = 2;
+
+    switch (valBlack) {
+        case 'you':
+            fnBlack = () => null;
+            enginesPlaying--;
+            break;
+        case 'cumbuca (2000)':
+            fnBlack = () => null;
+            break;
+        case 'stockdog (2000)':
+            fnBlack = () => null;
+            break;
+        case 'random engine (???)':
+            fnBlack = randEngine;
+            break;
+    }
+
+    switch (valWhite) {
+        case 'you':
+            fnWhite = () => null;
+            enginesPlaying--;
+            break;
+        case 'cumbuca (2000)':
+            fnWhite = () => null;
+            break;
+        case 'stockdog (2000)':
+            fnWhite = () => null;
+            break;
+        case 'random engine (???)':
+            fnWhite = randEngine;
+            break;
+    }
+
+    delay = enginesPlaying === 2;
+
+    flowControl();
+}
+
 let loginMenuBtn = document.querySelector('#login-btn');
 
 let criaInformacoesDeUsuario = () => {
@@ -113,3 +170,25 @@ let criaInformacoesDeUsuario = () => {
     
     divInformacoesDoUsuarioEl.classList.add('usuario-informacoes');
 }
+
+let saveBtn = document.querySelector('#save');
+
+let exibeTabuleiroFinal = () => {
+    html2canvas(document.querySelector('#tabuleiro-e-pecas')).then(canvas => {
+        let imagemCodificadaEmURL = canvas.toDataURL();
+
+        document.querySelector('#pecas-resultado').src = imagemCodificadaEmURL;
+    });
+}
+
+let salvaTabuleiroFinal = () => {
+    let linkEl = document.createElement('a');
+    linkEl.download = 'resultado.png';
+    linkEl.href = document.querySelector('#pecas-resultado').src;
+
+    document.body.appendChild(linkEl);
+
+    linkEl.click();
+}
+
+saveBtn.addEventListener('click', salvaTabuleiroFinal);

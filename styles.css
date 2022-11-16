@@ -1,3 +1,10 @@
+:root {
+    --main-color: #070c15;
+    --darker-color: #02050c;
+    --lighter-color: rgb(32, 40, 58);
+    --light-font: rgb(172, 172, 172);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +17,7 @@ html {
 
 body {
     height: 100vh;
-    background-color: #070c15;
+    background-color: var(--main-color);
     color: white;
     font-family: 'Nunito', sans-serif;
 }
@@ -18,7 +25,7 @@ body {
 header {
     text-align: left;
     padding: 2vh;
-    background-color: #02050c;
+    background-color: var(--darker-color);
     display: flex;
     justify-content: space-between;
     z-index: 99;
@@ -50,6 +57,14 @@ main {
     height: 91.224vh;
 }
 
+#tabuleiro-e-pecas {
+    grid-area: 2 / 2 / 3 / 3;
+    display: grid;
+    grid-template: 1fr auto 1fr / 1fr auto 1fr;
+    height: 72vh;
+    height: 72vh;
+}
+
 main>h2 {
     font-size: 9vh;
 }
@@ -74,7 +89,7 @@ main>h2 {
     position: absolute;
     width: 9vh;
     height: 36vh;
-    background-color: rgb(32, 40, 58);
+    background-color: var(--lighter-color);
     display: flex;
     justify-content: space-around;
     flex-direction: column;
@@ -94,7 +109,7 @@ main>h2 {
 #game-over>div {
     width: 52.5vh;
     height: 75vh;
-    background-color: #02050c;
+    background-color: var(--darker-color);
     border-radius: 2.5vh;
     display: flex;
     flex-direction: column;
@@ -115,7 +130,7 @@ main>h2 {
 }
 
 #game-over p {
-    color: rgb(181, 181, 181);
+    color: var(--light-font);
 }
 
 #game-over {
@@ -127,16 +142,17 @@ main>h2 {
     justify-content: center;
 }
 
+#game-over img {
+    max-width: 45vh;
+    max-height: 45vh;
+}
+
 .piece {
     position: absolute;
     cursor: grab;
     height: 9vh;
     user-select: none;
     z-index: 1;
-}
-
-.piece:active {
-    cursor: grabbing;
 }
 
 [data-square$="1"],
@@ -216,6 +232,132 @@ main>h2 {
     left: 87.5%;
 }
 
+select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding-left: 1vh;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.2vh;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    grid-area: select;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select:focus {
+    border: none;
+}
+
+option {
+    background-color: var(--main-color);
+}
+
+option:checked {
+    display: none;
+}
+
+#choose-black-player,
+#black-player,
+#choose-white-player,
+#white-player {
+    position: relative;
+    width: 20vh;
+    height: 4vh;
+    left: 6vh;
+}
+
+#black-player,
+#white-player {
+    display: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.2vh;
+}
+
+#choose-black-player,
+#choose-white-player {
+    border: .25vh solid white;
+    border-radius: .746vh;
+    cursor: pointer;
+    display: grid;
+    grid-template-areas: "select";
+    align-items: center;
+}
+
+#choose-black-player::after,
+#choose-white-player::after {
+    content: "";
+    width: 1.5vh;
+    height: 1vh;
+    margin-right: 1vh;
+    grid-area: select;
+    background-color: white;
+    clip-path: polygon(100% 0, 85% 0, 50% 70%, 15% 0, 0 0, 50% 100%);
+    justify-self: end;
+}
+
+#choose-black-player,
+#black-player {
+    grid-area: 1 / 2 / 2 / 3;
+    top: 3.506vh;
+}
+
+#choose-white-player,
+#white-player {
+    grid-area: 3 / 2 / 4 / 3;
+    top: 1.506vh;
+}
+
+#color-black,
+#color-white {
+    position: relative;
+    width: 4.5vh;
+    height: 4.5vh;
+    border-radius: .746vh;
+    border: .35vh solid var(--lighter-color);
+    box-sizing: border-box;
+}
+
+#color-black {
+    grid-area: 1 / 2 / 2 / 3;
+    top: 3.506vh;
+    background-color: black;
+}
+
+#color-white {
+    grid-area: 3 / 2 / 4 / 3;
+    top: 1.506vh;
+    background-color: white;
+}
+
+#play {
+    position: relative;
+    grid-area: 2 / 2 / 3 / 3;
+    height: 72vh;
+    width: 72vh;
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#play>div {
+    height: 25vh;
+    width: 40vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2.5vh;
+}
+
 header {
     position: sticky;
     top: 0vh;
@@ -273,7 +415,7 @@ label span:nth-child(2) {
 
 nav {
     z-index: 100;
-    background-color: #02050c;
+    background-color: var(--darker-color);
     position: fixed;
     height: 91.3vh;
     width: 35vh;
@@ -295,7 +437,7 @@ nav {
     text-align: center;
     font-size: 2.536vh;
     font-weight: bold;
-    color: #02050c;
+    color: var(--darker-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -306,7 +448,7 @@ nav {
 .opcoes a:link, .opcoes a:visited {
     text-decoration: none;
     font-size: medium;
-    color: #02050c;
+    color: var(--darker-color);
 }
 
 .opcoes:hover {
@@ -351,7 +493,7 @@ nav {
 [data-color="white"],
 [data-color="black"]:active {
     background-color: white;
-    color: #02050c;
+    color: var(--darker-color);
 }
 
 [data-color="white"]:hover {
@@ -387,7 +529,7 @@ nav {
 #configuracoes-janela {
     height: 38vh;
     width: 70vh;
-    background-color: #02050c;
+    background-color: var(--darker-color);
     border-radius: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -444,10 +586,10 @@ nav {
     top: 9vh;
     height: 65vh;
     width: 42.7vh;
-    background-color: #02050c;
+    background-color: var(--darker-color);
     padding: 10.3vh;
     border-radius: 2.8vh;
-    z-index: 99;
+    z-index: 300;
 }
 
 #login h2 {
@@ -489,7 +631,7 @@ nav {
     left: 20vh;
     width: 24vh;
     height: 5vh;
-    color: #02050c;
+    color: var(--darker-color);
     font-size: 3.2vh;
     border-radius: 0.5vh;
 }
@@ -544,14 +686,13 @@ nav {
 }
 
 #desenvolvedores-html body::-webkit-scrollbar-track {
-    background: #02050c;
+    background: var(--darker-color);
 }
 
 #desenvolvedores-html body::-webkit-scrollbar-thumb {
     background-color: white;
     border-radius: 20px;
-    border: 3px solid #02050c;
-    
+    border: 3px solid var(--darker-color);
 }
 
 #desenvolvedores {
@@ -566,7 +707,7 @@ nav {
 
 .conteudo a:nth-child(-n + 3):link,
 .conteudo a:nth-child(-n + 3):visited {
-    color: rgb(172, 172, 172);
+    color: var(--light-font);
     text-decoration: none;
 }
 
@@ -575,7 +716,7 @@ nav {
 }
 
 .titulos {
-    background-color: #02050c;
+    background-color: var(--darker-color);
     color: white;
     border-radius: 1vh;
     margin: 3vh;
@@ -583,11 +724,11 @@ nav {
 
 .dev-dados {
     margin: 0 3vh 0 1vh;
-    border-right: 0.8vh solid #02050c;
+    border-right: 0.8vh solid var(--darker-color);
 }
 
 .conteudo {
-    border: 1.3vh solid #02050c;
+    border: 1.3vh solid var(--darker-color);
     margin: 3vh;
     border-radius: 1vh;
     padding: 1vh;
@@ -606,7 +747,7 @@ nav {
 .github {
     font-size: small;
     margin-left: 1vh;
-    color: rgb(172, 172, 172);
+    color: var(--light-font);
 }
 
 .github a:link:hover {
@@ -614,11 +755,11 @@ nav {
 }
 
 .github a:visited {
-    color: rgb(172, 172, 172);
+    color: var(--light-font);
 }
 
 .github a:link {
-    color: rgb(172, 172, 172);
+    color: var(--light-font);
     text-decoration: none;
 }
 
@@ -639,7 +780,7 @@ nav {
 
     .conteudo {
         flex-direction: column;
-        border: 0.9vh solid #02050c;
+        border: 0.9vh solid var(--darker-color);
     }
 
     #desenvolvedores section article {
@@ -653,17 +794,17 @@ nav {
         text-align: center;
         justify-content: center;
         border-right: none;
-        border-bottom: 0.8vh solid #02050c;
+        border-bottom: 0.8vh solid var(--darker-color);
     }
-
+    
     .conteudo h3 {
         margin: auto;
     }
-
+    
     .conteudo p {
         margin: 0 3vw;
     }
-
+    
     .conteudo img {
         margin: 0;
     }
@@ -729,7 +870,6 @@ nav {
 .usuario-informacoes table tr:nth-child(2) td:nth-child(2) strong {
     color: rgb(212, 3, 3);
 }
-
 @media screen and (max-aspect-ratio: 3/4) {
     #board {
         width: 96vw;
@@ -744,7 +884,7 @@ nav {
     .piece {
         height: 12vw;
     }
-
+    
     .piece-cpy {
         height: 12vw;
     }
@@ -765,11 +905,11 @@ nav {
         height: 115vw;
         border-radius: 2.5vh;
     }
-
+    
     #game-over h2 {
         font-size: 7.75vw;
     }
-
+    
     #game-over p {
         font-size: 3.1vw;
     }
