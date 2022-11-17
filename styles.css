@@ -153,7 +153,7 @@ main>h2 {
     cursor: grab;
     height: 9vh;
     user-select: none;
-    z-index: 90;
+    z-index: 1;
 }
 
 [data-square$="1"],
