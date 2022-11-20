@@ -64,6 +64,8 @@ main {
     display: grid;
     grid-template: 1fr auto 1fr / 1fr auto 1fr;
     border-radius: 1vh;
+    width: 72vh;
+    height: 72vh;
 }
 
 main>h2 {
@@ -152,10 +154,18 @@ main>h2 {
     margin: 1.5vh;
 }
 
+#game-over .opcoes {
+    width: 26.25vh;
+}
+
+#pecas-resultado {
+    border-radius: 1vh;
+}
+
 .piece {
     position: absolute;
     cursor: grab;
-    height: 9vh;
+    height: 100%;
     user-select: none;
     z-index: 1;
 }
@@ -239,7 +249,7 @@ main>h2 {
 
 #flip-board,
 #resign {
-    width: 3.5vh;
+    width: 4.5vh;
     position: relative;
     grid-area: 2 / 3 / 3 / 4;
     left: 1vh;
@@ -247,7 +257,7 @@ main>h2 {
 }
 
 #resign {
-    top: 4.5vh;
+    top: 6vh;
 }
 
 #black,
@@ -404,20 +414,14 @@ option:checked {
     align-items: center;
 }
 
-#play>div {
-    height: 4.177vh;
-    width: 54vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(10px);
-}
-
 #play .opcoes {
     background-color: #02050cb0;
+    backdrop-filter: blur(10px);
     color: rgba(255, 255, 255, 0.916);
     border-radius: 0;
-    width: 100%;
+    height: 7%;
+    width: 75%;
+    padding: 0;
 }
 
 header {
@@ -881,25 +885,19 @@ nav {
     color: rgb(212, 3, 3);
 }
 
-@media screen and (max-aspect-ratio: 107/132) {
-    #board {
-        width: 96vw;
-        height: 96vw;
-    }
-
-    #pieces-move {
-        width: 96vw;
-        height: 96vw;
-    }
-
-    .piece {
-        height: 12vw;
+@media screen and (max-aspect-ratio: 658/792) {
+    #board,
+    #pieces-move,
+    #tabuleiro-e-pecas,
+    #play {
+        max-width: 96vw;
+        max-height: 96vw;
     }
 
     #game-over>div {
-        width: 70vw;
-        height: 100vw;
-        border-radius: 2.5vh;
+        width: 65vw;
+        height: 95vw;
+        border-radius: 1vh;
     }
     
     #game-over h2 {
@@ -922,28 +920,33 @@ nav {
     }
 
     #game-over .opcoes {
-        height: 5.57vw;
-        width: 27.848vw;
+        height: 5.5vw;
+        width: 35vw;
         border-radius: .995vw;
         padding: .796vw .397vw .796vw .397vw;
         font-size: 3.381vw;
     }
 
     #play .opcoes {
-        height: 5.57vw;
         font-size: 3.381vw;
     }
 
     #flip-board,
     #resign {
-        width: 4.665vw;
-        top: 2vw;
-        left: 91.335vw;
+        width: 7vw;
+        top: 0;
+        padding-top: 2vw;
         grid-area: 3 / 2 / 4 / 3;
     }
 
+    #flip-board {
+        padding-left: 1vw;
+        left: calc(100% - 8vw);
+    }
+
     #resign {
-        left: 85.67vw;
+        left: calc(100% - 16vw);
+        padding-right: 1vw;
     }
 
     select {
@@ -953,8 +956,8 @@ nav {
 
     #black div,
     #white div {
-        width: 26.667vw;
-        height: 5.332vw;
+        width: 27.667vw;
+        height: 6.332vw;
     }
 
     #black div {
@@ -983,15 +986,15 @@ nav {
 
     #black div:last-of-type::after,
     #white div:last-of-type::after {
-        width: 2vw;
-        height: 1.334vw;
-        margin-right: 1.334vw;
+        width: 2.5vw;
+        height: 1.5vw;
+        margin-right: 1.5vw;
     }
 
     #black span,
     #white span {
-        width: 6vw;
-        height: 6vw;
+        width: 7vw;
+        height: 7vw;
         border-radius: .995vw;
         border: .467vw solid var(--lighter-color);
         margin-right: 2vw;
@@ -1003,11 +1006,6 @@ nav {
 
     #white span {
         margin-top: 2vw;
-    }
-
-    #play {
-        height: 96vw;
-        width: 96vw;
     }
 
     #black-promotion,

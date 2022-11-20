@@ -392,6 +392,9 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     movedByClick = false;
 }
 
+let captureSound = new Audio('sounds/capture.mp3');
+let moveSound = new Audio('sounds/move-self.mp3');
+
 /**
  * Remove a pice of its `starting position` and add a `piece` on the `final position` with the atributes of the parameter `piece`.
  * 
@@ -399,15 +402,17 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
  * 
  * @param {*} startingPosition An [x, y] array with the starting position of a piece
  * @param {*} finalPosition An [x, y] array with the final position of a piece
- * @param {*} piece The name of a pice
+ * @param {*} piece The name of a piece
+ * @return return if the `gameOn` is set to false
  */
-function moveAtBoard(startingPosition, finalPosition, piece) {
+function moveAtBoard(startingPosition, finalPosition, piece, capture=false) {
     if (!gameOn) return;
 
     if (piece === 'pawn' && enPassant != null && enPassant[0] === finalPosition[0] && enPassant[1] === finalPosition[1]) {
         removePiece(board[finalPosition[0]][startingPosition[1]].piece);
         board[finalPosition[0]][startingPosition[1]].piece = null;
         squares[boardToSquares(finalPosition[0], startingPosition[1])].innerHTML = '';
+        capture = true;
         enPassant = null;
     } else if (piece === 'pawn' && Math.abs(finalPosition[1]-startingPosition[1]) === 2) {
         enPassant = [startingPosition[0], startingPosition[1]+board[startingPosition[0]][startingPosition[1]].piece.moveDirection()];
@@ -450,8 +455,17 @@ function moveAtBoard(startingPosition, finalPosition, piece) {
     [newPiece].forEach(eventListenersForMove);
 
     squares[boardToSquares(startingPosition[0], startingPosition[1])].innerHTML = '';
+
+    if (!capture)
+        capture = squares[boardToSquares(finalPosition[0], finalPosition[1])].getElementsByTagName('img').length > 0;
+    
     squares[boardToSquares(finalPosition[0], finalPosition[1])].innerHTML = '';
     squares[boardToSquares(finalPosition[0], finalPosition[1])].appendChild(newPiece);
+
+    if (capture)
+        captureSound.play(); 
+    else
+        moveSound.play();
 
     getAttacks();
     turn = turn === 'white' ? 'black' : 'white';
@@ -520,7 +534,7 @@ function eventListenersForMove(pieceEl) {
                 promotionEl.style.zIndex = '-100';
                 pieceToSelect.onclick = null;
 
-                moveAtBoard([x, y], [xToMove, yToMove], pieceToSelect.dataset.piece);
+                moveAtBoard([x, y], [xToMove, yToMove], pieceToSelect.dataset.piece, finalParentS != null);
             }
         });
         finalStepAtBoard(x, y, xToMove, yToMove);
