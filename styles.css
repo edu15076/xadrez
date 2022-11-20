@@ -3,6 +3,7 @@
     --darker-color: #02050c;
     --lighter-color: rgb(32, 40, 58);
     --light-font: rgb(172, 172, 172);
+    --move-background: rgba(255, 217, 91, .8);
 }
 
 * {
@@ -82,6 +83,8 @@ main>h2 {
     grid-area: 2 / 2 / 3 / 3;
     width: 72vh;
     height: 72vh;
+    border-radius: 1vh;
+    overflow: hidden;
 }
 
 #black-promotion,
@@ -89,7 +92,7 @@ main>h2 {
     position: absolute;
     width: 9vh;
     height: 36vh;
-    background-color: var(--lighter-color);
+    backdrop-filter: blur(30px);
     display: flex;
     justify-content: space-around;
     flex-direction: column;
@@ -113,7 +116,7 @@ main>h2 {
     border-radius: 2.5vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     align-self: center;
 }
@@ -131,6 +134,7 @@ main>h2 {
 
 #game-over p {
     color: var(--light-font);
+    font-size: 2vh;
 }
 
 #game-over {
@@ -233,6 +237,34 @@ main>h2 {
     left: 87.5%;
 }
 
+#flip-board,
+#resign {
+    width: 3.5vh;
+    position: relative;
+    grid-area: 2 / 3 / 3 / 4;
+    left: 1vh;
+    cursor: pointer;
+}
+
+#resign {
+    top: 4.5vh;
+}
+
+#black,
+#white {
+    display: flex;
+    justify-content: left;
+}
+
+#black {
+    grid-area: 1 / 2 / 2 / 3;
+    align-items: end;
+}
+
+#white {
+    grid-area: 3 / 2 / 4 / 3;
+}
+
 select {
     appearance: none;
     background-color: transparent;
@@ -245,8 +277,8 @@ select {
     font-size: 2.2vh;
     outline: none;
     cursor: pointer;
-    color: white;
     grid-area: select;
+    font-weight: 600;
 }
 
 select::-ms-expand {
@@ -259,32 +291,65 @@ select:focus {
 
 option {
     background-color: var(--main-color);
+    color: white;
+    font-weight: 500;
+}
+
+#white option {
+    background-color: white;
+    color: var(--main-color);
 }
 
 option:checked {
     display: none;
 }
 
-#choose-black-player,
-#black-player,
-#choose-white-player,
-#white-player {
-    position: relative;
+#black div,
+#white div {
     width: 20vh;
     height: 4vh;
-    left: 6vh;
 }
 
-#black-player,
-#white-player {
+#black div {
+    margin-bottom: 1.5vh;
+}
+
+#white div {
+    margin-top: 1.5vh;
+}
+
+#black div:first-of-type,
+#white div:first-of-type {
     display: none;
+    border: .35vh solid transparent;
+    align-items: center;
+}
+
+#black p,
+#white p {
     font-family: 'Nunito', sans-serif;
     font-size: 2.2vh;
 }
 
-#choose-black-player,
-#choose-white-player {
-    border: .25vh solid white;
+#black select {
+    color: white;
+}
+
+#white select {
+    color: var(--main-color);
+}
+
+#white div:last-of-type {
+    background-color: white;
+}
+
+#black div:last-of-type {
+    background-color: black;
+}
+
+#black div:last-of-type,
+#white div:last-of-type {
+    border: .25vh solid var(--lighter-color);
     border-radius: .746vh;
     cursor: pointer;
     display: grid;
@@ -292,50 +357,40 @@ option:checked {
     align-items: center;
 }
 
-#choose-black-player::after,
-#choose-white-player::after {
+#black div:last-of-type::after,
+#white div:last-of-type::after {
     content: "";
     width: 1.5vh;
     height: 1vh;
     margin-right: 1vh;
     grid-area: select;
-    background-color: white;
+    background-color: var(--main-color);
     clip-path: polygon(100% 0, 85% 0, 50% 70%, 15% 0, 0 0, 50% 100%);
     justify-self: end;
 }
 
-#choose-black-player,
-#black-player {
-    grid-area: 1 / 2 / 2 / 3;
-    top: 3.506vh;
+#black div:last-of-type::after {
+    background-color: white;
 }
 
-#choose-white-player,
-#white-player {
-    grid-area: 3 / 2 / 4 / 3;
-    top: 1.506vh;
-}
-
-#color-black,
-#color-white {
-    position: relative;
+#black span,
+#white span {
     width: 4.5vh;
     height: 4.5vh;
     border-radius: .746vh;
     border: .35vh solid var(--lighter-color);
+    margin-right: 1.5vh;
     box-sizing: border-box;
 }
 
-#color-black {
-    grid-area: 1 / 2 / 2 / 3;
-    top: 3.506vh;
+#black span {
     background-color: black;
+    margin-bottom: 1.5vh;
 }
 
-#color-white {
-    grid-area: 3 / 2 / 4 / 3;
-    top: 1.506vh;
+#white span {
     background-color: white;
+    margin-top: 1.5vh;
 }
 
 #play {
@@ -343,20 +398,26 @@ option:checked {
     grid-area: 2 / 2 / 3 / 3;
     height: 72vh;
     width: 72vh;
-    z-index: 200;
+    z-index: 50;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #play>div {
-    height: 25vh;
-    width: 40vh;
-    background-color: black;
+    height: 4.177vh;
+    width: 54vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2.5vh;
+    backdrop-filter: blur(10px);
+}
+
+#play .opcoes {
+    background-color: #02050cb0;
+    color: rgba(255, 255, 255, 0.916);
+    border-radius: 0;
+    width: 100%;
 }
 
 header {
@@ -455,58 +516,6 @@ nav {
 .opcoes:hover {
     background-color: rgb(218, 216, 216);
 }
-
-#choose-color {
-    height: 8vh;
-    width: 20.886vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#choose-color p {
-    text-align: center;
-    font-size: large;
-}
-
-#choose-color div {
-    display: flex;
-    justify-content: space-between;
-}
-
-#choose-color span {
-    width: 10vh;
-    height: 4.177vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.536vh;
-    font-weight: bold;
-    border-radius: .746vh;
-    user-select: none;
-    cursor: pointer;
-}
-
-[data-color="black"]:hover {
-    background-color: #202020;
-}
-
-[data-color="white"],
-[data-color="black"]:active {
-    background-color: white;
-    color: var(--darker-color);
-}
-
-[data-color="white"]:hover {
-    background-color: rgb(218, 216, 216);
-}
-
-[data-color="black"],
-[data-color="white"]:active {
-    background-color: #131313;
-    color: white;
-}
-
 
 .aberto {
     right: 0;
@@ -871,7 +880,8 @@ nav {
 .usuario-informacoes table tr:nth-child(2) td:nth-child(2) strong {
     color: rgb(212, 3, 3);
 }
-@media screen and (max-aspect-ratio: 3/4) {
+
+@media screen and (max-aspect-ratio: 107/132) {
     #board {
         width: 96vw;
         height: 96vw;
@@ -885,34 +895,25 @@ nav {
     .piece {
         height: 12vw;
     }
-    
-    .piece-cpy {
-        height: 12vw;
-    }
-
-    #black-promotion div,
-    #white-promotion div {
-        width: 58.5vw;
-        height: 13vw;
-    }
-
-    #black-promotion img,
-    #white-promotion img {
-        height: 11.25vw;
-    }
 
     #game-over>div {
-        width: 80vw;
-        height: 115vw;
+        width: 70vw;
+        height: 100vw;
         border-radius: 2.5vh;
     }
     
     #game-over h2 {
-        font-size: 7.75vw;
+        font-size: 6.667vw;
     }
-    
+
     #game-over p {
-        font-size: 3.1vw;
+        font-size: 2.667vw;
+    }
+
+    #game-over img {
+        max-width: 46.667vw;
+        max-height: 46.667vw;
+        margin: 2vw;
     }
 
     #configuracoes-janela {
@@ -921,11 +922,92 @@ nav {
     }
 
     #game-over .opcoes {
-        height: 6.474vw;
-        width: 32.333vw;
-        border-radius: 1.156vw;
-        padding: .925vw .462vw .925vw .462vw;
-        font-size: 3.931vw;
+        height: 5.57vw;
+        width: 27.848vw;
+        border-radius: .995vw;
+        padding: .796vw .397vw .796vw .397vw;
+        font-size: 3.381vw;
+    }
+
+    #play .opcoes {
+        height: 5.57vw;
+        font-size: 3.381vw;
+    }
+
+    #flip-board,
+    #resign {
+        width: 4.665vw;
+        top: 2vw;
+        left: 91.335vw;
+        grid-area: 3 / 2 / 4 / 3;
+    }
+
+    #resign {
+        left: 85.67vw;
+    }
+
+    select {
+        padding-left: 1.332vw;
+        font-size: 2.94vw;
+    }
+
+    #black div,
+    #white div {
+        width: 26.667vw;
+        height: 5.332vw;
+    }
+
+    #black div {
+        margin-bottom: 2vw;
+    }
+
+    #white div {
+        margin-top: 2vw;
+    }
+
+    #black div:first-of-type,
+    #white div:first-of-type {
+        border: .467vw solid transparent;
+    }
+
+    #black p,
+    #white p {
+        font-size: 2.94vw;
+    }
+
+    #black div:last-of-type,
+    #white div:last-of-type {
+        border: .332vw solid var(--lighter-color);
+        border-radius: .995vw;
+    }
+
+    #black div:last-of-type::after,
+    #white div:last-of-type::after {
+        width: 2vw;
+        height: 1.334vw;
+        margin-right: 1.334vw;
+    }
+
+    #black span,
+    #white span {
+        width: 6vw;
+        height: 6vw;
+        border-radius: .995vw;
+        border: .467vw solid var(--lighter-color);
+        margin-right: 2vw;
+    }
+
+    #black span {
+        margin-bottom: 2vw;
+    }
+
+    #white span {
+        margin-top: 2vw;
+    }
+
+    #play {
+        height: 96vw;
+        width: 96vw;
     }
 
     #black-promotion,

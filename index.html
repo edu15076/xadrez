@@ -65,33 +65,12 @@
         </header>
 
         <nav>
-            <div id="choose-color">
-                <p>Play as:</p>
-                <div>
-                    <span data-color="white">White</span>
-                    <span data-color="black">Black</span>
-                </div>
-            </div>
             <div class="opcoes" id="login-btn">Login</div>          
             <div class="opcoes" id="configuracoes-btn">Configurações</div>
             <a href="desenvolvedores.html"><div class="opcoes">Desenvolvedores</div></a>
         </nav>
 
-        <section id="black-promotion">
-            <img draggable="false" data-piece="queen" src="img/black_queen.svg">
-            <img draggable="false" data-piece="knight" src="img/black_knight.svg">
-            <img draggable="false" data-piece="rook" src="img/black_rook.svg">
-            <img draggable="false" data-piece="bishop" src="img/black_bishop.svg">
-        </section>
-
-        <section id="white-promotion">
-            <img draggable="false" data-piece="queen" src="img/white_queen.svg">
-            <img draggable="false" data-piece="knight" src="img/white_knight.svg">
-            <img draggable="false" data-piece="rook" src="img/white_rook.svg">
-            <img draggable="false" data-piece="bishop" src="img/white_bishop.svg">
-        </section>
-
-        <!-- fonte das imagens: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
+        <!-- fonte das peças: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces -->
         <main tabindex="0">
 
             <section id="game-over">
@@ -106,27 +85,31 @@
                 </div>
             </section>
 
-            <span id="color-black"></span>
-            <p id="black-player"></p>
-            <div id="choose-black-player">
-                <select>
-                    <option class="option" value="you">you</option>
-                    <option class="option" value="cumbuca (2000)">cumbuca</option>
-                    <option class="option" value="stockdog (2000)">stockdog</option>
-                    <option class="option" value="random engine (???)">random engine</option>
-                </select>
-            </div>
+            <section id="black">
+                <span></span>
+                <div><p></p></div>
+                <div>
+                    <select>
+                        <option class="option" value="you">you</option>
+                        <option class="option" value="cumbuca (2000)">cumbuca</option>
+                        <option class="option" value="stockdog (2000)">stockdog</option>
+                        <option class="option" value="random engine (???)">random engine</option>
+                    </select>
+                </div>
+            </section>
 
-            <span id="color-white"></span>
-            <p id="white-player"></p>
-            <div id="choose-white-player">
-                <select>
-                    <option class="option" value="you">you</option>
-                    <option class="option" value="cumbuca (2000)">cumbuca</option>
-                    <option class="option" value="stockdog (2000)">stockdog</option>
-                    <option class="option" value="random engine (???)">random engine</option>
-                </select>
-            </div>
+            <section id="white">
+                <span></span>
+                <div><p></p></div>
+                <div>
+                    <select>
+                        <option class="option" value="you">you</option>
+                        <option class="option" value="cumbuca (2000)">cumbuca</option>
+                        <option class="option" value="stockdog (2000)">stockdog</option>
+                        <option class="option" value="random engine (???)">random engine</option>
+                    </select>
+                </div>
+            </section>
 
 
             <section id="play">
@@ -134,11 +117,29 @@
                     <div class="opcoes">Play</div>
                 </div>
             </section>
+
+            <img src="img/circle_arrow_icon.png" id="flip-board" />
+            <img src="img/flag_icon.png" class="reset" id="resign" />
             
             <div id="tabuleiro-e-pecas">
                 <canvas id="board" width="2400" height="2400"></canvas>
 
                 <section id="pieces-move">
+
+                    <section id="black-promotion">
+                        <img draggable="false" data-piece="queen" src="img/black_queen.svg">
+                        <img draggable="false" data-piece="knight" src="img/black_knight.svg">
+                        <img draggable="false" data-piece="rook" src="img/black_rook.svg">
+                        <img draggable="false" data-piece="bishop" src="img/black_bishop.svg">
+                    </section>
+            
+                    <section id="white-promotion">
+                        <img draggable="false" data-piece="queen" src="img/white_queen.svg">
+                        <img draggable="false" data-piece="knight" src="img/white_knight.svg">
+                        <img draggable="false" data-piece="rook" src="img/white_rook.svg">
+                        <img draggable="false" data-piece="bishop" src="img/white_bishop.svg">
+                    </section>
+
                     <div data-square="a1"><img draggable="false" class="piece" src="img/white_rook.svg"></div>
                     <div data-square="b1"><img draggable="false" class="piece" src="img/white_knight.svg"></div>
                     <div data-square="c1"><img draggable="false" class="piece" src="img/white_bishop.svg"></div>

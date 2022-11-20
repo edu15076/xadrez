@@ -60,42 +60,73 @@ for (const tema of temas) {
     tema.addEventListener('click', fechaConfiguracoes);
 }
 
-let piecesUser = 'white';
+let colorScreening = 'white';
+let actualColor = 'white';
+let pvp = false;
+let flipBoardEl = document.getElementById('flip-board');
 let chooseColorButtons = document.querySelectorAll('#choose-color span');
+let whiteEl = document.getElementById('white');
+let blackEl = document.getElementById('black');
 
-function rotateBoard(choosedColor) {
-    let newColor = choosedColor.dataset.color;
-    if (newColor != piecesUser) {
-        squares.forEach(squareEl => {
-            let left = 87.5 - 100 * squareEl.offsetLeft / piecesMoveEl.clientHeight;
-            let top = 87.5 - 100 * squareEl.offsetTop / piecesMoveEl.clientHeight;
-            
-            left = left % 1 === 0.5 ? left : roundToHalf(left);
-            top = top % 1 === 0.5 ? top : roundToHalf(top);
-
-            squareEl.style.left = `${left}%`;
-            squareEl.style.top = `${top}%`;
-        });
-        piecesUser = newColor;
-    }
+function playerViewTop(el) {
+    el.style.marginBottom = getComputedStyle(el).marginTop;
+    el.style.marginTop = '0';
 }
 
-chooseColorButtons.forEach(choosedColor => {
-    choosedColor.onclick = () => {rotateBoard(choosedColor)};
-});
+function playerViewBottom(el) {
+    el.style.marginTop = getComputedStyle(el).marginBottom;
+    el.style.marginBottom = '0';
+}
+
+function rotateBoard() {
+    squares.forEach(squareEl => {
+        let left = 87.5 - 100 * squareEl.offsetLeft / piecesMoveEl.clientHeight;
+        let top = 87.5 - 100 * squareEl.offsetTop / piecesMoveEl.clientHeight;
+        
+        left = left % 1 === 0.5 ? left : roundToHalf(left);
+        top = top % 1 === 0.5 ? top : roundToHalf(top);
+
+        squareEl.style.left = `${left}%`;
+        squareEl.style.top = `${top}%`;
+    });
+
+    actualColor = actualColor === 'white' ? 'black' : 'white';
+
+    if (actualColor === 'white') {
+        whiteEl.style.gridArea = '3 / 2 / 4 / 3';
+        blackEl.style.gridArea = '1 / 2 / 2 / 3';
+        whiteEl.style.alignItems = 'start';
+        blackEl.style.alignItems = 'end';
+
+        document.querySelectorAll('#white > *').forEach(playerViewBottom);
+        document.querySelectorAll('#black > *').forEach(playerViewTop);
+    } else {
+        whiteEl.style.gridArea = '1 / 2 / 2 / 3';
+        blackEl.style.gridArea = '3 / 2 / 4 / 3';
+        whiteEl.style.alignItems = 'end';
+        blackEl.style.alignItems = 'start';
+
+        document.querySelectorAll('#white > *').forEach(playerViewTop);
+        document.querySelectorAll('#black > *').forEach(playerViewBottom);
+    }
+
+    if (pvp || delay) colorScreening = colorScreening === 'white' ? 'black' : 'white';
+}
+
+flipBoardEl.onclick = rotateBoard;
 
 let playEl = document.querySelector('#play .opcoes');
-let chooseBlackEl = document.querySelector('#choose-black-player');
-let chooseWhiteEl = document.querySelector('#choose-white-player');
-let blackPlayerEl = document.getElementById('black-player');
-let whitePlayerEl = document.getElementById('white-player');
+let chooseBlackEl = blackEl.querySelector('div:last-of-type');
+let chooseWhiteEl = whiteEl.querySelector('div:last-of-type');
+let blackPlayerEl = blackEl.querySelector('p');
+let whitePlayerEl = whiteEl.querySelector('p');
 
 playEl.onclick = () => {
     let valBlack = chooseBlackEl.querySelector('select').value;
     let valWhite = chooseWhiteEl.querySelector('select').value;
 
-    blackPlayerEl.style.display = 'inline';
-    whitePlayerEl.style.display = 'inline';
+    blackEl.querySelector('div:first-of-type').style.display = 'flex';
+    whiteEl.querySelector('div:first-of-type').style.display = 'flex';
     blackPlayerEl.innerHTML = valBlack;
     whitePlayerEl.innerHTML = valWhite;
     chooseBlackEl.style.display = 'none';
@@ -103,6 +134,8 @@ playEl.onclick = () => {
     document.getElementById('play').style.display = 'none';
 
     let enginesPlaying = 2;
+
+    let userColor = 'black';
 
     switch (valBlack) {
         case 'you':
@@ -124,6 +157,7 @@ playEl.onclick = () => {
         case 'you':
             fnWhite = () => null;
             enginesPlaying--;
+            userColor = 'white';
             break;
         case 'cumbuca (2000)':
             fnWhite = () => null;
@@ -137,7 +171,13 @@ playEl.onclick = () => {
     }
 
     delay = enginesPlaying === 2;
+    pvp = enginesPlaying === 0;
+    colorScreening = actualColor;
 
+    if (enginesPlaying === 1)
+        colorScreening = userColor;
+
+    gameOn = true;
     flowControl();
 }
 

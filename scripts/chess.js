@@ -301,6 +301,8 @@ function getMate() {
     return true;
 }
 
+
+
 let movesDrawn = [];
 let piecesMoveEl = document.getElementById('pieces-move');
 
@@ -361,8 +363,8 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
     lastParentToMove = squares[boardToSquares(x, y)];
     lastFinalParent = squares[boardToSquares(xToMove, yToMove)];
-    lastFinalParent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
-    lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+    lastFinalParent.style.backgroundColor = 'var(--move-background)';
+    lastParentToMove.style.backgroundColor = 'var(--move-background)';
     lastParent = undefined;
     
     let colorKing = turn === 'white' ? whiteKing : blackKing;
@@ -370,7 +372,7 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     if (board[colorKing.x][colorKing.y].piece.moves().length === 0) {
         if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && getMate()) {
             let gameResultEl = gameOverEl.querySelector('h2');
-            let resultColor = opositeColor === piecesUser ? 'greenyellow' : 'red';
+            let resultColor = opositeColor === colorScreening ? 'greenyellow' : 'red';
 
             gameOverEl.querySelector('p').innerHTML = 'by checkmate';
             gameResultEl.innerHTML = `${opositeColor.charAt(0).toUpperCase()+opositeColor.slice(1)} won`;
@@ -379,9 +381,11 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
             gameOverEl.style.zIndex = '50';
             gameOverEl.style.opacity = '100';
 
+            squares[boardToSquares(colorKing.x, colorKing.y)].style.backgroundColor = 'red';
+
             gameOn = false;
 
-            exibeTabuleiroFinal();
+            fnWhite = fnBlack = null;
         }
     }
     
@@ -398,6 +402,8 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
  * @param {*} piece The name of a pice
  */
 function moveAtBoard(startingPosition, finalPosition, piece) {
+    if (!gameOn) return;
+
     if (piece === 'pawn' && enPassant != null && enPassant[0] === finalPosition[0] && enPassant[1] === finalPosition[1]) {
         removePiece(board[finalPosition[0]][startingPosition[1]].piece);
         board[finalPosition[0]][startingPosition[1]].piece = null;
@@ -451,7 +457,9 @@ function moveAtBoard(startingPosition, finalPosition, piece) {
     turn = turn === 'white' ? 'black' : 'white';
 
     finalStepAtBoard(startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1]);
-    if (gameOn) flowControl();
+    
+    if (gameOn) flowControl(); 
+    else exibeTabuleiroFinal();
 }
 
 /** Let a `piece` move. */
@@ -466,18 +474,18 @@ function eventListenersForMove(pieceEl) {
         let finalParent = squares[boardToSquares(xToMove, yToMove)];
 
         function positionPromotionDiv() {
-            if (pawnColor != piecesUser) {
+            if (pawnColor != actualColor) {
                 promotionEl.style.flexDirection = 'column-reverse';
-                promotionEl.style.top = `${piecesMoveEl.clientHeight / 2 + getDistance(piecesMoveEl)[1]}px`;
+                promotionEl.style.top = `${piecesMoveEl.clientHeight / 2}px`;
             } else {
                 promotionEl.style.flexDirection = 'column';
-                promotionEl.style.top = `${getDistance(piecesMoveEl)[1] - 0.5}px`;
+                promotionEl.style.top = '0px';
             }
 
-            if (piecesUser === 'black')
-                promotionEl.style.left = `${(7 - xToMove) * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0]}px`;
+            if (actualColor === 'black')
+                promotionEl.style.left = `${(7 - xToMove) * piecesMoveEl.clientHeight / 8}px`;
             else
-                promotionEl.style.left = `${xToMove * piecesMoveEl.clientHeight / 8 + getDistance(piecesMoveEl)[0]}px`;
+                promotionEl.style.left = `${xToMove * piecesMoveEl.clientHeight / 8}px`;
         }
         positionPromotionDiv();
 
@@ -508,55 +516,17 @@ function eventListenersForMove(pieceEl) {
         
         promotionPieceEl.forEach(pieceToSelect => {
             pieceToSelect.onclick = () => {
-                if (board[xToMove][yToMove].piece != null)
-                    removePiece(board[xToMove][yToMove].piece);
-
-                switch (pieceToSelect.dataset.piece) {
-                    case 'queen':
-                        board[xToMove][yToMove].piece = Object.create(queen);
-                        break;
-                    case 'knight':
-                        board[xToMove][yToMove].piece = Object.create(knight);
-                        break;
-                    case 'rook':
-                        board[xToMove][yToMove].piece = Object.create(rook);
-                        board[xToMove][yToMove].piece.moved = true;
-                        break;
-                    default:
-                        board[xToMove][yToMove].piece = Object.create(bishop);
-                }
-
-                board[xToMove][yToMove].piece.x = xToMove;
-                board[xToMove][yToMove].piece.y = yToMove;
-                board[xToMove][yToMove].piece.color = pawnColor;
-
-                substitutePiece(board[x][y].piece, board[xToMove][yToMove].piece);
-
-                board[x][y].piece = null;
-                
-                let newPiece = document.createElement('img');
-                newPiece.src = pieceToSelect.src;
-                newPiece.classList.add('piece');
-                newPiece.draggable = false;
-                [newPiece].forEach(eventListenersForMove);
-
-                finalParent.appendChild(newPiece);
-                getAttacks();
-                turn = turn === 'white' ? 'black' : 'white';
                 promotionEl.style.opacity = '0';
                 promotionEl.style.zIndex = '-100';
                 pieceToSelect.onclick = null;
 
-                removeMoves(movesDrawn);
-                if (gameOn) flowControl();
+                moveAtBoard([x, y], [xToMove, yToMove], pieceToSelect.dataset.piece);
             }
         });
         finalStepAtBoard(x, y, xToMove, yToMove);
     }
 
     function movementStart(parent, x, y) {
-        bodyEl.style.overflow = 'hidden';
-
         parent = pieceEl.closest('[data-square]');
         x = parent.dataset.square.charCodeAt(0) - 97;
         y = 8 - parent.dataset.square[1];
@@ -564,9 +534,9 @@ function eventListenersForMove(pieceEl) {
         
         if (board[x][y].piece.color === turn) {
             if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
-            parent.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+            parent.style.backgroundColor = 'var(--move-background)';
             lastParent = parent;
-            if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'rgba(255, 217, 91, .8)';
+            if (lastParentToMove != undefined) lastParentToMove.style.backgroundColor = 'var(--move-background)';
 
             movesDrawn = board[x][y].piece.moves();
             drawMoves(movesDrawn);
@@ -689,7 +659,6 @@ function eventListenersForMove(pieceEl) {
 
         bodyEl.onmouseup = function(e) {
             bodyEl.removeEventListener('mousemove', movePieceAtBoard);
-            bodyEl.style.overflow = 'auto';
 
             pieceEl.style.top = '0';
             pieceEl.style.left = '0';
@@ -780,8 +749,9 @@ resetEls.forEach(resetEl => {
     resetEl.onclick = () => {
         whitePieces = [];
         blackPieces = [];
-        originalBoardSettings();
+        gameOn = false;
         turn = 'white';
+        originalBoardSettings();
         
         for (let i = 0; i < 64; i++) {
             squares[i].style.backgroundColor = 'transparent';
@@ -802,6 +772,12 @@ resetEls.forEach(resetEl => {
         gameOverEl.style.zIndex = '-100';
         firstMoved = false;
         lastParent = lastParentToMove = lastFinalParent = undefined;
+
+        blackEl.querySelector('div:first-of-type').style.display = 'none';
+        whiteEl.querySelector('div:first-of-type').style.display = 'none';
+        chooseBlackEl.style.display = 'grid';
+        chooseWhiteEl.style.display = 'grid';
+        document.getElementById('play').style.display = 'flex';
     }
 });
 
