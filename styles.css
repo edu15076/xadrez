@@ -159,6 +159,22 @@ main>h2 {
     width: 26.25vh;
 }
 
+.piece,
+.piece-move,
+#pecas-resultado,
+#flip-board,
+#resign {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
 #pecas-resultado {
     border-radius: 1vh;
 }
