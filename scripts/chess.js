@@ -183,6 +183,16 @@ let pieces = document.querySelectorAll('.piece');
 let bodyEl = document.querySelector('body');
 let squares = document.querySelectorAll('#pieces-move div');
 
+const sideCtx = 150;
+
+let circleMove = new Path2D();
+let circleCapture = new Path2D();
+
+circleMove.arc(sideCtx / 2, sideCtx / 2, sideCtx / 5, 0, 2 * Math.PI);
+
+circleCapture.arc(sideCtx / 2, sideCtx / 2, sideCtx / 2, 0, 2 * Math.PI, true);
+circleCapture.arc(sideCtx / 2, sideCtx / 2, sideCtx * 2 / 5, 0, 2 * Math.PI, false);
+
 /**
  * Draw the possible `piece` moves on the board.
  * 
@@ -192,25 +202,18 @@ function drawMoves(moves) {
     for (let move of moves) {
         let canvasEl = document.createElement('canvas');
         let side = squares[0].offsetWidth;
-        
-        canvasEl.width = 300;
-        canvasEl.height = 300;
 
         canvasEl.style.width = `${side}px`;
         canvasEl.style.height = `${side}px`;
+
+        canvasEl.width = sideCtx;
+        canvasEl.height = sideCtx;
         
         let ctx = canvasEl.getContext('2d');
-        let circle = new Path2D();
         ctx.fillStyle = '#2e2e2e5a';
         
-        if (squares[move[0] - 8 * move[1] + 56].querySelector(':first-child') === null) {
-            circle.arc(150, 150, 60, 0, 2 * Math.PI);
-            ctx.fill(circle);
-        } else {
-            circle.arc(150, 150, 150, 0, 2 * Math.PI, true);
-            circle.arc(150, 150, 120, 0, 2 * Math.PI, false);
-            ctx.fill(circle);
-        }
+        ctx.fill(squares[move[0] - 8 * move[1] + 56].querySelector(':first-child') === null && (enPassant === null || move[0] != enPassant[0] || move[1] != enPassant[1]) ? circleMove : circleCapture);
+
         squares[move[0] - 8 * move[1] + 56].appendChild(canvasEl);
     }
 }
@@ -524,7 +527,7 @@ function eventListenersForMove(pieceEl) {
                 promotionEl.style.top = `${piecesMoveEl.clientHeight / 2}px`;
             } else {
                 promotionEl.style.flexDirection = 'column';
-                promotionEl.style.top = '0px';
+                promotionEl.style.top = '0';
             }
 
             if (actualColor === 'black')
@@ -551,9 +554,12 @@ function eventListenersForMove(pieceEl) {
 
                 parent.appendChild(parentS);
                 if (finalParentS != null) finalParent.appendChild(finalParentS);
-                lastFinalParent.style.backgroundColor = 'transparent';
-                lastParentToMove.style.backgroundColor = 'transparent';
-                lastParent = lastParentToMove = lastFinalParent = undefined;
+
+                if (finalParent.dataset.square != lastParentToMove.dataset.square) finalParent.style.backgroundColor = 'transparent';
+                
+                parent.style.backgroundColor = 'transparent';
+                lastFinalParent.style.backgroundColor = 'var(--move-background)';
+                lastParent = undefined;
             }
             bodyEl.onclick = null;
         }
@@ -568,7 +574,12 @@ function eventListenersForMove(pieceEl) {
                 moveAtBoard([x, y], [xToMove, yToMove], pieceToSelect.dataset.piece, finalParentS != null);
             }
         });
-        finalStepAtBoard(x, y, xToMove, yToMove);
+        removeMoves(movesDrawn);
+        movesDrawn = [];
+
+        finalParent.style.backgroundColor = 'var(--move-background)';
+        parent.style.backgroundColor = 'var(--move-background)';
+        lastParent = undefined;
     }
 
     function movementStart(parent, x, y) {
@@ -619,13 +630,15 @@ function eventListenersForMove(pieceEl) {
                         moveAtBoard([x, y], [xToMove, yToMove], board[x][y].piece.piece, false, movedByClick);
                     if (pieceEl != undefined)
                         pieceEl.style.zIndex = '1';
+                    movedByClick = false;
+
                     return true;
                 } else if (movedByClick && x != xToMove && y != yToMove) {
                     removeMoves(movesDrawn);
                     movesDrawn = [];
                 }
         if (pieceEl != undefined)
-                pieceEl.style.zIndex = '1';
+            pieceEl.style.zIndex = '1';
         movedByClick = false;
 
         return false;

@@ -35,7 +35,7 @@ function drawBoard() {
         
     if (boardEl.getContext) {
         let boardCtx = boardEl.getContext('2d', { alpha: false });
-            
+        
         for (let i = 0; i < 8; i++)
         for (let j = 0; j < 8; j++) {
             boardCtx.fillStyle = (j + i) % 2 == 0 ? lightSquare : darkSquare;
