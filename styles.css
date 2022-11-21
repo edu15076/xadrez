@@ -78,6 +78,7 @@ main>h2 {
     width: 72vh;
     height: 72vh;
     border-radius: 1vh;
+    image-rendering: pixelated;
 }
 
 #pieces-move {
@@ -160,6 +161,16 @@ main>h2 {
 
 #pecas-resultado {
     border-radius: 1vh;
+}
+
+.piece-move {
+    position: absolute;
+    height: 100%;
+    z-index: 10;
+    user-select: none;
+    top: 0;
+    left: 0;
+    transition: all 75ms linear;
 }
 
 .piece {

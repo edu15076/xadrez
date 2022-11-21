@@ -16,7 +16,7 @@ function randEngine() {
     let randMovesOfPiece = moves[(Math.floor(Math.random() * 100)) % moves.length];
     let piece = piecesTurn[randNum].piece === 'pawn' && (randMovesOfPiece[1] === 0 || randMovesOfPiece[1] === 7) ? possibePromotions[(Math.floor(Math.random() * 100)) % 4] : piecesTurn[randNum].piece;
 
-    moveAtBoard([piecesTurn[randNum].x, piecesTurn[randNum].y], randMovesOfPiece, piece);
+    moveAtBoard([piecesTurn[randNum].x, piecesTurn[randNum].y], randMovesOfPiece, piece, false, true);
 }
 
 let fnWhite, fnBlack;

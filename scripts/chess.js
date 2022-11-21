@@ -405,7 +405,7 @@ let moveSound = new Audio('sounds/move-self.mp3');
  * @param {*} piece The name of a piece
  * @return return if the `gameOn` is set to false
  */
-function moveAtBoard(startingPosition, finalPosition, piece, capture=false) {
+function moveAtBoard(startingPosition, finalPosition, piece, capture=false, click=false) {
     if (!gameOn) return;
 
     if (piece === 'pawn' && enPassant != null && enPassant[0] === finalPosition[0] && enPassant[1] === finalPosition[1]) {
@@ -427,9 +427,15 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false) {
         board[xRookToMove][startingPosition[1]].piece.x = xRookToMove;
         board[xRook][startingPosition[1]].piece = null;
         
-        squares[boardToSquares(xRookToMove, startingPosition[1])].appendChild(squares[boardToSquares(xRook, startingPosition[1])].querySelector('img'));
+        let cpyRook = squares[boardToSquares(xRook, startingPosition[1])].querySelector('img');
         squares[boardToSquares(xRook, startingPosition[1])].innerHTML = '';
-        [squares[boardToSquares(xRookToMove, startingPosition[1])].querySelector('img')].forEach(eventListenersForMove);
+
+        translatePiece('rook', turn, [xRook, startingPosition[1]], [xRookToMove, finalPosition[1]]);
+
+        setTimeout( () => {
+            squares[boardToSquares(xRookToMove, startingPosition[1])].appendChild(cpyRook);
+            [squares[boardToSquares(xRookToMove, startingPosition[1])].querySelector('img')].forEach(eventListenersForMove);
+        }, 75);
     }
 
     if (board[finalPosition[0]][finalPosition[1]].piece != null)
@@ -459,13 +465,25 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false) {
     if (!capture)
         capture = squares[boardToSquares(finalPosition[0], finalPosition[1])].getElementsByTagName('img').length > 0;
     
-    squares[boardToSquares(finalPosition[0], finalPosition[1])].innerHTML = '';
-    squares[boardToSquares(finalPosition[0], finalPosition[1])].appendChild(newPiece);
-
-    if (capture)
-        captureSound.play(); 
-    else
+        
+    if (capture) {
+        captureSound.load();
+        captureSound.play();
+    } else {
+        moveSound.load();
         moveSound.play();
+    }
+    
+    if (click) {
+        translatePiece(piece, turn, startingPosition, finalPosition);
+        setTimeout(() => {
+            squares[boardToSquares(finalPosition[0], finalPosition[1])].innerHTML = '';
+            squares[boardToSquares(finalPosition[0], finalPosition[1])].appendChild(newPiece);
+        }, 75);
+    } else {
+        squares[boardToSquares(finalPosition[0], finalPosition[1])].innerHTML = '';
+        squares[boardToSquares(finalPosition[0], finalPosition[1])].appendChild(newPiece);
+    }
 
     getAttacks();
     turn = turn === 'white' ? 'black' : 'white';
@@ -474,6 +492,19 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false) {
     
     if (gameOn) flowControl(); 
     else exibeTabuleiroFinal();
+}
+
+function translatePiece(piece, color, startingPosition, finalPosition) {
+    let pieceMove = document.createElement('img');
+    pieceMove.src = `img/${color}_${piece}.svg`;
+    pieceMove.draggable = false;
+    pieceMove.classList.add('piece-move');
+
+    squares[boardToSquares(startingPosition[0], startingPosition[1])].appendChild(pieceMove);
+    pieceMove.style.left = `${pieceMove.clientHeight * (finalPosition[0] - startingPosition[0])}px`;
+    pieceMove.style.top = `${pieceMove.clientHeight * (finalPosition[1] - startingPosition[1])}px`;
+
+    setTimeout(() => { squares[boardToSquares(startingPosition[0], startingPosition[1])].removeChild(pieceMove); }, 75);
 }
 
 /** Let a `piece` move. */
@@ -585,7 +616,7 @@ function eventListenersForMove(pieceEl) {
                     if (board[x][y].piece.piece === 'pawn' && (yToMove === 0 || yToMove === 7))
                         promotePawn(x, y, xToMove, yToMove);
                     else
-                        moveAtBoard([x, y], [xToMove, yToMove], board[x][y].piece.piece);
+                        moveAtBoard([x, y], [xToMove, yToMove], board[x][y].piece.piece, false, movedByClick);
                     if (pieceEl != undefined)
                         pieceEl.style.zIndex = '1';
                     return true;
@@ -714,7 +745,7 @@ function eventListenersForMove(pieceEl) {
             movesDrawn = [];
         }
 
-        setTimeout(() => { timerVerify = true; }, 85);
+        setTimeout(() => { timerVerify = true; }, 75);
     });
 
     pieceEl.addEventListener('touchmove', movePieceAtBoardTouch);
@@ -765,6 +796,7 @@ resetEls.forEach(resetEl => {
         blackPieces = [];
         gameOn = false;
         turn = 'white';
+        enPassant = null;
         originalBoardSettings();
         
         for (let i = 0; i < 64; i++) {
