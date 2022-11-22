@@ -622,63 +622,130 @@ nav {
 /*-----------------------------------*/
 
 #login {
-    position: absolute;
-    left: 71vh;
-    top: 9vh;
-    height: 65vh;
-    width: 42.7vh;
-    background-color: var(--darker-color);
-    padding: 10.3vh;
-    border-radius: 2.8vh;
+    display:block;
+    height: 35vh;
+    width: 30vh;
+    background-color: white;
+    padding: 2vh;
+    border-radius: .8vh;
     z-index: 300;
 }
 
 #login h2 {
-    font-size: 6.5vh;
+    color: black;
+    font-size: 3.5vh;
 }
 
-#login input {
+#login p {
+    color: black;
+    font-size: 1.6vh;
+    margin-top: 2vh;
+    cursor: pointer;
+    user-select: none;
+}
+
+#login-topo p{
+    font-size: 3vh;
+    margin-top: 0;
+}
+
+#login-topo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.input-login {
     height: 4vh;
-    width: 37vh;
-    border-radius: .75vh;
-    color: white;
-    background-color: rgb(65, 62, 62);
+    width: 25vh;
+    border-radius: .5vh;
+    border: .05vw solid black;
+    color: black;
+    background-color: white;
+    font-size: 1.9vh;
 }
 
 #login input:focus {
     outline: 0.3vh solid white;
 }
 
-#login label:first-of-type {
-    margin: 5vh 0 3vh 3vh;
-}
-
-#login label:nth-of-type(2) {
-    margin: 0 0 6vh 3vh;
-}
-
 ::placeholder {
-    font-size: 2.3vh;
+    font-size: 1.7vh;
+    color: black;
+    opacity: .3;
+}
+
+#botao-login, #botao-confirmar {
+    width: 25vh;
+    height: 4vh;
     color: white;
-}
-
-#login h2:nth-of-type(2) {
-    position: relative;
-    top: 10vh;
-}
-
-#botao-login, #botao-nova-conta, #botao-confirmar {
-    position: absolute;
-    left: 20vh;
-    width: 24vh;
-    height: 5vh;
-    color: var(--darker-color);
-    font-size: 3.2vh;
+    font-size: 2.1vh;
     border-radius: 0.5vh;
+    background-color: black;
 }
 
-#botao-nova-conta {
-    top: 60vh;
+#login p button {
+    color: blue;
+    background-color: white;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+#login-inicial {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 90%;
+}
+
+#login-existente {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+}
+
+#logon {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 30vh;
+    margin-top: 1.5vh;
+}
+
+#logon button {
+    margin-top: 5vh;
+}
+
+#logon-input {
+    height: 22vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 100;
+}
+
+#centralizing {
+    position: absolute;
+    display: flex;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 .botoes {
@@ -688,28 +755,6 @@ nav {
 .botoes:hover {
     background-color: rgb(218, 216, 216);
     cursor: pointer;
-}
-
-#usuario-novo, #idade-nova, #senha-nova, #senha-confirmacao, #torre-animacao {
-    position: fixed;
-    transition: 550ms all ease;
-}
-
-#usuario-novo {
-    left: -100vh;
-}
-
-#idade-nova {
-    right: -100vh;
-}
-
-#senha-nova, #senha-confirmacao {
-    top: -100vh;
-}
-
-#botao-confirmar {
-    position: fixed;
-    bottom: -100vh;
 }
 
 /*-----------------pagina desenvolvedores------------------------*/
@@ -1044,5 +1089,64 @@ nav {
     #black-promotion img,
     #white-promotion img {
         height: 12vw;
+    }
+
+    #login {
+        height: 46.67vw;
+        width: 40vw;
+        padding: 2.67vw;
+        border-radius: 1.07vw;
+    }
+    
+    #login h2 {
+        font-size: 4.67vw;
+    }
+    
+    #login p {
+        font-size: 2.10vw;
+        margin-top: 2.67vw;
+    }
+    
+    #login-topo p{
+        font-size: 4vw;
+    }
+    
+    .input-login {
+        height: 5.3vw;
+        width: 33vw;
+        border-radius: .67vw;
+        font-size: 2.5vw;
+    }
+    
+    #login input:focus {
+        outline: .4vw solid white;
+    }
+    
+    ::placeholder {
+        font-size: 2.27vw;
+    }
+    
+    #botao-login, #botao-confirmar {
+        width: 33.3vw;
+        height: 5.3vw;
+        font-size: 2.8vw;
+        border-radius: .67vw;
+    }
+
+    #login-existente {
+        height: 13.3vw;
+    }
+    
+    #logon {
+        height: 40vw;
+        margin-top: 2vw;
+    }
+    
+    #logon button {
+        margin-top: 6.67vw;
+    }
+    
+    #logon-input {
+        height: 29.3vw;
     }
 }
