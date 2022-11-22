@@ -214,31 +214,32 @@
 
         </main>
 
-        <div id="login">
-            <h2>Login</h2>
-            <label> <!-- colocar icone -->
-                <input type="text" placeholder="Usuário" minlength="5" maxlength="20" id="nome-logar">
-            </label>
-            <label> <!-- colocar icone -->
-                <input type="password" placeholder="Senha" minlength="8" maxlength="25" id="senha-logar">
-            </label>
-            <button id="botao-login" class="sumir botoes" type="submit">Login!</button>
-            <h2>Primeira vez?</h2>
-            <button id="botao-nova-conta" class="botoes">Criar conta!</button>
-            <label id="usuario-novo"> <!-- colocar icone -->
-                <input type="text" placeholder="Nome do Usuário" minlength="5" maxlength="20" id="novo-nome">
-            </label>
-            <label id="idade-nova"> <!-- colocar icone -->
-                <input type="number" placeholder="Idade" step="1" id="idade">
-            </label>
-            <label id="senha-nova"> <!-- colocar icone -->
-                <input type="password" placeholder="Defina a Senha" minlength="8" maxlength="25" id="nova-senha">
-            </label>
-            <img src="img/white_rook.svg" id="torre-animacao">
-            <label id="senha-confirmacao"> <!-- colocar icone -->
-                <input type="password" placeholder="Confirme a senha aqui" minlength="8" maxlength="25">
-            </label>
-            <button id="botao-confirmar" class="sumir botoes" type="submit">Criar!</button>
+        <div id="cover"></div>
+
+        <div id="centralizing">
+            <div id="login">
+                <div id="login-topo" >
+                    <h2>Login</h2>
+                    <p></p>
+                </div>
+                <div id="login-inicial">
+                    <div id="login-existente">
+                        <input type="text" placeholder="User" minlength="5" maxlength="20" id="nome-logar" class="input-login">
+                        <input type="password" placeholder="Password" minlength="8" maxlength="25" id="senha-logar" class="input-login">
+                    </div>
+                    <button id="botao-login" class="botoes" type="submit">Login</button>
+                    <p>No account? <button>Join</button> us!</p>
+                </div>
+                <div id="logon">
+                    <div id="logon-input">
+                        <input type="text" placeholder="User name" minlength="5" maxlength="20" id="novo-nome" class="input-login">
+                        <input type="email" placeholder="Email" step="1" id="email" class="input-login">
+                        <input type="password" placeholder="New password" minlength="8" maxlength="25" id="nova-senha" class="input-login">
+                        <input type="password" placeholder="Confirm password" minlength="8" maxlength="25" class="input-login" id="senha-confirmacao">
+                    </div>
+                    <button id="botao-confirmar" class="botoes" type="submit">Create</button>
+                </div>
+            </div>
         </div>
 
         <script src="scripts/cria_tabuleiro.js"></script>
