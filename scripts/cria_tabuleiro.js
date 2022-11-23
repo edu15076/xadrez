@@ -39,7 +39,7 @@ function drawBoard() {
         for (let i = 0; i < 8; i++)
         for (let j = 0; j < 8; j++) {
             boardCtx.fillStyle = (j + i) % 2 == 0 ? lightSquare : darkSquare;
-            boardCtx.fillRect(i, j, 1, 1);
+            boardCtx.fillRect(i * 130, j * 130, 130, 130);
         }
     }
 }
