@@ -467,6 +467,17 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
     } else
         enPassant = null;
 
+    if (!capture)
+        capture = squares[boardToSquares(finalPosition[0], finalPosition[1])].getElementsByTagName('img').length > 0;
+    
+    if (capture) {
+        captureSound.load();
+        captureSound.play();
+    } else {
+        moveSound.load();
+        moveSound.play();
+    }
+
     if (piece === 'king' && Math.abs(startingPosition[0]-finalPosition[0]) === 2) {
         let xRook = startingPosition[0]-finalPosition[0] > 0 ? 0 : 7;
         let xRookToMove = startingPosition[0]-finalPosition[0] > 0 ? 3 : 5;
@@ -509,18 +520,6 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
     [newPiece].forEach(eventListenersForMove);
 
     squares[boardToSquares(startingPosition[0], startingPosition[1])].innerHTML = '';
-
-    if (!capture)
-        capture = squares[boardToSquares(finalPosition[0], finalPosition[1])].getElementsByTagName('img').length > 0;
-    
-        
-    if (capture) {
-        captureSound.load();
-        captureSound.play();
-    } else {
-        moveSound.load();
-        moveSound.play();
-    }
     
     if (click) {
         translatePiece(piece, turn, startingPosition, finalPosition);
