@@ -289,13 +289,8 @@ function getCheck(kingX, kingY) {
     return false;
 }
 
-/**
- * Check whether the `king` of the current `turn` is mated.
- * 
- * @returns `true` if the `king` from the current `turn` is mated or `false` if it is not.
- */
-function getMate() {
-    let movePieces = turn === 'white' ? whitePieces : blackPieces;
+function getStalemate(color) {
+    let movePieces = color === 'white' ? whitePieces : blackPieces;
 
     for (let piece of movePieces)
         if (piece.moves().length != 0)
@@ -304,7 +299,15 @@ function getMate() {
     return true;
 }
 
-
+/**
+ * Check whether the `king` of the current `turn` is mated.
+ * 
+ * @returns `true` if the `king` from the current `turn` is mated or `false` if it is not.
+ */
+function getMate(kingX, kingY, color) {
+    let opositeColor = color === 'white' ? 'black' : 'white';
+    return board[kingX][kingY][`${opositeColor}Attack`] && getStalemate(color);
+}
 
 let movesDrawn = [];
 let piecesMoveEl = document.getElementById('pieces-move');
@@ -350,7 +353,7 @@ let lastFinalParent;
 /**
  * @return The board x, y cordinates to the `squares` cordinates.
  */
- function boardToSquares(x, y) {
+function boardToSquares(x, y) {
     return x - 8 * y + 56;
 }
 
@@ -373,7 +376,8 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     let colorKing = turn === 'white' ? whiteKing : blackKing;
     let opositeColor = turn === 'white' ? 'black' : 'white';
     if (board[colorKing.x][colorKing.y].piece.moves().length === 0) {
-        if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && getMate()) {
+        let areThereAnyValidMoves = getStalemate(turn);
+        if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && areThereAnyValidMoves) {
             let gameResultEl = gameOverEl.querySelector('h2');
             let resultColor = opositeColor === colorScreening ? 'greenyellow' : 'red';
 
@@ -387,7 +391,48 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
             squares[boardToSquares(colorKing.x, colorKing.y)].style.backgroundColor = 'red';
 
             gameOn = false;
+            fnWhite = fnBlack = null;
+        } else if (areThereAnyValidMoves) {
+            let gameResultEl = gameOverEl.querySelector('h2');
 
+            gameOverEl.querySelector('p').innerHTML = 'by stalemate';
+            gameResultEl.innerHTML = 'Draw';
+            gameResultEl.style.color = 'lightgray';
+            gameResultEl.style.filter = 'drop-shadow(0 0 2.5vh lightgray)';
+            gameOverEl.style.zIndex = '50';
+            gameOverEl.style.opacity = '100';
+
+            gameOn = false;
+            fnWhite = fnBlack = null;
+        }
+    }
+
+    if (whitePieces.length <= 2 && blackPieces.length <= 2) {
+        let havePiece = false;
+        for (let i = 0; i < 2; i++) {
+            if (whitePieces[i % whitePieces.length].piece === 'pawn' ||
+                whitePieces[i % whitePieces.length].piece === 'rook' ||
+                whitePieces[i % whitePieces.length].piece === 'queen'||
+                blackPieces[i % blackPieces.length].piece === 'pawn' ||
+                blackPieces[i % blackPieces.length].piece === 'rook' ||
+                blackPieces[i % blackPieces.length].piece === 'queen') {
+                
+                havePiece = true;
+                break;
+            }
+
+        }
+        if (!havePiece) {
+            let gameResultEl = gameOverEl.querySelector('h2');
+
+            gameOverEl.querySelector('p').innerHTML = 'by insufficient material';
+            gameResultEl.innerHTML = 'Draw';
+            gameResultEl.style.color = 'lightgray';
+            gameResultEl.style.filter = 'drop-shadow(0 0 2.5vh lightgray)';
+            gameOverEl.style.zIndex = '50';
+            gameOverEl.style.opacity = '100';
+
+            gameOn = false;
             fnWhite = fnBlack = null;
         }
     }
