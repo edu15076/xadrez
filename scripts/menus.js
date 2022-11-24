@@ -176,6 +176,8 @@ playEl.onclick = () => {
 
     if (enginesPlaying === 1)
         colorScreening = userColor;
+    if (pvp)
+        playerCanMove = true;
 
     gameOn = true;
     flowControl();

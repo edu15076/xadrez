@@ -25,9 +25,29 @@ let delay;
 function flowControl() {
     switch (turn) {
         case 'white':
-            delay ? setTimeout(fnWhite, 500) : fnWhite();
+            if (delay)
+                setTimeout(fnWhite, 500);
+            else if (pvp) 
+                fnWhite();
+            else if (!playerCanMove) {
+                playerCanMove = true;
+                fnWhite();
+            } else {
+                playerCanMove = false;
+                setTimeout(fnWhite, 20);
+            }
             break;
         default:
-            delay ? setTimeout(fnBlack, 500) : fnBlack();
+            if (delay)
+                setTimeout(fnBlack, 500);
+            else if (pvp) 
+                fnBlack();
+            else if (!playerCanMove) {
+                playerCanMove = true;
+                fnBlack();
+            } else {
+                playerCanMove = false;
+                setTimeout(fnBlack, 20);
+            }
     }
 }

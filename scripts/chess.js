@@ -1,6 +1,8 @@
 /** The current piece color to move. */
 let turn = 'white';
 
+let playerCanMove = false;
+
 /**
  * If en passant is possible it contains the possition, an `Array`, where en passant is possible.
  * 
@@ -199,6 +201,8 @@ circleCapture.arc(sideCtx / 2, sideCtx / 2, sideCtx * 2 / 5, 0, 2 * Math.PI, fal
  * @param {moves} moves The possible moves of a `piece`.
  */
 function drawMoves(moves) {
+    if (!playerCanMove) return;
+
     for (let move of moves) {
         let canvasEl = document.createElement('canvas');
         let side = squares[0].offsetWidth;
@@ -538,7 +542,7 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
     finalStepAtBoard(startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1]);
     
     if (gameOn) flowControl(); 
-    else exibeTabuleiroFinal();
+    else setTimeout(exibeTabuleiroFinal, 30);
 }
 
 function translatePiece(piece, color, startingPosition, finalPosition) {
@@ -665,7 +669,7 @@ function eventListenersForMove(pieceEl) {
     }
 
     function movementEnd(x, y, xToMove, yToMove) {
-        if (board[x][y].piece != null && board[x][y].piece.color === turn)
+        if (board[x][y].piece != null && board[x][y].piece.color === turn && playerCanMove)
             for (let pieceMove of board[x][y].piece.moves())
                 if (pieceMove[0] === xToMove && pieceMove[1] === yToMove) {
                     if (board[x][y].piece.piece === 'pawn' && (yToMove === 0 || yToMove === 7))
