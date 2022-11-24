@@ -191,11 +191,11 @@ let criaInformacoesDeUsuario = () => {
     let divInformacoesDoUsuarioEl = document.createElement('div');
     let informacoesEl = document.createElement('ul');
 
-    menuEl.insertBefore(divInformacoesDoUsuarioEl, document.querySelector('#choose-color'))
+    menuEl.insertBefore(divInformacoesDoUsuarioEl, document.querySelector('#configuracoes-btn'));
 
     let tableEl = document.createElement('table');
-    tableEl.innerHTML = `<tr><td><strong>V</strong></td><td><strong>D</strong></td></tr>\
-    <tr><td><strong>${usuario.vitorias}</strong></td><td><strong>${usuario.derrotas}</strong></td></tr>`
+    tableEl.innerHTML = `<tr><td><strong>V</strong></td><td><strong>D</strong></td></tr>
+    <tr><td><strong>${usuario.vitorias}</strong></td><td><strong>${usuario.derrotas}</strong></td></tr>`;
     divInformacoesDoUsuarioEl.appendChild(tableEl);
     
     divInformacoesDoUsuarioEl.insertBefore(informacoesEl, tableEl);

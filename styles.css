@@ -58,6 +58,10 @@ main {
     height: 91.224vh;
 }
 
+nav a:link {
+    text-decoration: none;
+}
+
 #tabuleiro-e-pecas {
     grid-area: 2 / 2 / 3 / 3;
     position: relative;
@@ -564,7 +568,7 @@ nav {
     width: 100vw;
     align-items: center;
     justify-content: center;
-    z-index: 4;
+    z-index: 100;
 }
 
 #configuracoes-janela {
@@ -1148,5 +1152,9 @@ nav {
     
     #logon-input {
         height: 29.3vw;
+    }
+
+    #desenvolvedores-html {
+        overflow-y: hidden;
     }
 }

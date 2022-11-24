@@ -128,6 +128,8 @@ let criarPerfil = () => {
     
     localStorage.setItem('logado', true);
 
+    criaInformacoesDeUsuario();
+
     sumir(); 
 }
 
@@ -224,6 +226,7 @@ botaoConta.onclick = () => {
     novaConta.style.display = 'flex';
     loginText.innerHTML = 'Logon';
     loginP.innerHTML = '↺';
+    criarContaEl.nome.focus();
 }
 
 let iconeVoltar = document.querySelector('#login-topo p');
