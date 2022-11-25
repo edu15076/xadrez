@@ -38,7 +38,7 @@ function getAllMoves() {
         for (let j = 0; j < 8; j++) {
             if (board[i][j].piece != null && board[i][j].piece.color == engineColor) {
                 movesFromThisPiece = board[i][j].piece.moves();
-                for (let k = 0; k < board[i][j].piece.moves().length; k++) {
+                for (let k = 0; k < movesFromThisPiece.length; k++) {
                     moveBeingAnalized = movesFromThisPiece[k];
                     moves.push([j*8 + i, moveBeingAnalized[1]*8 + moveBeingAnalized[0]]);
                 }
@@ -49,31 +49,45 @@ function getAllMoves() {
     return moves;
 }
 
-function engineMove(profunidade) {
-    let totalMaterial = getMaterialValue('white') - getMaterialValue('black');
+function engineMove(profundidade) {
+    if (profundidade == 0)
+        return 1;
+    
     let bestMaterial = 2000;
 
     let arrayBeingAnalized = getAllMoves();
     let pieceInMovement = [];
     let pieceCaptured = [];
+    let moveBeingAnalized = [];
 
     let moveToReturn = [];
 
     for (let i = 0; i < arrayBeingAnalized.length; i++) {
-        pieceInMovement = [arrayBeingAnalized[i][0] % 8, arrayBeingAnalized[i][0] / 8];
-        pieceCaptured = [arrayBeingAnalized[i][1] % 8, arrayBeingAnalized[i][1] / 8];
+        moveBeingAnalized = arrayBeingAnalized[i];
         
-        board[arrayBeingAnalized[i][0] % 8][ arrayBeingAnalized[i][0] / 8].piece = null;
-        board[arrayBeingAnalized[i][1] % 8][ arrayBeingAnalized[i][1] / 8].piece = pieceInMovement;
+        if (moveBeingAnalized.length != 0) {
+            pieceInMovement = board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece;
+            pieceCaptured = board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece;
 
-        if (pieceCaptured != null)
-            removePiece(pieceCaptured);
+            board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece = null;
+            board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece = pieceInMovement;
 
-        let totalMaterialAfterMove = getMaterialValue('white') - getMaterialValue('black');
+            if (pieceCaptured != null)
+                removePiece(pieceCaptured);
+            profundidade--;
+            engineMove(profundidade);
 
-        if (totalMaterialAfterMove < bestMaterial) {
-            bestMaterial = totalMaterialAfterMove;
-            moveToReturn = arrayBeingAnalized[i];
+            let totalMaterialAfterMove = getMaterialValue('white') - getMaterialValue('black');
+
+            if (totalMaterialAfterMove < bestMaterial) {
+                bestMaterial = totalMaterialAfterMove;
+                moveToReturn = arrayBeingAnalized[i];
+            }
+
+            board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece = pieceInMovement;
+            board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece = pieceCaptured;
         }
     }
+
+    console.log(moveToReturn);
 }
