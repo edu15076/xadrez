@@ -467,6 +467,44 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     movedByClick = false;
 }
 
+/*let movesMade = document.querySelector('moves-made');
+
+function rightMoves(x, y, xAfter, yAfter) {
+    let newMove = document.createElement('div');
+    let newMoveP = document.createElement('p');
+
+    newMove.style.width = '100%';
+    newMove.style.height = '4vh';
+    newMove.style.backgroundColor = 'black';
+    newMove.style.color = 'white';
+
+    let textToInsert = '';
+
+    if (board[x][y].piece.piece != 'pawn') {
+        textToInsert = `${textToInsert}${board[x][y].piece.piece[0].toUpperCase()}`;
+    }
+    else {
+        if (board[xAfter][yAfter].piece != null)
+            textToInsert = `${textToInsert}${x + 97}`;
+    }
+
+    if (board[xAfter][yAfter].piece.piece != null)
+        textToInsert = `${textToInsert}x`;
+
+    textToInsert = `${textToInsert}${String.fromCharCode(xAfter + 97)}${yAfter}`;
+
+    let possibleCheck = board[xAfter][yAfter].piece.moves();
+
+    for (let moves of possibleCheck) {
+        if (board[moves[0]][moves[1]].piece.piece == 'king')
+            textToInsert = `${textToInsert}+`;
+    }
+
+    newMoveP.innerHTML = textToInsert;
+    newMove.appendChild(newMoveP);
+    movesMade.appendChild(newMove);
+}*/
+
 let captureSound = new Audio('sounds/capture.mp3');
 let moveSound = new Audio('sounds/move-self.mp3');
 
@@ -482,6 +520,8 @@ let moveSound = new Audio('sounds/move-self.mp3');
  */
 function moveAtBoard(startingPosition, finalPosition, piece, capture=false, click=false) {
     if (!gameOn) return;
+
+    //rightMoves(startingPosition[0], finalPosition[0], startingPosition[1], finalPosition[1]);
 
     if (piece === 'pawn' && enPassant != null && enPassant[0] === finalPosition[0] && enPassant[1] === finalPosition[1]) {
         removePiece(board[finalPosition[0]][startingPosition[1]].piece);

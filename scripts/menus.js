@@ -234,3 +234,8 @@ let salvaTabuleiroFinal = () => {
 }
 
 saveBtn.addEventListener('click', salvaTabuleiroFinal);
+
+loginMenuBtn.addEventListener('click', () => {
+    location.reload();
+});
+

@@ -1,4 +1,3 @@
-
 const pawnValue = 10;
 const bishopValue = 30;
 const knightValue = 30;
@@ -49,7 +48,7 @@ function getAllMoves() {
     return moves;
 }
 
-function engineMove(profundidade) {
+function engineMove(profundidade, cor) {
     if (profundidade == 0)
         return 1;
     
@@ -74,8 +73,10 @@ function engineMove(profundidade) {
 
             if (pieceCaptured != null)
                 removePiece(pieceCaptured);
-            profundidade--;
-            engineMove(profundidade);
+
+            let opositeColor = (cor == 'white') ? 'black' : 'white';
+
+            engineMove(--profundidade, opositeColor);
 
             let totalMaterialAfterMove = getMaterialValue('white') - getMaterialValue('black');
 
@@ -84,10 +85,12 @@ function engineMove(profundidade) {
                 moveToReturn = arrayBeingAnalized[i];
             }
 
+            addPiece(pieceCaptured);
+
             board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece = pieceInMovement;
             board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece = pieceCaptured;
         }
     }
 
-    console.log(moveToReturn);
+    moveAtBoard([moveToReturn[0] % 8, moveToReturn[1] / 8], [moveToReturn[1] % 8, moveToReturn[1] / 8], false, false);
 }

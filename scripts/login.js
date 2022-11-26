@@ -247,3 +247,32 @@ iconeVoltar.addEventListener('click', () => {
 coverEl.addEventListener('click', () => {
     sumir();
 })
+
+let olhos = document.querySelectorAll('.olho-img');
+
+for (let olhoEl of olhos) {
+    olhoEl.addEventListener('click', () => { 
+        let srcFromImg = olhoEl.src;
+        let imgFather = olhoEl.closest('div');
+        console.log(imgFather);
+        let inputImg = (imgFather.firstChild).nextSibling;
+        console.log(inputImg);
+
+        if (srcFromImg.indexOf('fechado') == -1) {
+            inputImg.type = 'text';
+            olhoEl.src = "img/olho-fechado.png";
+            olhoEl.style.height = '3vh';
+            olhoEl.style.width = '3vh';
+            olhoEl.style.top = '';
+            olhoEl.style.left = '';
+        }
+        else {
+            inputImg.type = 'password';
+            olhoEl.src = "img/olho-aberto.png";
+            olhoEl.style.height = '2.5vh';
+            olhoEl.style.width = '2.5vh';
+            olhoEl.style.top = '.4vh';
+            olhoEl.style.left = '65%';
+        }
+    }
+)}
