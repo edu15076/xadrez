@@ -15,7 +15,7 @@ function saveKingMoves(pieceObj) {
             removePiece(lastPiece);
         board[pieceObj.x][pieceObj.y].piece = null;
         board[move[0]][move[1]].piece = pieceObj;
-        if (!getCheck(x, y))
+        if (!getCheck(x, y, pieceObj.color))
             newPieceMoves.push(move);
         board[pieceObj.x][pieceObj.y].piece = pieceObj;
         board[move[0]][move[1]].piece = lastPiece;
@@ -130,7 +130,7 @@ const king = {
     x: 4,
     y: 7,
     moved: false,
-    score: 500,
+    score: 10000,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
     },

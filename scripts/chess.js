@@ -136,6 +136,28 @@ function createPiceForBoard(pieceName, x, y, color, moved) {
     return newPiece;
 }
 
+function printBoard() {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++)
+            if (board[j][i].piece != null)
+                console.log(board[j][i].piece.piece, board[j][i].piece.color, j, i);
+            else
+                console.log('-', j, i);
+    }
+}
+
+function resetPieces() {
+    whitePieces = [];
+    blackPieces = [];
+
+    for (let i = 0; i < 8; i++)
+        for (let j = 0; j < 8; j++)
+            if (board[i][j].piece != null) {
+                let colorPieces = board[i][j].piece.color === 'white' ? whitePieces : blackPieces;
+                colorPieces.push(board[i][j].piece);
+            }
+}
+
 let = removePieceAtBoard = (i, j) => {
     board[i][j].piece = null;
 }
@@ -273,11 +295,12 @@ originalBoardSettings();
  * 
  * @param {kingX} kingX The position o the `king` on x.
  * @param {kingY} kingY The position o the `king` on y.
+ * @param {color} color The color is automatically set to turn but it can be changed to whatever.
  * @returns `true` if the king is checked or `false` if it is not.
  */
-function getCheck(kingX, kingY) {
-    let opositeColor = turn === 'white' ? 'black' : 'white';
-    let colorPieces = turn === 'white' ? blackPieces : whitePieces;
+function getCheck(kingX, kingY, color=turn) {
+    let opositeColor = color === 'white' ? 'black' : 'white';
+    let colorPieces = color === 'white' ? blackPieces : whitePieces;
     board[kingX][kingY][`${opositeColor}Attack`] = false;
 
     
@@ -308,7 +331,7 @@ function getStalemate(color) {
  * 
  * @returns `true` if the `king` from the current `turn` is mated or `false` if it is not.
  */
-function getMate(kingX, kingY, color) {
+function getMate(kingX, kingY, color=turn) {
     let opositeColor = color === 'white' ? 'black' : 'white';
     return board[kingX][kingY][`${opositeColor}Attack`] && getStalemate(color);
 }
@@ -503,25 +526,29 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
 
     if (board[finalPosition[0]][finalPosition[1]].piece != null)
         removePiece(board[finalPosition[0]][finalPosition[1]].piece);
+    
+    let newPiece;
 
     if (board[startingPosition[0]][startingPosition[1]].piece.piece != piece) {
         board[finalPosition[0]][finalPosition[1]].piece = createPiceForBoard(piece, finalPosition[0], finalPosition[1], turn, true);
         substitutePiece(board[startingPosition[0]][startingPosition[1]].piece, board[finalPosition[0]][finalPosition[1]].piece);
+
+        newPiece = document.createElement('img');
+        newPiece.classList.add('piece');
+        newPiece.src = `img/${board[finalPosition[0]][finalPosition[1]].piece.color}_${piece}.svg`;
+        newPiece.draggable = false;
+        [newPiece].forEach(eventListenersForMove);
     } else {
         board[finalPosition[0]][finalPosition[1]].piece = board[startingPosition[0]][startingPosition[1]].piece;
         board[finalPosition[0]][finalPosition[1]].piece.x = finalPosition[0];
         board[finalPosition[0]][finalPosition[1]].piece.y = finalPosition[1];
         if (board[finalPosition[0]][finalPosition[1]].piece.moved != undefined)
             board[finalPosition[0]][finalPosition[1]].piece.moved = true;
+
+        newPiece = squares[boardToSquares(startingPosition[0], startingPosition[1])].querySelector('img');
     }
 
     board[startingPosition[0]][startingPosition[1]].piece = null;
-
-    let newPiece = document.createElement('img');
-    newPiece.classList.add('piece');
-    newPiece.src = `img/${board[finalPosition[0]][finalPosition[1]].piece.color}_${piece}.svg`;
-    newPiece.draggable = false;
-    [newPiece].forEach(eventListenersForMove);
 
     squares[boardToSquares(startingPosition[0], startingPosition[1])].innerHTML = '';
     
