@@ -122,6 +122,7 @@ let blackPlayerEl = blackEl.querySelector('p');
 let whitePlayerEl = whiteEl.querySelector('p');
 
 playEl.onclick = () => {
+    playerCanMove = false;
     let valBlack = chooseBlackEl.querySelector('select').value;
     let valWhite = chooseWhiteEl.querySelector('select').value;
 
@@ -143,7 +144,7 @@ playEl.onclick = () => {
             enginesPlaying--;
             break;
         case 'cumbuca (2000)':
-            fnBlack = () => null;
+            fnBlack = cumbuca;
             break;
         case 'stockdog (2000)':
             fnBlack = () => null;
@@ -160,7 +161,7 @@ playEl.onclick = () => {
             userColor = 'white';
             break;
         case 'cumbuca (2000)':
-            fnWhite = () => null;
+            fnWhite = cumbuca;
             break;
         case 'stockdog (2000)':
             fnWhite = () => null;

@@ -254,9 +254,7 @@ for (let olhoEl of olhos) {
     olhoEl.addEventListener('click', () => { 
         let srcFromImg = olhoEl.src;
         let imgFather = olhoEl.closest('div');
-        console.log(imgFather);
         let inputImg = (imgFather.firstChild).nextSibling;
-        console.log(inputImg);
 
         if (srcFromImg.indexOf('fechado') == -1) {
             inputImg.type = 'text';

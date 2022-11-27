@@ -40,7 +40,7 @@ function flowControl() {
         default:
             if (delay)
                 setTimeout(fnBlack, 500);
-            else if (pvp) 
+            else if (pvp)
                 fnBlack();
             else if (!playerCanMove) {
                 playerCanMove = true;
@@ -61,9 +61,9 @@ function flowControl() {
  * @param {*} pieceName An optional parameter that can be changed in order to promote a pawn.
  * @returns `{piece: piece, movedPiece: movedPiece, lastPiece: lastPiece, lastEnPassant: lastEnPassant, lastCastle: lastCastle}` which is the parameter for `undoMoveAtVBoard`.
  */
-function moveAtVBoard(piece, move, doGetAttacks=false, pieceName=null) {
+function moveAtVBoard(pos, move, pieceName=null) {
     if (pieceName === null)
-        pieceName = piece.piece;
+        pieceName = board[pos[0]][pos[1]].piece.piece;
 
     const somePiece = {
         x: null,
@@ -79,48 +79,49 @@ function moveAtVBoard(piece, move, doGetAttacks=false, pieceName=null) {
     let lastEnPassant = enPassant;
     let lastCastle = null;
 
-    movedPiece.x = piece.x;
-    movedPiece.y = piece.y;
-    movedPiece.name = piece.piece;
-    movedPiece.color = piece.color;
-    if (piece.moved != undefined)
-        movedPiece.moved = piece.moved;
+    movedPiece.x = pos[0];
+    movedPiece.y = pos[1];
+    movedPiece.name =board[pos[0]][pos[1]].piece.piece;
+    movedPiece.color =board[pos[0]][pos[1]].piece.color;
+    if (board[pos[0]][pos[1]].piece.moved != undefined)
+        movedPiece.moved = board[pos[0]][pos[1]].piece.moved;
 
     movedPieceFinal.x = move[0];
     movedPieceFinal.y = move[1];
     movedPieceFinal.name = pieceName;
-    movedPieceFinal.color = piece.color;
+    movedPieceFinal.color = board[pos[0]][pos[1]].piece.color;
     movedPieceFinal.moved = true;
 
-    if (piece.piece === 'pawn' && enPassant != null && enPassant[0] === move[0] && enPassant[1] === move[1]) {
+    if (board[pos[0]][pos[1]].piece.piece === 'pawn' && enPassant != null && enPassant[0] === move[0] && enPassant[1] === move[1]) {
         lastPiece = Object.create(somePiece);
 
         lastPiece.x = move[0];
-        lastPiece.y = piece.y;
-        lastPiece.name = board[move[0]][piece.y].piece.piece;
-        lastPiece.color = board[move[0]][piece.y].piece.color;
+        lastPiece.y = pos[1];
+        lastPiece.name = board[move[0]][pos[1]].piece.piece;
+        lastPiece.color = board[move[0]][pos[1]].piece.color;
         lastPiece.moved = true;
 
-        removePiece(board[move[0]][piece.y].piece);
-        board[move[0]][piece.y].piece = null;
+        removePiece(board[move[0]][pos[1]].piece);
+        board[move[0]][pos[1]].piece = null;
         enPassant = null;
-    } else if (piece.piece === 'pawn' && Math.abs(move[1]-piece.y) === 2) {
-        enPassant = [piece.x, piece.y+board[piece.x][piece.y].piece.moveDirection()];
+    } else if (board[pos[0]][pos[1]].piece.piece === 'pawn' && Math.abs(move[1]-pos[1]) === 2) {
+        enPassant = [pos[0], pos[1]+board[pos[0]][pos[1]].piece.moveDirection()];
     } else
         enPassant = null;
 
-    if (piece.piece === 'king' && Math.abs(piece.x-move[0]) === 2) {
-        let xRook = piece.x-move[0] > 0 ? 0 : 7;
-        let xRookToMove = piece.x-move[0] > 0 ? 3 : 5;
-        board[xRookToMove][piece.y].piece = board[xRook][piece.y].piece;
-        board[xRookToMove][piece.y].piece.moved = true;
-        board[xRookToMove][piece.y].piece.x = xRookToMove;
-        board[xRook][piece.y].piece = null;
+    if (board[pos[0]][pos[1]].piece.piece === 'king' && Math.abs(pos[0]-move[0]) === 2) {
+        let xRook = pos[0]-move[0] > 0 ? 0 : 7;
+        let xRookToMove = pos[0]-move[0] > 0 ? 3 : 5;
+        board[xRookToMove][pos[1]].piece = board[xRook][pos[1]].piece;
+        board[xRookToMove][pos[1]].piece.moved = true;
+        board[xRookToMove][pos[1]].piece.x = xRookToMove;
+        substitutePiece(board[xRook][pos[1]].piece, board[xRookToMove][pos[1]].piece);
+        board[xRook][pos[1]].piece = null;
 
         lastCastle = {
             x: xRookToMove,
-            y: piece.y,
-            color: piece.piece,
+            y: pos[1],
+            color: board[pos[0]][pos[1]].piece.color,
             xCastled: xRook
         }
     }
@@ -138,42 +139,48 @@ function moveAtVBoard(piece, move, doGetAttacks=false, pieceName=null) {
         removePiece(board[move[0]][move[1]].piece);
     }
 
-    if (piece.piece != pieceName) {
-        board[move[0]][move[1]].piece = createPiceForBoard(pieceName, move[0], move[1], piece.color, true);
-        substitutePiece(board[piece.x][piece.y].piece, board[move[0]][move[1]].piece);
-        board[piece.x][piece.y].piece = null;
-        piece = board[move[0]][move[1]].piece;
+    if (board[pos[0]][pos[1]].piece.piece != pieceName) {
+        board[move[0]][move[1]].piece = createPiceForBoard(pieceName, move[0], move[1], board[pos[0]][pos[1]].piece.color, true);
+        substitutePiece(board[pos[0]][pos[1]].piece, board[move[0]][move[1]].piece);
+        board[pos[0]][pos[1]].piece = null;
     } else {
-        board[piece.x][piece.y].piece = null;
-        board[move[0]][move[1]].piece = piece;
-        piece.x = board[move[0]][move[1]].piece.x = move[0];
-        piece.y = board[move[0]][move[1]].piece.y = move[1];
+        removePiece(board[pos[0]][pos[1]].piece);
+        board[move[0]][move[1]].piece = board[pos[0]][pos[1]].piece;
+        board[move[0]][move[1]].piece.x = move[0];
+        board[move[0]][move[1]].piece.y = move[1];
         if (board[move[0]][move[1]].piece.moved != undefined)
             board[move[0]][move[1]].piece.moved = true;
+        board[pos[0]][pos[1]].piece = null;
+        addPiece(board[move[0]][move[1]].piece);
     }
 
-    piece.piece = pieceName;
+    getAttacks();
+    resetPieces();
 
-    if (doGetAttacks) getAttacks();
-
-    return {piece: piece, movedPiece: movedPiece, movedPieceFinal: movedPieceFinal, lastPiece: lastPiece, lastEnPassant: lastEnPassant, lastCastle: lastCastle};
+    return {
+            movedPiece: movedPiece,
+            movedPieceFinal: movedPieceFinal,
+            lastPiece: lastPiece,
+            lastEnPassant: lastEnPassant,
+            lastCastle: lastCastle
+           };
 }
 
-function undoMoveAtVBoard(moveStats) {
-    if (moveStats.piece.piece != moveStats.movedPiece.name) {
+function undoMoveAtVBoard(moveStats, piece) {
+    if (moveStats.movedPieceFinal.name != moveStats.movedPiece.name) {
         board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece = createPiceForBoard(moveStats.movedPiece.name, moveStats.movedPiece.x, moveStats.movedPiece.y, moveStats.movedPiece.color, moveStats.movedPiece.moved);
-        substitutePiece(board[moveStats.piece.x][moveStats.piece.y].piece, board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece);
-        board[moveStats.piece.x][moveStats.piece.y].piece = null;
-        moveStats.piece = board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece;
+        substitutePiece(board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece, board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece);
+        board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece = null;
     } else {
-        board[moveStats.piece.x][moveStats.piece.y].piece = null;
-
-        moveStats.piece.x = moveStats.movedPiece.x;
-        moveStats.piece.y = moveStats.movedPiece.y;
-        if (moveStats.piece.moved != undefined)
-            moveStats.piece.moved = moveStats.movedPiece.moved;
-
-        board[moveStats.piece.x][moveStats.piece.y].piece = moveStats.piece;
+        removePiece(board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece);
+        board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece = board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece;
+        
+        board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece.x = moveStats.movedPiece.x;
+        board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece.y = moveStats.movedPiece.y;
+        if (board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece.moved != undefined)
+            board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece.moved = moveStats.movedPiece.moved;
+        board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece = null;
+        addPiece(board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece);
     }
     
     if (moveStats.lastPiece != null) {
@@ -185,8 +192,18 @@ function undoMoveAtVBoard(moveStats) {
     if (moveStats.lastCastle != null) {
         board[moveStats.lastCastle.xCastled][moveStats.lastCastle.y].piece = board[moveStats.lastCastle.x][moveStats.lastCastle.y].piece;
         board[moveStats.lastCastle.xCastled][moveStats.lastCastle.y].piece.moved = false;
+        board[moveStats.lastCastle.xCastled][moveStats.lastCastle.y].piece.x = moveStats.lastCastle.xCastled;
+        substitutePiece(board[moveStats.lastCastle.x][moveStats.lastCastle.y].piece, board[moveStats.lastCastle.xCastled][moveStats.lastCastle.y].piece);
         board[moveStats.lastCastle.x][moveStats.lastCastle.y].piece = null;
     }
 
     enPassant = moveStats.lastEnPassant;
+
+    if (piece != undefined) {
+        piece.x = moveStats.movedPiece.x;
+        piece.y = moveStats.movedPiece.y;
+        piece.piece = moveStats.movedPiece.name;
+        if (piece.moved != undefined)
+            piece.moved = moveStats.movedPiece.moved;
+    }
 }

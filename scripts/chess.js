@@ -23,6 +23,8 @@ let gameOn = true;
 let square = {
     whiteAttack: false,
     blackAttack: false,
+    whiteValueAtt: 0,
+    blackValueAtt: 0,
     piece: null
 };
 
@@ -168,39 +170,30 @@ let = addPieceForBoard = (i, j, piece) => {
 
 function removePiece(piece) {
     let index;
-    let color = piece.color;
-    switch (color) {
-        case 'white':
-            index = whitePieces.indexOf(piece);
-            whitePieces.splice(index, 1);
-            break;
-        default:
-            index = blackPieces.indexOf(piece);
-            blackPieces.splice(index, 1);
-    }
+    let colorPieces = piece.color === 'white' ? whitePieces : blackPieces;
+
+    colorPieces.forEach((sPiece, i) => {
+        if (sPiece.x === piece.x && sPiece.y === piece.y)
+            index = i;
+    });
+    colorPieces.splice(index, 1);
 }
 
 function addPiece(piece) {
-    switch (piece.color) {
-        case 'white':
-            whitePieces.push(piece);
-            break;
-        default:
-            blackPieces.push(piece);
-    }
+    let colorPieces = piece.color === 'white' ? whitePieces : blackPieces;
+    colorPieces.push(piece);
 }
 
 function substitutePiece(piece, newPiece) {
-    let color = piece.color;
-    switch (color) {
-        case 'white':
-            whitePieces.splice(whitePieces.indexOf(piece), 1);
-            whitePieces.push(newPiece);
-            break;
-        default:
-            blackPieces.splice(blackPieces.indexOf(piece), 1);
-            blackPieces.push(newPiece);
-    }
+    let index;
+    let colorPieces = piece.color === 'white' ? whitePieces : blackPieces;
+
+    colorPieces.forEach((sPiece, i) => {
+        if (sPiece.x === piece.x && sPiece.y === piece.y)
+            index = i;
+    });
+    colorPieces.splice(index, 1);
+    colorPieces.push(newPiece);
 }
 
 let pieces = document.querySelectorAll('.piece');
@@ -263,8 +256,10 @@ function removeMoves(moves) {
  */
 function removeAttacks() {
     for (let x = 0; x < 8; x++)
-        for (let y = 0; y < 8; y++)
+        for (let y = 0; y < 8; y++) {
             board[x][y].blackAttack = board[x][y].whiteAttack = false;
+            board[x][y].blackValueAtt = board[x][y].whiteValueAtt = 0;
+        }
 }
 
 /**
@@ -277,6 +272,7 @@ function getAttacks() {
         let attacks = whitePiece.attacks();
         attacks.forEach(attack => {
             board[attack[0]][attack[1]]['whiteAttack'] = true;
+            board[attack[0]][attack[1]].whiteValueAtt += whitePiece.score;
         });
     });
 
@@ -284,6 +280,7 @@ function getAttacks() {
         let attacks = blackPiece.attacks();
         attacks.forEach(attack => {
             board[attack[0]][attack[1]]['blackAttack'] = true;
+            board[attack[0]][attack[1]].blackValueAtt += blackPiece.score;
         });
     });
 }

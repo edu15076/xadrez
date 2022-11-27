@@ -130,7 +130,7 @@ const king = {
     x: 4,
     y: 7,
     moved: false,
-    score: 10000,
+    score: 100000,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
     },
@@ -156,7 +156,7 @@ const knight = {
     color: 'white',
     x: 1,
     y: 7,
-    score: 30,
+    score: 300,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
     },
@@ -186,7 +186,7 @@ const pawn = {
     color: 'white',
     x: 0,
     y: 6,
-    score: 10,
+    score: 100,
     moved: false,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
@@ -240,7 +240,7 @@ const bishop = {
     color: 'white',
     x: 2,
     y: 7,
-    score: 30,
+    score: 300,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
     },
@@ -264,7 +264,7 @@ const rook = {
     color: 'white',
     x: 0,
     y: 7,
-    score: 50,
+    score: 500,
     moved: false,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
@@ -289,7 +289,7 @@ const queen = {
     color: 'white',
     x: 3,
     y: 7,
-    score: 90,
+    score: 900,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
     },
