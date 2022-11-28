@@ -12,7 +12,7 @@ function getMaterialValue(cor) {
     let total = 0;
     
     for (let i = 0; i < arrayInAnalize.length; i++) {
-        switch(arrayInAnalize[i].piece) {
+        switch(arrayInAnalize[i].piece.piece) {
             case 'pawn': total+= pawnValue; break;
             case 'bishop': total+= bishopValue; break;
             case 'knight': total+= knightValue; break;
@@ -21,25 +21,22 @@ function getMaterialValue(cor) {
             default: total+= kingValue;
         }
     }
-    
-    if (cor == 'black')
-        total*= -1;
 
     return total;
 }
 
-function getAllMoves() {
-    let moves = [[]];
-    let movesFromThisPiece = [[]];
+function getAllMoves(cor) {
+    let moves = [];
+    let movesFromThisPiece = [];
     let moveBeingAnalized = [];
     
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
-            if (board[i][j].piece != null && board[i][j].piece.color == engineColor) {
+            if (board[i][j].piece != null && board[i][j].piece.color == cor) {
                 movesFromThisPiece = board[i][j].piece.moves();
                 for (let k = 0; k < movesFromThisPiece.length; k++) {
                     moveBeingAnalized = movesFromThisPiece[k];
-                    moves.push([j*8 + i, moveBeingAnalized[1]*8 + moveBeingAnalized[0]]);
+                    moves.push([[i, j], [moveBeingAnalized[0], moveBeingAnalized[1]]]);
                 }
             }
         }
@@ -48,49 +45,82 @@ function getAllMoves() {
     return moves;
 }
 
-function engineMove(profundidade, cor) {
-    if (profundidade == 0)
-        return 1;
+function seiPastor (profundidadeFora, corFora) {
+    let bestMove = [];
+    let bestEval = -Infinity;
+    let profundidadeMax = 4;
     
-    let bestMaterial = 2000;
+    function miniMax(profundidade=profundidadeFora, cor=corFora, alpha=-999999, beta=999999) {
+        let corOposta = cor === 'white' ? 'black' : 'white';
 
-    let arrayBeingAnalized = getAllMoves();
-    let pieceInMovement = [];
-    let pieceCaptured = [];
-    let moveBeingAnalized = [];
-
-    let moveToReturn = [];
-
-    for (let i = 0; i < arrayBeingAnalized.length; i++) {
-        moveBeingAnalized = arrayBeingAnalized[i];
+        if (profundidade === 0)
+            return getMaterialValue(cor) - getMaterialValue(corOposta);
         
-        if (moveBeingAnalized.length != 0) {
-            pieceInMovement = board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece;
-            pieceCaptured = board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece;
+        getAttacks();
 
-            board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece = null;
-            board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece = pieceInMovement;
+        let arrayInAnalize = getAllMoves(cor);
+        
+        if (cor === turn) {
+            let maxEvaluation = -999999;
+            
+            for (let teste of arrayInAnalize) {
+                let bkp;
+                let name = board[teste[0][0]][teste[0][1]].piece.piece;
+                if ((teste[1][1] === 7 || teste[1][1] === 0) && name === 'pawn') {
+                    bkp = moveAtVBoard(teste[0], teste[1], 'queen');
+                    name = 'queen';
+                } else
+                    bkp = moveAtVBoard(teste[0], teste[1]);
+                                    
+                let evaluation = miniMax(profundidade-1, corOposta, alpha, beta);
 
-            if (pieceCaptured != null)
-                removePiece(pieceCaptured);
+                undoMoveAtVBoard(bkp);
 
-            let opositeColor = (cor == 'white') ? 'black' : 'white';
+                if (profundidade === profundidadeMax && evaluation > bestEval) {
+                    bestEval = evaluation;
+                    bestMove = [teste[0], teste[1], name];
+                }
 
-            engineMove(--profundidade, opositeColor);
+                maxEvaluation = maxEvaluation > evaluation ? maxEvaluation : evaluation;
+                alpha = alpha > maxEvaluation ? alpha : maxEvaluation;
+                if (beta <= alpha)
+                    break;
 
-            let totalMaterialAfterMove = getMaterialValue('white') - getMaterialValue('black');
-
-            if (totalMaterialAfterMove < bestMaterial) {
-                bestMaterial = totalMaterialAfterMove;
-                moveToReturn = arrayBeingAnalized[i];
             }
+            return maxEvaluation;
+        } 
+        else {
+            let minEvaluation = 999999;
 
-            addPiece(pieceCaptured);
+            for (let teste of arrayInAnalize) {
+                let bkp;
+                let name = board[teste[0][0]][teste[0][1]].piece.piece;
+                if ((teste[1][1] === 7 || teste[1][1] === 0) && name === 'pawn') {
+                    bkp = moveAtVBoard(teste[0], teste[1], 'queen');
+                    name = 'queen';
+                } else
+                    bkp = moveAtVBoard(teste[0], teste[1]);
 
-            board[moveBeingAnalized[0] % 8][Math.floor(moveBeingAnalized[0] / 8)].piece = pieceInMovement;
-            board[moveBeingAnalized[1] % 8][Math.floor(moveBeingAnalized[1] / 8)].piece = pieceCaptured;
+                let evaluation = miniMax(profundidade-1, corOposta, alpha, beta);
+
+                undoMoveAtVBoard(bkp);
+
+                minEvaluation = minEvaluation < evaluation ? minEvaluation : evaluation;
+                beta = beta < minEvaluation ? beta : minEvaluation;
+                if (beta <= alpha)
+                    break;
+            }
+            return minEvaluation;
         }
     }
 
-    moveAtBoard([moveToReturn[0] % 8, moveToReturn[1] / 8], [moveToReturn[1] % 8, moveToReturn[1] / 8], false, false);
+    miniMax();
+
+    return bestMove;
+}
+
+function engineMove(profundidade=4, cor=turn) {
+    let moveToReturn = seiPastor(profundidade, cor);
+
+    moveAtBoard(moveToReturn[0], moveToReturn[1], moveToReturn[2], false, true);
 }
