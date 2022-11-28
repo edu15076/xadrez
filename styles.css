@@ -934,6 +934,10 @@ nav {
     .conteudo img {
         margin: 0;
     }
+
+    #desenvolvedores-html::-webkit-scrollbar{
+        display: none;
+    }
 }
 
 #torre-animacao {
@@ -1188,9 +1192,5 @@ nav {
     
     #logon-input {
         height: 29.3vw;
-    }
-
-    #desenvolvedores-html {
-        overflow-y: hidden;
     }
 }
