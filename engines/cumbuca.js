@@ -129,14 +129,13 @@ function cumbuca() {
             if (maximazedPlayer) {
                 minOrMaxEval = cumbucaMax(minOrMaxEval, eval);
                 alpha = cumbucaMax(minOrMaxEval, alpha);
-                if (beta <= alpha)
-                    break;
             } else {
                 minOrMaxEval = cumbucaMin(minOrMaxEval, eval);
                 beta = cumbucaMin(minOrMaxEval, beta);
-                if (beta <= alpha)
-                    break;
             }
+
+            if (beta <= alpha)
+                break;
         }
 
         return minOrMaxEval;
