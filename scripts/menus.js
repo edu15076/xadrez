@@ -15,7 +15,7 @@ const fechaMenu = () => {
 
 //document.onkeydown = acionaAtalho
 main.addEventListener('keyup', acionaAtalho);
-*/
+
 const abreConfiguracoes = () => {
     configuracaoEl.classList.remove('pop-up-configuracoes-fechado');
     configuracaoEl.classList.add('pop-up-configuracoes-aberto');
