@@ -22,6 +22,9 @@ function randEngine() {
 let fnWhite, fnBlack;
 let delay;
 
+/**
+ * Control the turn of each player.
+ */
 function flowControl() {
     switch (turn) {
         case 'white':
@@ -34,7 +37,7 @@ function flowControl() {
                 fnWhite();
             } else {
                 playerCanMove = false;
-                setTimeout(fnWhite, 20);
+                setTimeout(fnWhite, 100);
             }
             break;
         default:
@@ -47,7 +50,7 @@ function flowControl() {
                 fnBlack();
             } else {
                 playerCanMove = false;
-                setTimeout(fnBlack, 20);
+                setTimeout(fnBlack, 100);
             }
     }
 }
@@ -55,11 +58,10 @@ function flowControl() {
 /**
  * Move a piece at the `board` global variable only.
  * 
- * @param {*} piece A object of the `piece` being moved.
- * @param {*} move An array `[x, y]` of the final position of `piece`.
- * @param {*} doGetAttacks An optional parameter that determines if `getAttacks` should be executed. This should be set to true if you are getting the piece moves by `piece.moves()`.
+ * @param {*} pos An array `[x, y]` of the initial position of a `piece`.
+ * @param {*} move An array `[x, y]` of the final position of a `piece`.
  * @param {*} pieceName An optional parameter that can be changed in order to promote a pawn.
- * @returns `{piece: piece, movedPiece: movedPiece, lastPiece: lastPiece, lastEnPassant: lastEnPassant, lastCastle: lastCastle}` which is the parameter for `undoMoveAtVBoard`.
+ * @returns `{movedPiece: movedPiece, lastPiece: lastPiece, lastEnPassant: lastEnPassant, lastCastle: lastCastle}` which is the first parameter for `undoMoveAtVBoard`.
  */
 function moveAtVBoard(pos, move, pieceName=null) {
     if (pieceName === null)
@@ -155,7 +157,6 @@ function moveAtVBoard(pos, move, pieceName=null) {
     }
 
     getAttacks();
-    resetPieces();
 
     return {
             movedPiece: movedPiece,
@@ -166,7 +167,13 @@ function moveAtVBoard(pos, move, pieceName=null) {
            };
 }
 
-function undoMoveAtVBoard(moveStats, piece) {
+/**
+ * Undo a move at the virtual board.
+ * 
+ * @param {*} moveStats The output of moveAtVBoard.
+ * @param {*} piece An optional parameter of an object `piece`.
+ */
+function undoMoveAtVBoard(moveStats, piece=null) {
     if (moveStats.movedPieceFinal.name != moveStats.movedPiece.name) {
         board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece = createPiceForBoard(moveStats.movedPiece.name, moveStats.movedPiece.x, moveStats.movedPiece.y, moveStats.movedPiece.color, moveStats.movedPiece.moved);
         substitutePiece(board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece, board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece);
@@ -199,7 +206,7 @@ function undoMoveAtVBoard(moveStats, piece) {
 
     enPassant = moveStats.lastEnPassant;
 
-    if (piece != undefined) {
+    if (piece != null) {
         piece.x = moveStats.movedPiece.x;
         piece.y = moveStats.movedPiece.y;
         piece.piece = moveStats.movedPiece.name;

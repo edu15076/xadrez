@@ -175,8 +175,11 @@ playEl.onclick = () => {
     pvp = enginesPlaying === 0;
     colorScreening = actualColor;
 
-    if (enginesPlaying === 1)
+    if (enginesPlaying === 1) {
         colorScreening = userColor;
+        if (valWhite != 'you')
+            playerCanMove = true;
+    }
     if (pvp)
         playerCanMove = true;
 

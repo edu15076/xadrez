@@ -23,8 +23,8 @@ let gameOn = true;
 let square = {
     whiteAttack: false,
     blackAttack: false,
-    whiteValueAtt: 0,
-    blackValueAtt: 0,
+    wAtk: 0,
+    bAtk: 0,
     piece: null
 };
 
@@ -196,6 +196,8 @@ function substitutePiece(piece, newPiece) {
     colorPieces.push(newPiece);
 }
 
+let selectedPieceName;
+
 let pieces = document.querySelectorAll('.piece');
 let bodyEl = document.querySelector('body');
 let squares = document.querySelectorAll('#pieces-move div');
@@ -231,7 +233,7 @@ function drawMoves(moves) {
         let ctx = canvasEl.getContext('2d');
         ctx.fillStyle = '#2e2e2e5a';
         
-        ctx.fill(squares[move[0] - 8 * move[1] + 56].querySelector(':first-child') === null && (enPassant === null || move[0] != enPassant[0] || move[1] != enPassant[1]) ? circleMove : circleCapture);
+        ctx.fill(squares[move[0] - 8 * move[1] + 56].querySelector(':first-child') === null && (enPassant === null || move[0] != enPassant[0] || move[1] != enPassant[1] || selectedPieceName != 'pawn') ? circleMove : circleCapture);
 
         squares[move[0] - 8 * move[1] + 56].appendChild(canvasEl);
     }
@@ -258,7 +260,7 @@ function removeAttacks() {
     for (let x = 0; x < 8; x++)
         for (let y = 0; y < 8; y++) {
             board[x][y].blackAttack = board[x][y].whiteAttack = false;
-            board[x][y].blackValueAtt = board[x][y].whiteValueAtt = 0;
+            board[x][y].wAtk = board[x][y].bAtk = 0;
         }
 }
 
@@ -272,7 +274,7 @@ function getAttacks() {
         let attacks = whitePiece.attacks();
         attacks.forEach(attack => {
             board[attack[0]][attack[1]]['whiteAttack'] = true;
-            board[attack[0]][attack[1]].whiteValueAtt += whitePiece.score;
+            board[attack[0]][attack[1]].wAtk++;
         });
     });
 
@@ -280,7 +282,7 @@ function getAttacks() {
         let attacks = blackPiece.attacks();
         attacks.forEach(attack => {
             board[attack[0]][attack[1]]['blackAttack'] = true;
-            board[attack[0]][attack[1]].blackValueAtt += blackPiece.score;
+            board[attack[0]][attack[1]].bAtk++;
         });
     });
 }
@@ -616,8 +618,14 @@ function translatePiece(piece, color, startingPosition, finalPosition) {
     pieceMove.classList.add('piece-move');
 
     squares[boardToSquares(startingPosition[0], startingPosition[1])].appendChild(pieceMove);
-    pieceMove.style.left = `${pieceMove.clientHeight * (finalPosition[0] - startingPosition[0])}px`;
-    pieceMove.style.top = `${pieceMove.clientHeight * (finalPosition[1] - startingPosition[1])}px`;
+    if (actualColor === 'white') {
+        pieceMove.style.left = `${pieceMove.clientHeight * (finalPosition[0] - startingPosition[0])}px`;
+        pieceMove.style.top = `${pieceMove.clientHeight * (finalPosition[1] - startingPosition[1])}px`;
+    } else {
+        pieceMove.style.left = `${pieceMove.clientHeight * (startingPosition[0] - finalPosition[0])}px`;
+        pieceMove.style.top = `${pieceMove.clientHeight * (startingPosition[1] - finalPosition[1])}px`;
+    }
+
 
     setTimeout(() => { squares[boardToSquares(startingPosition[0], startingPosition[1])].removeChild(pieceMove); }, 75);
 }
@@ -699,6 +707,8 @@ function eventListenersForMove(pieceEl) {
         x = parent.dataset.square.charCodeAt(0) - 97;
         y = 8 - parent.dataset.square[1];
         pieceEl.style.zIndex = '101';
+
+        selectedPieceName = board[x][y].piece.piece;
         
         if (board[x][y].piece.color === turn) {
             if (lastParent != undefined) lastParent.style.backgroundColor = 'transparent';
