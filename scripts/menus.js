@@ -13,24 +13,6 @@ const fechaMenu = () => {
     checkboxMenuEl.checked = false;
 };
 
-/* Pensei em colocar atalhos de teclado mas to
-estudando a melhor forma de fazer.
-
-function keyPressed(evt){
-    evt = evt || window.event;
-    var key = evt.keyCode || evt.which;
-    return String.fromCharCode(key); 
-}
-
-let acionaAtalho = e => {
-    let tecla = keyPressed(e);
-
-    if(tecla === 'C' || tecla === 'c') {
-        abreConfiguracoes();
-        console.log(1);
-    }
-}
-
 //document.onkeydown = acionaAtalho
 main.addEventListener('keyup', acionaAtalho);
 */
@@ -146,9 +128,6 @@ playEl.onclick = () => {
         case 'cumbuca (2000)':
             fnBlack = cumbuca;
             break;
-        case 'stockdog (2000)':
-            fnBlack = () => null;
-            break;
         case 'random engine (???)':
             fnBlack = randEngine;
             break;
@@ -162,9 +141,6 @@ playEl.onclick = () => {
             break;
         case 'cumbuca (2000)':
             fnWhite = cumbuca;
-            break;
-        case 'stockdog (2000)':
-            fnWhite = () => null;
             break;
         case 'random engine (???)':
             fnWhite = randEngine;
