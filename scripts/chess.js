@@ -33,6 +33,9 @@ let whiteKing, blackKing;
 let whitePieces = [];
 let blackPieces = [];
 
+let whiteCount = 16;
+let blackCount = 16;
+
 /** This is a matrix of `square`, it contains one `square` for each position on a chess board. */
 let board = [[],[],[],[],[],[],[],[]];
 
@@ -539,6 +542,7 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
     if (capture) {
         captureSound.load();
         captureSound.play();
+        board[finalPosition[0]][finalPosition[1]].piece.color === 'white' ? whiteCount-- : blackCount--;
     } else {
         moveSound.load();
         moveSound.play();

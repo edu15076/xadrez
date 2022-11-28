@@ -1182,7 +1182,7 @@ nav {
     }
     
     #logon {
-        height: 40vw;
+        height: 38.5vw;
         margin-top: 2vw;
     }
     
@@ -1193,4 +1193,14 @@ nav {
     #logon-input {
         height: 29.3vw;
     }
+
+    .olho-img {
+        width: 3.34vw;
+        height: 3.34vw;
+    }
+
+    .olho {
+        top: 1.07vw;
+    }
+
 }
