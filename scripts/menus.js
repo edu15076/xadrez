@@ -122,12 +122,14 @@ playEl.onclick = () => {
             fnBlack = () => null;
             enginesPlaying--;
             break;
-        case 'cumbuca (2000)':
+        case 'cumbuca (1500)':
             fnBlack = cumbuca;
             break;
         case 'random engine (???)':
             fnBlack = randEngine;
             break;
+        default:
+            fnBlack = engineMove;
     }
 
     switch (valWhite) {
@@ -136,12 +138,14 @@ playEl.onclick = () => {
             enginesPlaying--;
             userColor = 'white';
             break;
-        case 'cumbuca (2000)':
+        case 'cumbuca (1500)':
             fnWhite = cumbuca;
             break;
         case 'random engine (???)':
             fnWhite = randEngine;
             break;
+        default:
+            fnBlack = engineMove;
     }
 
     delay = enginesPlaying === 2;
