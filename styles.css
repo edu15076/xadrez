@@ -737,6 +737,7 @@ nav {
 .olho-img {
     width: 2.5vh;
     height: 2.5vh;
+    opacity: 0.7;
 }
 
 .olho {
