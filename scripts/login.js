@@ -258,15 +258,15 @@ for (let olhoEl of olhos) {
 
         if (srcFromImg.indexOf('fechado') == -1) {
             inputImg.type = 'text';
-            olhoEl.src = "img/olho-fechado.png";
-            olhoEl.style.height = '3vh';
-            olhoEl.style.width = '3vh';
+            olhoEl.src = "img/olho-fechado.svg";
+            olhoEl.style.height = '2.5vh';
+            olhoEl.style.width = '2.5vh';
             olhoEl.style.top = '';
             olhoEl.style.left = '';
         }
         else {
             inputImg.type = 'password';
-            olhoEl.src = "img/olho-aberto.png";
+            olhoEl.src = "img/olho-aberto.svg";
             olhoEl.style.height = '2.5vh';
             olhoEl.style.width = '2.5vh';
             olhoEl.style.top = '.4vh';
