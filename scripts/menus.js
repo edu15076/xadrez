@@ -100,6 +100,10 @@ let chooseWhiteEl = whiteEl.querySelector('div:last-of-type');
 let blackPlayerEl = blackEl.querySelector('p');
 let whitePlayerEl = whiteEl.querySelector('p');
 
+let player = false;
+let engineOponente = false;
+let corPlayer = null;
+
 playEl.onclick = () => {
     playerCanMove = false;
     let valBlack = chooseBlackEl.querySelector('select').value;
@@ -146,6 +150,19 @@ playEl.onclick = () => {
             break;
         default:
             fnBlack = engineMove;
+    };
+
+    if(valWhite === 'you' && valBlack !== 'you') {
+        player = 'white';
+        engineOponente = valBlack;
+        corPlayer = userColor;
+    } else if(valWhite !== 'you' && valBlack === 'you'){
+        player = 'black';
+        engineOponente = valWhite;
+        corPlayer = userColor;
+    } else {
+        player = false;
+        engineOponente = false;
     }
 
     delay = enginesPlaying === 2;
@@ -192,6 +209,19 @@ let criaInformacoesDeUsuario = () => {
     informacoesEl.insertBefore(nomeDoUsuario, pontos);
     
     divInformacoesDoUsuarioEl.classList.add('usuario-informacoes');
+}
+
+let atualizaInformacoesDeUsuario = () => {
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    let vitoriaEl = document.querySelector('.usuario-informacoes table tr:nth-child(2) td:nth-child(1) strong');
+    vitoriaEl.innerHTML = usuario.vitorias;
+
+    let derrotaEl = document.querySelector('.usuario-informacoes table tr:nth-child(2) td:nth-child(2) strong');
+    derrotaEl.innerHTML = usuario.derrotas;
+
+    let pontuacaoEl = document.querySelector('.usuario-informacoes ul li:nth-child(2)');
+    pontuacaoEl.innerHTML = usuario.score;
 }
 
 let saveBtn = document.querySelector('#save');

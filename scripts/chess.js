@@ -419,6 +419,10 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
 
             squares[boardToSquares(colorKing.x, colorKing.y)].style.backgroundColor = 'red';
 
+            if(logado) {
+                contaPontuacao(opositeColor.charAt(0).toUpperCase()+opositeColor.slice(1));
+            }
+
             gameOn = false;
             fnWhite = fnBlack = null;
         } else if (areThereAnyValidMoves) {

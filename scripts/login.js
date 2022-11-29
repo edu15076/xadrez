@@ -104,22 +104,18 @@ let camposCompletos = () => {
     
 }
 
+let logado = false;
+
 let criarPerfil = () => {
     localStorage.removeItem('usuario');
     
     let usuario = {
         nome: criarContaEl.nome.value,
         senha: criarContaEl.senha.value,
-        score: 0,
+        score: 800,
         vitorias: 0,
         derrotas: 0,
-        tema: 'wood',
-        tabuleiro: {
-            moved: false,
-            html: 'none',
-            board: [],
-            turn: 'white'
-        }
+        tema: 'wood'
     }
     
     localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -131,6 +127,8 @@ let criarPerfil = () => {
     criaInformacoesDeUsuario();
 
     sumir(); 
+
+    logado = true;
 }
 
 let logar = () => {
@@ -175,6 +173,8 @@ let logar = () => {
     selecionaTabuleiro(usuario);
 
     sumir();
+
+    logar = true;
 }
 
 loginSenhaInput.addEventListener('keyup', e => {
@@ -274,3 +274,34 @@ for (let olhoEl of olhos) {
         }
     }
 )}
+
+let contaPontuacao = (vencedor) => {
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
+    if(!player) {
+        return;
+    } else if(vencedor !== player){
+        usuario.derrotas++;
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        atualizaInformacoesDeUsuario();
+    }
+    pontuacaoEngine;
+
+    switch (engineOponente) {
+        case 'cumbuca (1500)':
+            pontuacaoEngine = 1500;
+            break;
+        case 'sei mate pastor (800)':
+            pontuacaoEngine = 800;
+            break;
+        case 'random engine (???)':
+            pontuacaoEngine = 200;
+            break;                
+    }
+            
+    usuario.vitorias = (usuario.vitorias) ? usuario.vitorias++ : 1;
+    usuario.score += contaPontuacao(11 * pontuacaoEngine / usuario.score);
+
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+
+    atualizaInformacoesDeUsuario();
+}
