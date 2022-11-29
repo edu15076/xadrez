@@ -473,44 +473,6 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     movedByClick = false;
 }
 
-/*let movesMade = document.querySelector('moves-made');
-
-function rightMoves(x, y, xAfter, yAfter) {
-    let newMove = document.createElement('div');
-    let newMoveP = document.createElement('p');
-
-    newMove.style.width = '100%';
-    newMove.style.height = '4vh';
-    newMove.style.backgroundColor = 'black';
-    newMove.style.color = 'white';
-
-    let textToInsert = '';
-
-    if (board[x][y].piece.piece != 'pawn') {
-        textToInsert = `${textToInsert}${board[x][y].piece.piece[0].toUpperCase()}`;
-    }
-    else {
-        if (board[xAfter][yAfter].piece != null)
-            textToInsert = `${textToInsert}${x + 97}`;
-    }
-
-    if (board[xAfter][yAfter].piece.piece != null)
-        textToInsert = `${textToInsert}x`;
-
-    textToInsert = `${textToInsert}${String.fromCharCode(xAfter + 97)}${yAfter}`;
-
-    let possibleCheck = board[xAfter][yAfter].piece.moves();
-
-    for (let moves of possibleCheck) {
-        if (board[moves[0]][moves[1]].piece.piece == 'king')
-            textToInsert = `${textToInsert}+`;
-    }
-
-    newMoveP.innerHTML = textToInsert;
-    newMove.appendChild(newMoveP);
-    movesMade.appendChild(newMove);
-}*/
-
 let captureSound = new Audio('sounds/capture.mp3');
 let moveSound = new Audio('sounds/move-self.mp3');
 
@@ -526,9 +488,6 @@ let moveSound = new Audio('sounds/move-self.mp3');
  */
 function moveAtBoard(startingPosition, finalPosition, piece, capture=false, click=false) {
     if (!gameOn) return;
-
-    //rightMoves(startingPosition[0], finalPosition[0], startingPosition[1], finalPosition[1]);
-
     if (piece === 'pawn' && enPassant != null && enPassant[0] === finalPosition[0] && enPassant[1] === finalPosition[1]) {
         removePiece(board[finalPosition[0]][startingPosition[1]].piece);
         board[finalPosition[0]][startingPosition[1]].piece = null;
@@ -542,11 +501,10 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
 
     if (!capture)
         capture = squares[boardToSquares(finalPosition[0], finalPosition[1])].getElementsByTagName('img').length > 0;
-    
+
     if (capture) {
         captureSound.load();
         captureSound.play();
-        board[finalPosition[0]][finalPosition[1]].piece.color === 'white' ? whiteCount-- : blackCount--;
     } else {
         moveSound.load();
         moveSound.play();
@@ -562,40 +520,30 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
         
         let cpyRook = squares[boardToSquares(xRook, startingPosition[1])].querySelector('img');
         squares[boardToSquares(xRook, startingPosition[1])].innerHTML = '';
-
         translatePiece('rook', turn, [xRook, startingPosition[1]], [xRookToMove, finalPosition[1]]);
-
         setTimeout( () => {
             squares[boardToSquares(xRookToMove, startingPosition[1])].appendChild(cpyRook);
             [squares[boardToSquares(xRookToMove, startingPosition[1])].querySelector('img')].forEach(eventListenersForMove);
         }, 75);
     }
-
     if (board[finalPosition[0]][finalPosition[1]].piece != null)
         removePiece(board[finalPosition[0]][finalPosition[1]].piece);
-    
-    let newPiece;
-
     if (board[startingPosition[0]][startingPosition[1]].piece.piece != piece) {
         board[finalPosition[0]][finalPosition[1]].piece = createPiceForBoard(piece, finalPosition[0], finalPosition[1], turn, true);
         substitutePiece(board[startingPosition[0]][startingPosition[1]].piece, board[finalPosition[0]][finalPosition[1]].piece);
-
-        newPiece = document.createElement('img');
-        newPiece.classList.add('piece');
-        newPiece.src = `img/${board[finalPosition[0]][finalPosition[1]].piece.color}_${piece}.svg`;
-        newPiece.draggable = false;
-        [newPiece].forEach(eventListenersForMove);
     } else {
         board[finalPosition[0]][finalPosition[1]].piece = board[startingPosition[0]][startingPosition[1]].piece;
         board[finalPosition[0]][finalPosition[1]].piece.x = finalPosition[0];
         board[finalPosition[0]][finalPosition[1]].piece.y = finalPosition[1];
         if (board[finalPosition[0]][finalPosition[1]].piece.moved != undefined)
             board[finalPosition[0]][finalPosition[1]].piece.moved = true;
-
-        newPiece = squares[boardToSquares(startingPosition[0], startingPosition[1])].querySelector('img');
     }
-
     board[startingPosition[0]][startingPosition[1]].piece = null;
+    let newPiece = document.createElement('img');
+    newPiece.classList.add('piece');
+    newPiece.src = `img/${board[finalPosition[0]][finalPosition[1]].piece.color}_${piece}.svg`;
+    newPiece.draggable = false;
+    [newPiece].forEach(eventListenersForMove);
 
     squares[boardToSquares(startingPosition[0], startingPosition[1])].innerHTML = '';
     
