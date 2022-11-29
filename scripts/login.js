@@ -174,7 +174,7 @@ let logar = () => {
 
     sumir();
 
-    logar = true;
+    logado = true;
 }
 
 loginSenhaInput.addEventListener('keyup', e => {
