@@ -50,7 +50,7 @@ function cumbuca() {
     let cumbucaMax = (a, b) => a > b ? a : b;
     let cumbucaMin = (a, b) => a < b ? a : b;
 
-    /** must be even if low */
+    /** must be even, if low */
     const maxDepth = 4;
 
     let bestEval = -1000000;
@@ -63,44 +63,29 @@ function cumbuca() {
         let piecesOfColor;
         let opositeColor;
         let kingColorAtk;
+        let colorKing;
 
-        switch (color) {
-            case 'white':
+
+        switch (color.charAt(0)) {
+            case 'w':
                 piecesOfColor = whitePieces;
                 opositeColor = 'black'; 
                 kingColorAtk = board[whiteKing.x][whiteKing.y].blackAttack;
+                colorKing = whiteKing;
                 break;
             default:
                 piecesOfColor = blackPieces;
                 opositeColor = 'white';
                 kingColorAtk = board[blackKing.x][blackKing.y].whiteAttack;
+                colorKing = blackKing;
         }
 
         let minOrMaxEval = maximazedPlayer ? -999999 : 999999;
 
-        getAttacks();
-
         let moves = [];
-        for (let piece of piecesOfColor) {
-            let a = 0;
-            let b = 0;
-            for (let move of piece.moves()) {
-                if (board[move[0]][move[1]].piece != null) {
-                    if (Math.abs(board[piece.x][piece.y].piece.score) < Math.abs(board[move[0]][move[1]].piece.score)) {
-                        moves.unshift([[piece.x, piece.y], move]);
-                        a++;
-                    } else if (board[move[0]][move[1]].piece[`${color.charAt(0)}Atk`] > board[move[0]][move[1]].piece[`${opositeColor.charAt(0)}Atk`]) {
-                        moves.splice(a, 0, [[piece.x, piece.y], move]);
-                        b++;
-                    } else
-                        moves.splice(a+b, 0, [[piece.x, piece.y], move]);
-                } else if (board[piece.x][piece.y].piece[`${color.charAt(0)}Atk`] - board[piece.x][piece.y].piece[`${opositeColor.charAt(0)}Atk`] < 0) {
-                    moves.splice(a, 0, [[piece.x, piece.y], move]);
-                    b++;
-                } else
-                    moves.push([[piece.x, piece.y], move]);
-            }
-        }
+        for (let piece of piecesOfColor)
+            for (let move of piece.notSavingKingMoves())
+                moves.push([[piece.x, piece.y], move, null]);
 
         if (moves.length === 0)
             if (kingColorAtk)
@@ -108,10 +93,46 @@ function cumbuca() {
             else
                 return 0;
 
+        let len = moves.length;
+        
+        for (let i = 0; i < len; i++) {
+            let move = moves[i];
+
+            let kingX, kingY;
+
+            if (board[move[0][0]][move[0][1]].piece.piece.charAt(2) === 'n') {
+                kingX = move[1][0];
+                kingY = move[1][1];
+            } else {
+                kingX = colorKing.x;
+                kingY = colorKing.y;
+            }
+
+            let moveBackup;
+            if ((move[1][1] === 7 || move[1][1] === 0) && board[move[0][0]][move[0][1]].piece.piece.charAt(0) === 'p') {
+                moveBackup = moveAtVBoard(move[0], move[1], 'queen');
+                pieceName = 'queen';
+            } else
+                moveBackup = moveAtVBoard(move[0], move[1]);
+
+            if (!getCheck(kingX, kingY, color))
+                moves[i][2] = cumbucaEvalMid();
+            else {
+                moves.splice(i, 1);
+                len--;
+                i--;
+            }
+            
+            undoMoveAtVBoard(moveBackup);
+        }
+
+        let cmp = maximazedPlayer ? (a, b) => b[2] - a[2] : (a, b) => a[2] - b[2];
+        moves.sort(cmp);
+
         for (let move of moves) {
             let moveBackup;
             let pieceName = board[move[0][0]][move[0][1]].piece.piece;
-            if ((move[1][1] === 7 || move[1][1] === 0) && pieceName === 'pawn') {
+            if ((move[1][1] === 7 || move[1][1] === 0) && pieceName.charAt(0) === 'p') {
                 moveBackup = moveAtVBoard(move[0], move[1], 'queen');
                 pieceName = 'queen';
             } else
@@ -142,5 +163,7 @@ function cumbuca() {
     }
 
     cumbucaMiniMax();
+    getAttacks();
+    resetPieces();
     moveAtBoard(bestMove[0], bestMove[1], bestMove[2], false, true);
 }

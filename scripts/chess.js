@@ -110,22 +110,22 @@ function originalBoardSettings() {
 
 function createPiceForBoard(pieceName, x, y, color, moved) {
     let newPiece;
-    switch (pieceName) {
-        case 'pawn':
+    switch (pieceName.charAt(2)) {
+        case 'w':
             newPiece = Object.create(pawn);
             newPiece.moved = moved;
             break;
-        case 'knight':
+        case 'i':
             newPiece = Object.create(knight);
             break;
-        case 'bishop':
+        case 's':
             newPiece = Object.create(bishop);
             break;
-        case 'rook':
+        case 'o':
             newPiece = Object.create(rook);
             newPiece.moved = moved;
             break;
-        case 'queen':
+        case 'e':
             newPiece = Object.create(queen);
             break;
         default:
@@ -136,7 +136,7 @@ function createPiceForBoard(pieceName, x, y, color, moved) {
     newPiece.y = y;
     newPiece.color = color;
     newPiece.piece = pieceName;
-    newPiece.score = (color === 'black') ? newPiece.score * (-1) : newPiece.score;
+    newPiece.score = (color.charAt(0) === 'b') ? newPiece.score * (-1) : newPiece.score;
 
     return newPiece;
 }
@@ -158,7 +158,7 @@ function resetPieces() {
     for (let i = 0; i < 8; i++)
         for (let j = 0; j < 8; j++)
             if (board[i][j].piece != null) {
-                let colorPieces = board[i][j].piece.color === 'white' ? whitePieces : blackPieces;
+                let colorPieces = board[i][j].piece.color.charAt(0) === 'w' ? whitePieces : blackPieces;
                 colorPieces.push(board[i][j].piece);
             }
 }
@@ -173,7 +173,7 @@ let = addPieceForBoard = (i, j, piece) => {
 
 function removePiece(piece) {
     let index;
-    let colorPieces = piece.color === 'white' ? whitePieces : blackPieces;
+    let colorPieces = piece.color.charAt(0) === 'w' ? whitePieces : blackPieces;
 
     colorPieces.forEach((sPiece, i) => {
         if (sPiece.x === piece.x && sPiece.y === piece.y)
@@ -183,13 +183,13 @@ function removePiece(piece) {
 }
 
 function addPiece(piece) {
-    let colorPieces = piece.color === 'white' ? whitePieces : blackPieces;
+    let colorPieces = piece.color.charAt(0) === 'w' ? whitePieces : blackPieces;
     colorPieces.push(piece);
 }
 
 function substitutePiece(piece, newPiece) {
     let index;
-    let colorPieces = piece.color === 'white' ? whitePieces : blackPieces;
+    let colorPieces = piece.color.charAt(0) === 'w' ? whitePieces : blackPieces;
 
     colorPieces.forEach((sPiece, i) => {
         if (sPiece.x === piece.x && sPiece.y === piece.y)
@@ -301,8 +301,8 @@ originalBoardSettings();
  * @returns `true` if the king is checked or `false` if it is not.
  */
 function getCheck(kingX, kingY, color=turn) {
-    let opositeColor = color === 'white' ? 'black' : 'white';
-    let colorPieces = color === 'white' ? blackPieces : whitePieces;
+    let opositeColor = color.charAt(0) === 'w' ? 'black' : 'white';
+    let colorPieces = color.charAt(0) === 'w' ? blackPieces : whitePieces;
     board[kingX][kingY][`${opositeColor}Attack`] = false;
 
     
@@ -319,7 +319,7 @@ function getCheck(kingX, kingY, color=turn) {
 }
 
 function getStalemate(color) {
-    let movePieces = color === 'white' ? whitePieces : blackPieces;
+    let movePieces = color.charAt(0) === 'w' ? whitePieces : blackPieces;
 
     for (let piece of movePieces)
         if (piece.moves().length != 0)
@@ -334,7 +334,7 @@ function getStalemate(color) {
  * @returns `true` if the `king` from the current `turn` is mated or `false` if it is not.
  */
 function getMate(kingX, kingY, color=turn) {
-    let opositeColor = color === 'white' ? 'black' : 'white';
+    let opositeColor = color.charAt(0) === 'w' ? 'black' : 'white';
     return board[kingX][kingY][`${opositeColor}Attack`] && getStalemate(color);
 }
 
@@ -404,9 +404,10 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
     
     let colorKing = turn === 'white' ? whiteKing : blackKing;
     let opositeColor = turn === 'white' ? 'black' : 'white';
-    if (board[colorKing.x][colorKing.y].piece.moves().length === 0) {
-        let areThereAnyValidMoves = getStalemate(turn);
-        if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && areThereAnyValidMoves) {
+    if (colorKing.moves().length === 0) {
+        let noMoves = getStalemate(turn);
+        console.log(noMoves)
+        if (board[colorKing.x][colorKing.y][`${opositeColor}Attack`] && noMoves) {
             let gameResultEl = gameOverEl.querySelector('h2');
             let resultColor = opositeColor === colorScreening ? 'greenyellow' : 'red';
 
@@ -425,7 +426,7 @@ function finalStepAtBoard(x, y, xToMove, yToMove) {
 
             gameOn = false;
             fnWhite = fnBlack = null;
-        } else if (areThereAnyValidMoves) {
+        } else if (noMoves) {
             let gameResultEl = gameOverEl.querySelector('h2');
 
             gameOverEl.querySelector('p').innerHTML = 'by stalemate';
@@ -559,11 +560,11 @@ function moveAtBoard(startingPosition, finalPosition, piece, capture=false, clic
     }
 
     getAttacks();
-    turn = turn === 'white' ? 'black' : 'white';
+    turn = turn.charAt(0) === 'w' ? 'black' : 'white';
 
     finalStepAtBoard(startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1]);
     
-    if (gameOn) flowControl(); 
+    if (gameOn) flowControl();
     else setTimeout(exibeTabuleiroFinal, 30);
 }
 

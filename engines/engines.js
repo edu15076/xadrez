@@ -66,12 +66,14 @@ function flowControl() {
 function moveAtVBoard(pos, move, pieceName=null) {
     if (pieceName === null)
         pieceName = board[pos[0]][pos[1]].piece.piece;
+    
+    let color = board[pos[0]][pos[1]].piece.color;
+    let opositeColor = null;
 
     const somePiece = {
         x: null,
         y: null,
         name: null,
-        color: null,
         moved: null
     }
 
@@ -83,35 +85,33 @@ function moveAtVBoard(pos, move, pieceName=null) {
 
     movedPiece.x = pos[0];
     movedPiece.y = pos[1];
-    movedPiece.name =board[pos[0]][pos[1]].piece.piece;
-    movedPiece.color =board[pos[0]][pos[1]].piece.color;
+    movedPiece.name = board[pos[0]][pos[1]].piece.piece;
     if (board[pos[0]][pos[1]].piece.moved != undefined)
         movedPiece.moved = board[pos[0]][pos[1]].piece.moved;
 
     movedPieceFinal.x = move[0];
     movedPieceFinal.y = move[1];
     movedPieceFinal.name = pieceName;
-    movedPieceFinal.color = board[pos[0]][pos[1]].piece.color;
     movedPieceFinal.moved = true;
 
-    if (board[pos[0]][pos[1]].piece.piece === 'pawn' && enPassant != null && enPassant[0] === move[0] && enPassant[1] === move[1]) {
+    if (board[pos[0]][pos[1]].piece.piece.charAt(0) === 'p' && enPassant != null && enPassant[0] === move[0] && enPassant[1] === move[1]) {
         lastPiece = Object.create(somePiece);
 
         lastPiece.x = move[0];
         lastPiece.y = pos[1];
         lastPiece.name = board[move[0]][pos[1]].piece.piece;
-        lastPiece.color = board[move[0]][pos[1]].piece.color;
         lastPiece.moved = true;
+        opositeColor = board[move[0]][pos[1]].piece.color;
 
         removePiece(board[move[0]][pos[1]].piece);
         board[move[0]][pos[1]].piece = null;
         enPassant = null;
-    } else if (board[pos[0]][pos[1]].piece.piece === 'pawn' && Math.abs(move[1]-pos[1]) === 2) {
+    } else if (board[pos[0]][pos[1]].piece.piece.charAt(0) === 'p' && Math.abs(move[1]-pos[1]) === 2) {
         enPassant = [pos[0], pos[1]+board[pos[0]][pos[1]].piece.moveDirection()];
     } else
         enPassant = null;
 
-    if (board[pos[0]][pos[1]].piece.piece === 'king' && Math.abs(pos[0]-move[0]) === 2) {
+    if (board[pos[0]][pos[1]].piece.piece.charAt(2) === 'n' && Math.abs(pos[0]-move[0]) === 2) {
         let xRook = pos[0]-move[0] > 0 ? 0 : 7;
         let xRookToMove = pos[0]-move[0] > 0 ? 3 : 5;
         board[xRookToMove][pos[1]].piece = board[xRook][pos[1]].piece;
@@ -123,7 +123,6 @@ function moveAtVBoard(pos, move, pieceName=null) {
         lastCastle = {
             x: xRookToMove,
             y: pos[1],
-            color: board[pos[0]][pos[1]].piece.color,
             xCastled: xRook
         }
     }
@@ -134,7 +133,7 @@ function moveAtVBoard(pos, move, pieceName=null) {
         lastPiece.x = move[0];
         lastPiece.y = move[1];
         lastPiece.name = board[move[0]][move[1]].piece.piece;
-        lastPiece.color = board[move[0]][move[1]].piece.color;
+        opositeColor = board[move[0]][move[1]].piece.color;
         if (board[move[0]][move[1]].piece.moved != undefined)
             lastPiece.moved = board[move[0]][move[1]].piece.moved;
 
@@ -156,6 +155,13 @@ function moveAtVBoard(pos, move, pieceName=null) {
         addPiece(board[move[0]][move[1]].piece);
     }
 
+    if (pieceName.charAt(2) === 'n') {
+        if (color.charAt(0) === 'w')
+            whiteKing = board[move[0]][move[1]].piece;
+        else
+            blackKing = board[move[0]][move[1]].piece;
+    }
+
     getAttacks();
 
     return {
@@ -163,7 +169,9 @@ function moveAtVBoard(pos, move, pieceName=null) {
             movedPieceFinal: movedPieceFinal,
             lastPiece: lastPiece,
             lastEnPassant: lastEnPassant,
-            lastCastle: lastCastle
+            lastCastle: lastCastle,
+            color: color,
+            opositeColor: opositeColor
            };
 }
 
@@ -175,7 +183,7 @@ function moveAtVBoard(pos, move, pieceName=null) {
  */
 function undoMoveAtVBoard(moveStats, piece=null) {
     if (moveStats.movedPieceFinal.name != moveStats.movedPiece.name) {
-        board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece = createPiceForBoard(moveStats.movedPiece.name, moveStats.movedPiece.x, moveStats.movedPiece.y, moveStats.movedPiece.color, moveStats.movedPiece.moved);
+        board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece = createPiceForBoard(moveStats.movedPiece.name, moveStats.movedPiece.x, moveStats.movedPiece.y, moveStats.color, moveStats.movedPiece.moved);
         substitutePiece(board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece, board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece);
         board[moveStats.movedPieceFinal.x][moveStats.movedPieceFinal.y].piece = null;
     } else {
@@ -191,7 +199,7 @@ function undoMoveAtVBoard(moveStats, piece=null) {
     }
     
     if (moveStats.lastPiece != null) {
-        let lastPiece = createPiceForBoard(moveStats.lastPiece.name, moveStats.lastPiece.x, moveStats.lastPiece.y, moveStats.lastPiece.color, moveStats.lastPiece.moved);
+        let lastPiece = createPiceForBoard(moveStats.lastPiece.name, moveStats.lastPiece.x, moveStats.lastPiece.y, moveStats.opositeColor, moveStats.lastPiece.moved);
         addPiece(lastPiece);
         board[moveStats.lastPiece.x][moveStats.lastPiece.y].piece = lastPiece;
     }
@@ -213,4 +221,13 @@ function undoMoveAtVBoard(moveStats, piece=null) {
         if (piece.moved != undefined)
             piece.moved = moveStats.movedPiece.moved;
     }
+
+    if (moveStats.movedPiece.name.charAt(2) === 'n') {
+        if (moveStats.color.charAt(0) === 'w')
+            whiteKing = board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece;
+        else
+            blackKing = board[moveStats.movedPiece.x][moveStats.movedPiece.y].piece;
+    }
+
+    getAttacks();
 }

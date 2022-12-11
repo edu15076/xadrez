@@ -37,14 +37,14 @@ function findKingMoves(pieceObj) {
     if (!pieceObj.moved && !board[x][y][`${pieceObj.opositeColor()}Attack`]) {
         for (let roqueOption of roqueMoves) {
             if (roqueMoves.indexOf(roqueOption)) {
-                if (board[x+3][y].piece != null && board[x+3][y].piece.piece === 'rook' && !board[x+3][y].piece.moved
+                if (board[x+3][y].piece != null && board[x+3][y].piece.piece.charAt(0) === 'r' && !board[x+3][y].piece.moved
                     && board[x+1][y].piece === null && board[x+2][y].piece === null
                     && !board[x+1][y][`${pieceObj.opositeColor()}Attack`] && !board[x+2][y][`${pieceObj.opositeColor()}Attack`]) {
                     kingMoves.push(roqueOption);
                 }
             }
             else {
-                if (board[x-4][y].piece != null && board[x-4][y].piece.piece === 'rook' && !board[x-4][y].piece.moved
+                if (board[x-4][y].piece != null && board[x-4][y].piece.piece.charAt(0) === 'r' && !board[x-4][y].piece.moved
                     && board[x-1][y].piece === null && board[x-2][y].piece === null && board[x-3][y].piece === null
                     && !board[x-1][y][`${pieceObj.opositeColor()}Attack`] && !board[x-2][y][`${pieceObj.opositeColor()}Attack`])
                     kingMoves.push(roqueOption);
@@ -130,7 +130,7 @@ const king = {
     x: 4,
     y: 7,
     moved: false,
-    score: 100000,
+    score: 1000001,
     extra: 0,
     opositeColor() {
         return this.color === 'white' ? 'black' : 'white';
@@ -196,7 +196,7 @@ const pawn = {
     },
 
     moveDirection() {
-        return this.color === 'white' ? -1 : 1;
+        return this.color.charAt(0) === 'w' ? -1 : 1;
     },
 
     notSavingKingMoves() {
